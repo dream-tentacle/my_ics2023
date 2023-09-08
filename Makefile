@@ -1,6 +1,5 @@
 STUID = 221240060
 STUNAME = 熊浚丞
-
 # DO NOT modify the following code!!!
 
 GITFLAGS = -q --author='tracer-ics2023 <tracer@njuics.org>' --no-verify --allow-empty
