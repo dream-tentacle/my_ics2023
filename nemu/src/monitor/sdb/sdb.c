@@ -53,6 +53,26 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_si(char *args) {
+  if (args==NULL)cpu_exec(1);
+  else cpu_exec(atoi(args));
+  return 0;
+}
+
+static int cmd_info(char *args){
+  if (args[0]=='r'){
+    isa_reg_display();
+  }
+  else if (args[0]=='w'){
+    /* TODO */
+    
+  }
+  else{
+    printf("%s: wrong argumant",args);
+  }
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -63,7 +83,8 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-
+  {"si","Format: 'si x'. Step x instuctions. If x is not provided, it will be set to 1", cmd_si},
+  {"info","Format: 'info x'. Print information. x must be r or w",cmd_info}
   /* TODO: Add more commands */
 
 };
