@@ -17,6 +17,7 @@
 #include <cpu/cpu.h>
 #include <readline/readline.h>
 #include <readline/history.h>
+#include <memory/paddr.h>
 #include "sdb.h"
 
 static int is_batch_mode = false;
@@ -73,6 +74,15 @@ static int cmd_info(char *args){
   return 0;
 }
 
+static int cmd_x(char *args){
+  char *arg = strtok(args," ");
+  //int print_len = atoi(arg);
+  arg = strtok(NULL," ");
+  int start_pos = strtol(arg, NULL, 16);
+  printf("%d",paddr_read(start_pos,4));
+  return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -83,8 +93,9 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  {"si","Format: 'si x'. Step x instuctions. If x is not provided, it will be set to 1", cmd_si},
-  {"info","Format: 'info x'. Print information. x must be r or w",cmd_info}
+  {"si","Format: 'si N'. Step N instuctions. If N is not provided, it will be set to 1", cmd_si},
+  {"info","Format: 'info N'. Print information. N must be r or w",cmd_info},
+  {"x","Format: 'x N EXPR", cmd_x}
   /* TODO: Add more commands */
 
 };
