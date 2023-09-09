@@ -79,7 +79,7 @@ static int cmd_x(char *args){
   unsigned int print_len = atoi(arg);
   arg = strtok(NULL," ");
   unsigned int start_pos = strtol(arg, NULL, 16);
-  printf("start at: %d\n",start_pos);
+  printf("start at: %u\n",start_pos);
   print_len+=start_pos;
   for(unsigned int i=start_pos;i<=print_len;i++){
     printf("0x%08x\n",paddr_read(i,4));
