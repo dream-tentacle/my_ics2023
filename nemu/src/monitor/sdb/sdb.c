@@ -76,10 +76,13 @@ static int cmd_info(char *args){
 
 static int cmd_x(char *args){
   char *arg = strtok(args," ");
-  //int print_len = atoi(arg);
+  int print_len = atoi(arg);
   arg = strtok(NULL," ");
   int start_pos = strtol(arg, NULL, 16);
-  printf("%d",paddr_read(start_pos,4));
+  print_len+=start_pos;
+  for(int i=start_pos;i<=print_len;i++){
+    printf("%d",paddr_read(i,4));
+  }
   return 0;
 }
 
