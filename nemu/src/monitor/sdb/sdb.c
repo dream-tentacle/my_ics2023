@@ -76,12 +76,12 @@ static int cmd_info(char *args){
 
 static int cmd_x(char *args){
   char *arg = strtok(args," ");
-  int print_len = atoi(arg);
+  unsigned int print_len = atoi(arg);
   arg = strtok(NULL," ");
-  int start_pos = strtol(arg, NULL, 16);
+  unsigned int start_pos = strtol(arg, NULL, 16);
   printf("start at: %d\n",start_pos);
   print_len+=start_pos;
-  for(int i=start_pos;i<=print_len;i++){
+  for(unsigned int i=start_pos;i<=print_len;i++){
     printf("0x%08x\n",paddr_read(i,4));
   }
   return 0;
