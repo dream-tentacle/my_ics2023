@@ -81,7 +81,7 @@ static int cmd_x(char *args){
   int start_pos = strtol(arg, NULL, 16);
   print_len+=start_pos;
   for(int i=start_pos;i<=print_len;i++){
-    printf("%d",paddr_read(i,4));
+    printf("%d\n",paddr_read(i,4));
   }
   return 0;
 }
