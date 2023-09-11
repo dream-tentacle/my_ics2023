@@ -22,7 +22,7 @@
 
 enum {
   TK_NOTYPE = 256, TK_EQ,
-
+  TK_NUM=1,
   /* TODO: Add more token types */
 
 };
@@ -39,6 +39,10 @@ static struct rule {
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
+  {"[1-9][0-9]*",TK_NUM},
+  {"\\-",'-'},
+  {"\\(",'('},
+  {"\\)",')'}
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -76,7 +80,7 @@ static bool make_token(char *e) {
   regmatch_t pmatch;
 
   nr_token = 0;
-
+  
   while (e[position] != '\0') {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i ++) {
@@ -95,8 +99,18 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          default: TODO();
-        }
+          case TK_NOTYPE: break;
+					case TK_NUM:
+						tokens[nr_token].type=TK_NUM;
+						strncpy(tokens[nr_token].str,substr_start,substr_len);
+						nr_token++;
+						break;
+					default:
+						tokens[nr_token].type=rules[i].token_type;
+						nr_token++;
+						break;						
+				}
+				
 
         break;
       }
@@ -111,7 +125,7 @@ static bool make_token(char *e) {
   return true;
 }
 
-
+word_t eval(int p,int q, bool  *success);
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
@@ -119,7 +133,81 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
-
-  return 0;
+  bool flag = true;
+	bool* p = &flag;
+	word_t result = eval(0, nr_token - 1, p);
+	if (flag == false) {
+	  printf("Invalid expression!\n");
+		return 0;
+	}
+  return result;
+}
+bool check_parentheses(int p,int q){
+	if(tokens[p].type!='('||tokens[q].type!=')') return false;
+	int parenthese=0;
+	for(int i=p;i<=q;i++){
+		if(tokens[i].type=='(') parenthese++;
+		else if(tokens[i].type==')') parenthese--;
+		if(parenthese==0&&i!=q) return false;
+	}
+	return parenthese==0; 
+}
+word_t eval(int p,int  q,bool  *success) {
+  if (p > q) {
+		*success = false;
+		return 0;
+	}
+  else if (p == q) {
+    /* Single token.
+     * For now this token should be a number.
+     * Return the value of the number.
+     */
+		word_t result=atoi(tokens[p].str);
+		*success = true;
+		return result;
+  }
+  else if (check_parentheses(p, q) == true) {
+    /* The expression is surrounded by a matched pair of parentheses.
+     * If that is the case, just throw away the parentheses.
+     */
+    return eval(p + 1, q - 1,success);
+  }
+  else {
+		int parenthese=0;
+		int op=-1;
+		int op_type=-1;
+		for(int i=q;i>=p&&op==-1;i--){
+			if(tokens[i].type=='(') parenthese--;
+			else if(tokens[i].type==')') parenthese++;
+			else if(parenthese==0){
+				if(tokens[i].type=='+'||tokens[i].type=='-'){
+					op_type=tokens[i].type;
+					op=i;
+				}
+			}	
+		}
+		if(op==-1){
+			for(int i=q;i>=p&&op==-1;i--){
+				if(tokens[i].type=='(') parenthese--;
+				else if(tokens[i].type==')') parenthese++;
+				else if(parenthese==0){
+					if(tokens[i].type=='*'||tokens[i].type=='/'){
+						op_type=tokens[i].type;
+						op=i;
+					}
+				}
+			}
+		}
+    //op = the position of 主运算符 in the token expression;
+    word_t val1 = eval(p, op - 1, success);
+		word_t val2 = eval(op + 1, q, success);    
+		if (*success == false) return 0;
+    switch (op_type) {
+      case '+': return val1 + val2;
+      case '-': return val1 - val2;
+      case '*': return val1 * val2;
+			case '/': return val1 / val2;
+      default: assert(0);
+		}
+  }
 }
