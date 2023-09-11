@@ -22,6 +22,7 @@
 
 // this should be enough
 static char buf[65536] = {};
+static int buf_cnt = 0;
 static char code_buf[65536 + 128] = {}; // a little larger than `buf`
 static char *code_format =
 "#include <stdio.h>\n"
@@ -30,9 +31,37 @@ static char *code_format =
 "  printf(\"%%u\", result); "
 "  return 0; "
 "}";
-
+static int choose(int n){
+  return rand()%n;
+}
+static void gen_num(){
+  int num = rand();
+  int exp = 1;
+  while(num/exp>=10)exp*=10;
+  while(exp>0){
+    buf[buf_cnt] = (num/exp) + '0';
+    num -= (num/exp)*exp;
+    exp/=10;
+    buf_cnt++;
+  }
+}
+static void gen(char c){
+  buf[buf_cnt++]=c;
+}
+static void gen_rand_op(){
+  choose(4){
+    case 0: gen('+');
+		case 1: gen('-');
+		case 2: gen('*');
+		case 3: gen('/');
+  }
+}
 static void gen_rand_expr() {
-  buf[0] = '\0';
+  switch (choose(3)) {
+    case 0: gen_num(); break;
+    case 1: gen('('); gen_rand_expr(); gen(')'); break;
+    default: gen_rand_expr(); gen_rand_op(); gen_rand_expr(); break;
+  }
 }
 
 int main(int argc, char *argv[]) {
