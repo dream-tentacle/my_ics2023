@@ -118,7 +118,8 @@ static int cmd_test_calcu(char *args){
 	size_t len = 0;
 	int cor=0;
 	if(fscanf(fp,"%d",&ans)==EOF)return 0;	
-	while(getline(&buf,&len,fp)!=-1){	
+	while(getline(&buf,&len,fp)!=-1){
+		buf[strlen(buf)-1]='\0';	
 		if(check(buf, ans))cor++;
 		if(fscanf(fp,"%d",&ans)==EOF)return 0;	
 	}
