@@ -97,7 +97,7 @@ static int cmd_calcu(char *args){
 }
 
 static int cmd_test_calcu(char *args){
-	char *file_path=NULL;
+	char file_path[100];
 	if(args==NULL)strcpy(file_path,"/home/dreamtouch/ics2023/nemu/tools/gen-expr/input");
 	else strcpy(file_path,args);
 	FILE *fp = NULL;
