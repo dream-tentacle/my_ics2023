@@ -118,7 +118,7 @@ static int cmd_test_calcu(char *args){
 	int cor=0;
 	while(getline(&buf,&len,fp)!=-1){
 		ans=strtok(buf," ");
-		question[0]='\0';
+		memset(question,0,sizeof(question));
 		while((buf=strtok(NULL," "))!=NULL){
 				strcat(question,buf);
 		}
