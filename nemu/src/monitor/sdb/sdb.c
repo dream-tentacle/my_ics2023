@@ -91,7 +91,7 @@ static int cmd_calcu(char *args){
 	bool *p = &flag;
 	word_t result = expr(args,p);
 	if(p){
-		printf("%u",result);
+		printf("%u\n",result);
 	}
 	return 0;
 }
