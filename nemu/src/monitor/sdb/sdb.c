@@ -112,13 +112,17 @@ static int cmd_test_calcu(char *args){
 	if(args==NULL)strcpy(file_path,"/home/dreamtouch/ics2023/nemu/tools/gen-expr/input");
 	else strcpy(file_path,args);
 	FILE *fp = NULL;
-	char *buf=NULL, *ans=NULL;
+	char *buf=NULL, *ans=NULL, question[65536];
 	fp = fopen(file_path,"r");
 	size_t len = 0;
 	int cor=0;
 	while(getline(&buf,&len,fp)!=-1){
 		ans=strtok(buf," ");
-		if(check(buf, atoi(ans)))cor++;		
+		question[0]='\0';
+		while((buf=strtok(NULL," "))!=NULL){
+				strcat(question,buf);
+		}
+		if(check(question, atoi(ans)))cor++;		
 	}
 	fclose(fp);
 	printf("%d\n",cor);
