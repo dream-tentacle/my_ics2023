@@ -86,6 +86,16 @@ static int cmd_x(char *args){
   return 0;
 }
 
+static int cmd_calcu(char *args){
+	bool flag=true;
+	bool *p = &flag;
+	word_t result = expr(args,p);
+	if(p){
+		printf("%u",result);
+	}
+	return 0;
+}
+
 static int cmd_help(char *args);
 
 static struct {
@@ -98,7 +108,8 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   {"si","Format: 'si N'. Step N instuctions. If N is not provided, it will be set to 1", cmd_si},
   {"info","Format: 'info N'. Print information. N must be r or w",cmd_info},
-  {"x","Format: 'x N EXPR", cmd_x}
+  {"x","Format: 'x N EXPR", cmd_x},
+	{"calcu","Calculate the expression", cmd_calcu}
   /* TODO: Add more commands */
 
 };
