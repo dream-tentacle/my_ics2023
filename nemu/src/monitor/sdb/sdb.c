@@ -96,6 +96,17 @@ static int cmd_calcu(char *args){
 	return 0;
 }
 
+static bool check(char *ex, unsigned int ans){
+	bool flag=true;
+	bool *p = &flag;
+	word_t result = expr(ex,p);
+	if(flag){
+		return ans==result;
+	}
+	else printf("wrong expression: %s",ex);
+	return false;
+}
+
 static int cmd_test_calcu(char *args){
 	char file_path[100];
 	if(args==NULL)strcpy(file_path,"/home/dreamtouch/ics2023/nemu/tools/gen-expr/input");
@@ -105,13 +116,10 @@ static int cmd_test_calcu(char *args){
 	fp = fopen(file_path,"r");
 	size_t len = 0;
 	int cor=0;
-	bool flag=true;
-	bool *p=&flag;
 	while(getline(&buf,&len,fp)!=-1){
 		ans=strtok(buf," ");
 		buf=strtok(NULL," ");	
-		word_t result = expr(buf,p);
-		if(flag && result==atoi(ans))cor++;
+		if(check(buf, atoi(ans)))cor++;		
 	}
 	fclose(fp);
 	printf("%d\n",cor);
