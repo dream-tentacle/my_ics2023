@@ -112,7 +112,7 @@ static int cmd_test_calcu(char *args){
 	if(args==NULL)strcpy(file_path,"/home/dreamtouch/ics2023/nemu/tools/gen-expr/input");
 	else strcpy(file_path,args);
 	FILE *fp = NULL;
-	char *buf=NULL, *ans=NULL, question[65536];
+	char *buf=NULL, *ans=NULL, question[65536]={};
 	fp = fopen(file_path,"r");
 	size_t len = 0;
 	int cor=0;
