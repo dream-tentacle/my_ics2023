@@ -105,11 +105,11 @@ static int cmd_test_calcu(char *args){
 	fp = fopen(file_path,"r");
 	size_t len = 0;
 	int cor=0;
+	bool flag=true;
+	bool *p=&flag;
 	while(getline(&buf,&len,fp)!=-1){
 		ans=strtok(buf," ");
-		buf=strtok(NULL," ");
-		bool flag=true;
-		bool *p=&flag;
+		buf=strtok(NULL," ");	
 		word_t result = expr(buf,p);
 		if(flag && result==atoi(ans))cor++;
 	}
