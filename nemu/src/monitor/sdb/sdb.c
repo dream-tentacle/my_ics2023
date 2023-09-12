@@ -118,7 +118,6 @@ static int cmd_test_calcu(char *args){
 	int cor=0;
 	while(getline(&buf,&len,fp)!=-1){
 		ans=strtok(buf," ");
-		buf=strtok(NULL,"\0");	
 		if(check(buf, atoi(ans)))cor++;		
 	}
 	fclose(fp);
