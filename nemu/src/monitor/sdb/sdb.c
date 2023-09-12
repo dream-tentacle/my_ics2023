@@ -90,11 +90,34 @@ static int cmd_calcu(char *args){
 	bool flag=true;
 	bool *p = &flag;
 	word_t result = expr(args,p);
-	if(p){
+	if(flag){
 		printf("%u\n",result);
 	}
 	return 0;
 }
+
+static int cmd_test_calcu(char *args){
+	char *file_path=NULL;
+	if(args==NULL)strcpy(file_path,"/home/dreamtouch/ics2023/nemu/tools/gen-expr/input");
+	else strcpy(file_path,args);
+	FILE *fp = NULL;
+	char *buf=NULL, *ans=NULL;
+	fp = fopen(file_path,"r");
+	size_t len = 0;
+	int cor=0;
+	while(getline(&buf,&len,fp)!=-1){
+		ans=strtok(buf," ");
+		buf=strtok(NULL," ");
+		bool flag=true;
+		bool *p=&flag;
+		word_t result = expr(buf,p);
+		if(flag && result==atoi(ans))cor++;
+	}
+	fclose(fp);
+	printf("%d\n",cor);
+	return 0;
+}	
+
 
 static int cmd_help(char *args);
 
@@ -109,7 +132,8 @@ static struct {
   {"si","Format: 'si N'. Step N instuctions. If N is not provided, it will be set to 1", cmd_si},
   {"info","Format: 'info N'. Print information. N must be r or w",cmd_info},
   {"x","Format: 'x N EXPR", cmd_x},
-	{"calcu","Calculate the expression", cmd_calcu}
+	{"calcu","Calculate the expression", cmd_calcu},
+	{"test_calcu","Test the function of calcu",cmd_test_calcu}
   /* TODO: Add more commands */
 
 };
