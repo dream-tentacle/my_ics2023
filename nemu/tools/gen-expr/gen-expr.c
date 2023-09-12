@@ -35,6 +35,8 @@ static int choose(int n){
   return rand()%n;
 }
 static void gen_num(){
+	int add_space = choose(3);
+  for(int i=0;i<add_space;i++)buf[buf_cnt++]=' ';
   int num = rand();
   int exp = 1;
   while(num/exp>=10)exp*=10;
@@ -44,12 +46,14 @@ static void gen_num(){
     exp/=10;
     buf_cnt++;
   }
+	add_space = choose(3);
+  for(int i=0;i<add_space;i++)buf[buf_cnt++]=' ';
 }
 static void gen(char c){
   buf[buf_cnt++]=c;
 }
 static void gen_rand_op(){
-  choose(4){
+  switch(choose(4)){
     case 0: gen('+');
 		case 1: gen('-');
 		case 2: gen('*');
