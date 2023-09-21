@@ -153,10 +153,8 @@ word_t expr(char *e, bool *success) {
 			tokens[i].type = TK_DEREF;
 		}
 	}
-  bool flag = true;
-	bool* p = &flag;
-	word_t result = eval(0, nr_token - 1, p);
-	if (flag == false) {
+	word_t result = eval(0, nr_token - 1, success);
+	if (success == false) {
 	  printf("Invalid expression!\n");
 		return 0;
 	}
