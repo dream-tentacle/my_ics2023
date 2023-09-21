@@ -243,7 +243,7 @@ word_t eval(int p,int  q,bool  *success) {
 			}
 		}
     if(op_type==TK_DEREF){
-		word_t val = eval(p, op - 1, success);
+		word_t val = eval(op + 1, q, success);
 		if (*success == false) return 0;
 		return paddr_read(val,1);
 	}
