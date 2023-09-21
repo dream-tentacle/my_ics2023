@@ -210,7 +210,7 @@ word_t eval(int p,int  q,bool  *success) {
 			if(tokens[i].type=='(') parenthese--;
 			else if(tokens[i].type==')') parenthese++;
 			else if(parenthese==0){
-				if(tokens[i].type==TK_HEX_NUM){
+				if(tokens[i].type==TK_DEREF){
 					op_type=tokens[i].type;
 					op=i;
 				}
