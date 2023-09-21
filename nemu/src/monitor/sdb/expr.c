@@ -113,6 +113,11 @@ static bool make_token(char *e) {
 						strncpy(tokens[nr_token].str,substr_start,substr_len);//没看懂这里是干嘛
 						nr_token++;
 						break;
+					case TK_HEX_NUM:
+						tokens[nr_token].type=TK_HEX_NUM;
+						strncpy(tokens[nr_token].str,substr_start,substr_len);//没看懂这里是干嘛
+						nr_token++;
+						break;
 					case TK_REG:
 						tokens[nr_token].type=TK_REG;
 						strncpy(tokens[nr_token].str,substr_start+1,substr_len);//先不管了，把$删掉
