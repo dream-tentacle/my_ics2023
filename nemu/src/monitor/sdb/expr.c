@@ -215,7 +215,8 @@ word_t eval(int p,int  q,bool  *success) {
 		int parenthese=0;
 		int op=-1;
 		int op_type=-1;
-#define find(tok) \
+#define find(tok) {\
+parenthese=0;\
 for(int i=q;i>=p&&op==-1;i--){\
   if(tokens[i].type=='(') parenthese--;\
     else if(tokens[i].type==')') parenthese++;\
@@ -225,7 +226,7 @@ for(int i=q;i>=p&&op==-1;i--){\
 	  op=i;\
     }\
   }	\
-}
+}}
 		int find_list[20]={TK_DEREF,'+','-','*','/',
 		TK_NEQ,TK_EQ,TK_AND,'\0'};
 		for(int i=0;i<20;i++){
