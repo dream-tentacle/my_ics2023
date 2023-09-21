@@ -219,11 +219,11 @@ word_t eval(int p,int  q,bool  *success) {
 parenthese=0;\
 for(int i=q;i>=p&&op==-1;i--){\
   if(tokens[i].type=='(') parenthese--;\
-    else if(tokens[i].type==')') parenthese++;\
-    else if(parenthese==0){\
+  else if(tokens[i].type==')') parenthese++;\
+  else if(parenthese==0){\
     if(tokens[i].type==tok){\
       op_type=tokens[i].type;\
-	  op=i;\
+      op=i;\
     }\
   }	\
 }}
