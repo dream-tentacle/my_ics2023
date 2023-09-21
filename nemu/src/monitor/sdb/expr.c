@@ -229,9 +229,9 @@ for(int i=q;i>=p&&op==-1;i--){\
 }}
 		int find_list[20]={TK_DEREF,'+','-','*','/',
 		TK_NEQ,TK_EQ,TK_AND,'\0'};
-		for(int i=0;i<20;i++){
-			if(find_list[i]=='\0')break;
-			find(find_list[i])
+		for(int j=0;j<20;j++){
+			if(find_list[j]=='\0')break;
+			find(find_list[j])
 			if(op!=-1)break;
 		}
     if(op_type==TK_DEREF){
