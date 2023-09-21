@@ -182,7 +182,8 @@ word_t eval(int p,int  q,bool  *success) {
 			return result;
 		}
 		if(tokens[p].type==TK_HEX_NUM){
-			word_t result=strtol(tokens[p].str,NULL,16);
+			char* endptr;
+			word_t result=strtol(tokens[p].str,&endptr,16);
 			*success = true;
 			return result;
 		}
