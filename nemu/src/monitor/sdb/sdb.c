@@ -93,6 +93,9 @@ static int cmd_calcu(char *args){
 	if(flag){
 		printf("%u\n",result);
 	}
+	else{
+	  printf("Invalid expression!\n");
+	}
 	return 0;
 }
 

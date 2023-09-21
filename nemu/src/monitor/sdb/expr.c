@@ -154,10 +154,6 @@ word_t expr(char *e, bool *success) {
 		}
 	}
 	word_t result = eval(0, nr_token - 1, success);
-	if (success == false) {
-	  printf("Invalid expression!\n");
-		return 0;
-	}
   return result;
 }
 bool check_parentheses(int p,int q){
