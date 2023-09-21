@@ -22,11 +22,14 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,
+  TK_NOTYPE = 256, 
   TK_NUM=1,
-	TK_HEX_NUM=2,
-	TK_DEREF=3,
-	TK_REG=4,
+  TK_HEX_NUM=2,
+  TK_DEREF=3,
+  TK_REG=4,
+  TK_EQ=5,
+  TK_NEQ=6,
+  TK_AND=7,
   /* TODO: Add more token types */
 
 };
@@ -44,13 +47,15 @@ static struct rule {
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
   {"[1-9][0-9]*u?",TK_NUM},
-	{"0x[1-9A-F][0-9A-F]*u?",TK_HEX_NUM},
-	{"\\$[\\$a-z0-9]*",TK_REG},
+  {"0x[1-9A-F][0-9A-F]*u?",TK_HEX_NUM},
+  {"\\$[\\$a-z0-9]*",TK_REG},
   {"\\-",'-'},
   {"\\(",'('},
   {"\\)",')'},
-	{"\\*",'*'},
-	{"\\/",'/'}
+  {"\\*",'*'},
+  {"\\/",'/'},
+  {"!=",TK_NEQ},
+  {"&&",TK_AND},
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -208,44 +213,28 @@ word_t eval(int p,int  q,bool  *success) {
 		int parenthese=0;
 		int op=-1;
 		int op_type=-1;
-		for(int i=q;i>=p&&op==-1;i--){
-			if(tokens[i].type=='(') parenthese--;
-			else if(tokens[i].type==')') parenthese++;
-			else if(parenthese==0){
-				if(tokens[i].type==TK_DEREF){
-					op_type=tokens[i].type;
-					op=i;
-				}
-			}	
-		}
-		if(op==-1){
-			for(int i=q;i>=p&&op==-1;i--){
-				if(tokens[i].type=='(') parenthese--;
-				else if(tokens[i].type==')') parenthese++;
-				else if(parenthese==0){
-					if(tokens[i].type=='+'||tokens[i].type=='-'){
-						op_type=tokens[i].type;
-						op=i;
-					}
-				}	
-			}
-		}
-		if(op==-1){
-			for(int i=q;i>=p&&op==-1;i--){
-				if(tokens[i].type=='(') parenthese--;
-				else if(tokens[i].type==')') parenthese++;
-				else if(parenthese==0){
-					if(tokens[i].type=='*'||tokens[i].type=='/'){
-						op_type=tokens[i].type;
-						op=i;
-					}
-				}
-			}
+#define find(tok) \
+for(int i=q;i>=p&&op==-1;i--){\
+  if(tokens[i].type=='(') parenthese--;\
+    else if(tokens[i].type==')') parenthese++;\
+    else if(parenthese==0){\
+    if(tokens[i].type==tok){\
+      op_type=tokens[i].type;\
+	  op=i;\
+    }\
+  }	\
+}
+		int find_list[20]={TK_DEREF,'+','-','*','/',
+		TK_NEQ,TK_EQ,TK_AND,'\0'};
+		for(int i=0;i<20;i++){
+			if(find_list[i]=='\0')break;
+			find(find_list[i])
+			if(op!=-1)break;
 		}
     if(op_type==TK_DEREF){
 		word_t val = eval(op + 1, q, success);
 		if (*success == false) return 0;
-		return paddr_read(val,1);
+		return paddr_read(val,4);
 	}
     //op = the position of 主运算符 in the token expression;
     word_t val1 = eval(p, op - 1, success);
@@ -257,6 +246,9 @@ word_t eval(int p,int  q,bool  *success) {
       case '-': return val1 - val2;
       case '*': return val1 * val2;
 	  case '/': return val1 / val2;
+	  case TK_NEQ: return val1 != val2;
+	  case TK_EQ: return val1==val2;
+	  case TK_AND: return val1&&val2;
       default: assert(0);
 	}
   }
