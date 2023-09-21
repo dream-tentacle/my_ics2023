@@ -143,7 +143,7 @@ static struct {
   {"info","Format: 'info N'. Print information. N must be r or w",cmd_info},
   {"x","Format: 'x N EXPR", cmd_x},
 	{"calcu","Calculate the expression", cmd_calcu},
-	{"test_calcu","Test the function of calcu",cmd_test_calcu}
+	{"test_calcu","Test the function of calcu. Can modify path if needed",cmd_test_calcu}
   /* TODO: Add more commands */
 
 };

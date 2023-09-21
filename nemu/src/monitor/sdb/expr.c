@@ -14,6 +14,7 @@
 ***************************************************************************************/
 
 #include <isa.h>
+#include <memory/paddr.h>
 
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
@@ -23,6 +24,9 @@
 enum {
   TK_NOTYPE = 256, TK_EQ,
   TK_NUM=1,
+	TK_HEX_NUM=2,
+	TK_DEREF=3,
+	TK_REG=4,
   /* TODO: Add more token types */
 
 };
@@ -40,6 +44,8 @@ static struct rule {
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
   {"[1-9][0-9]*u?",TK_NUM},
+	{"0x[1-9A-F][0-9A-F]*u?",TK_HEX_NUM},
+	{"\\$[\\$a-z0-9]*",TK_REG},
   {"\\-",'-'},
   {"\\(",'('},
   {"\\)",')'},
@@ -104,7 +110,12 @@ static bool make_token(char *e) {
           case TK_NOTYPE: break;
 					case TK_NUM:
 						tokens[nr_token].type=TK_NUM;
-						strncpy(tokens[nr_token].str,substr_start,substr_len);
+						strncpy(tokens[nr_token].str,substr_start,substr_len);//没看懂这里是干嘛
+						nr_token++;
+						break;
+					case TK_REG:
+						tokens[nr_token].type=TK_REG;
+						strncpy(tokens[nr_token].str,substr_start+1,substr_len);//先不管了，把$删掉
 						nr_token++;
 						break;
 					default:
@@ -137,6 +148,11 @@ word_t expr(char *e, bool *success) {
   }
 
   /* TODO: Insert codes to evaluate the expression. */
+	for (int i = 0; i < nr_token; i ++) {
+		if (tokens[i].type == '*' && (i == 0 || tokens[i - 1].type == '*' || tokens[i - 1].type == '-' || tokens[i - 1].type == '+' || tokens[i-1].type=='/') ) {
+			tokens[i].type = TK_DEREF;
+		}
+	}
   bool flag = true;
 	bool* p = &flag;
 	word_t result = eval(0, nr_token - 1, p);
@@ -166,9 +182,21 @@ word_t eval(int p,int  q,bool  *success) {
      * For now this token should be a number.
      * Return the value of the number.
      */
-		word_t result=atoi(tokens[p].str);
-		*success = true;
-		return result;
+		if(tokens[p].type==TK_NUM){
+			word_t result=atoi(tokens[p].str);
+			*success = true;
+			return result;
+		}
+		if(tokens[p].type==TK_HEX_NUM){
+			word_t result=strtol(tokens[p].str,NULL,16);
+			*success = true;
+			return result;
+		}
+		if(tokens[p].type==TK_REG){
+			word_t result=isa_reg_str2val(tokens[p].str,success);//前面已经删掉$了
+			return result;
+		}
+		assert(0);
   }
   else if (check_parentheses(p, q) == true) {
     /* The expression is surrounded by a matched pair of parentheses.
@@ -184,11 +212,23 @@ word_t eval(int p,int  q,bool  *success) {
 			if(tokens[i].type=='(') parenthese--;
 			else if(tokens[i].type==')') parenthese++;
 			else if(parenthese==0){
-				if(tokens[i].type=='+'||tokens[i].type=='-'){
+				if(tokens[i].type==TK_HEX_NUM){
 					op_type=tokens[i].type;
 					op=i;
 				}
 			}	
+		}
+		if(op==-1){
+			for(int i=q;i>=p&&op==-1;i--){
+				if(tokens[i].type=='(') parenthese--;
+				else if(tokens[i].type==')') parenthese++;
+				else if(parenthese==0){
+					if(tokens[i].type=='+'||tokens[i].type=='-'){
+						op_type=tokens[i].type;
+						op=i;
+					}
+				}	
+			}
 		}
 		if(op==-1){
 			for(int i=q;i>=p&&op==-1;i--){
@@ -202,16 +242,22 @@ word_t eval(int p,int  q,bool  *success) {
 				}
 			}
 		}
+    if(op_type==TK_DEREF){
+		word_t val = eval(p, op - 1, success);
+		if (*success == false) return 0;
+		return paddr_read(val,1);
+	}
     //op = the position of 主运算符 in the token expression;
     word_t val1 = eval(p, op - 1, success);
-		word_t val2 = eval(op + 1, q, success);    
-		if (*success == false) return 0;
+	if (*success == false) return 0;
+    word_t val2 = eval(op + 1, q, success);    
+	if (*success == false) return 0;
     switch (op_type) {
       case '+': return val1 + val2;
       case '-': return val1 - val2;
       case '*': return val1 * val2;
-			case '/': return val1 / val2;
+	  case '/': return val1 / val2;
       default: assert(0);
-		}
+	}
   }
 }
