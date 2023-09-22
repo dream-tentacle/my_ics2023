@@ -13,7 +13,9 @@
  * See the Mulan PSL v2 for more details.
  ***************************************************************************************/
 
+#ifndef NR_WP
 #include "../monitor/sdb/watchpoint.c"
+#endif
 #include <cpu/cpu.h>
 #include <cpu/decode.h>
 #include <cpu/difftest.h>

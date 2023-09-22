@@ -13,8 +13,10 @@
  * See the Mulan PSL v2 for more details.
  ***************************************************************************************/
 
-#include "sdb.h"
+#ifndef NR_WP
 #include "watchpoint.c"
+#endif
+#include "sdb.h"
 #include <cpu/cpu.h>
 #include <isa.h>
 #include <memory/paddr.h>
