@@ -57,7 +57,6 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
         printf("A watchpoint is triggered:\n");
         printf("%s = %u\n", now->expr, result);
       }
-      printf("%s = %u\n", now->expr, result);
     } else {
       printf("Invalid watchpoint expression: \"%s\"\n", now->expr);
     }

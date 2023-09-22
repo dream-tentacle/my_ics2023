@@ -75,6 +75,7 @@ static int cmd_info(char *args) {
         printf("Invalid watchpoint expression: \"%s\"\n", now->expr);
       else
         printf("%s = %d\n", now->expr, now->last_result);
+      now = now->next;
     }
   } else {
     printf("%s: wrong argumant", args);
