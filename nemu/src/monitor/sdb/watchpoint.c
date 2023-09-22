@@ -38,9 +38,12 @@ WP *new_wp() {
   Assert(free_ != NULL, "No free watchpoint!");
   WP *re = free_;
   free_ = free_->next;
+  re->next = head;
+  head = re;
   return re;
 }
 void free_wp(WP *wp) {
   wp->next = free_;
   free_ = wp;
 }
+WP *get_head() { return head; }

@@ -66,7 +66,7 @@ static int cmd_info(char *args) {
   if (args[0] == 'r') {
     isa_reg_display();
   } else if (args[0] == 'w') {
-    WP *now = head;
+    WP *now = get_head();
     while (now != NULL) {
       bool flag = true;
       bool *p = &flag;
@@ -146,12 +146,6 @@ static int cmd_test_calcu(char *args) {
 static int cmd_w(char *args) {
   WP *wp = new_wp();
   strcpy(wp->expr, args);
-  if (head == NULL)
-    head = wp;
-  else {
-    wp->next = head;
-    head = wp;
-  }
   printf("watchpoint: '%s', NO = %d\n", wp->expr, wp->NO);
   return 0;
 }
