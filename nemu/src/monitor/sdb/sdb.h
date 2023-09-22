@@ -23,7 +23,7 @@ word_t expr(char *e, bool *success);
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
-  char *expr;
+  char expr[32];
   int last_result;
   /* TODO: Add more members if necessary */
 
