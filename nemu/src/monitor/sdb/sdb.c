@@ -14,7 +14,7 @@
  ***************************************************************************************/
 
 #include "sdb.h"
-#include </home/dreamtouch/ics2023/nemu/src/monitor/sdb/watchpoint.c>
+#include "watchpoint.c"
 #include <cpu/cpu.h>
 #include <isa.h>
 #include <memory/paddr.h>
