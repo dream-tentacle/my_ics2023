@@ -12,10 +12,7 @@
  *
  * See the Mulan PSL v2 for more details.
  ***************************************************************************************/
-
-#ifndef NR_WP
-#include "../monitor/sdb/watchpoint.c"
-#endif
+#include "/home/dreamtouch/ics2023/nemu/src/monitor/sdb/sdb.h"
 #include <cpu/cpu.h>
 #include <cpu/decode.h>
 #include <cpu/difftest.h>
@@ -27,6 +24,9 @@
  * You can modify this value as you want.
  */
 #define MAX_INST_TO_PRINT 10
+
+void init_regex();
+void init_wp_pool();
 
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;

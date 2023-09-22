@@ -13,9 +13,6 @@
  * See the Mulan PSL v2 for more details.
  ***************************************************************************************/
 
-#ifndef NR_WP
-#include "watchpoint.c"
-#endif
 #include "sdb.h"
 #include <cpu/cpu.h>
 #include <isa.h>
@@ -23,10 +20,10 @@
 #include <readline/history.h>
 #include <readline/readline.h>
 
-static int is_batch_mode = false;
-
 void init_regex();
 void init_wp_pool();
+
+static int is_batch_mode = false;
 
 /* We use the `readline' library to provide more flexibility to read from stdin.
  */
