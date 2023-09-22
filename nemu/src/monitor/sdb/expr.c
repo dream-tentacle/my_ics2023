@@ -131,7 +131,7 @@ static bool make_token(char *e) {
         case TK_REG:
           tokens[nr_token].type = TK_REG;
           strncpy(tokens[nr_token].str, substr_start + 1,
-                  substr_len); // 把$删掉
+                  substr_len - 1); // 把$删掉
           nr_token++;
           break;
         default:
