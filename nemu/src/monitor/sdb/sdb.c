@@ -145,7 +145,7 @@ static int cmd_test_calcu(char *args) {
 
 static int cmd_w(char *args) {
   WP *wp = new_wp();
-  printf("123\n");
+  Assert(wp != NULL, "wp is NULL!");
   strcpy(wp->expr, args);
   printf("watchpoint: '%s', number = %d", wp->expr, wp->NO);
   return 0;
