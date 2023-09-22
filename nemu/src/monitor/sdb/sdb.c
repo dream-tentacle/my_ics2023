@@ -146,6 +146,12 @@ static int cmd_test_calcu(char *args) {
 static int cmd_w(char *args) {
   WP *wp = new_wp();
   strcpy(wp->expr, args);
+  if (head == NULL)
+    head = wp;
+  else {
+    wp->next = head;
+    head = wp;
+  }
   printf("watchpoint: '%s', NO = %d\n", wp->expr, wp->NO);
   return 0;
 }
