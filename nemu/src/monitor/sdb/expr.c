@@ -30,6 +30,7 @@ enum {
   TK_EQ = 5,
   TK_NEQ = 6,
   TK_AND = 7,
+  TK_MINUS = 8,
   /* TODO: Add more token types */
 
 };
@@ -170,6 +171,12 @@ word_t expr(char *e, bool *success) {
          tokens[i - 1].type == '(')) {
       tokens[i].type = TK_DEREF;
     }
+    if (tokens[i].type == '-' &&
+        (i == 0 || tokens[i - 1].type == '*' || tokens[i - 1].type == '-' ||
+         tokens[i - 1].type == '+' || tokens[i - 1].type == '/' ||
+         tokens[i - 1].type == '(')) {
+      tokens[i].type = TK_MINUS;
+    }
   }
   word_t result = eval(0, nr_token - 1, success);
   return result;
@@ -239,8 +246,8 @@ word_t eval(int p, int q, bool *success) {
       }                                                                        \
     }                                                                          \
   }
-    int find_list[20] = {TK_DEREF, '+',   '-',    '*', '/',
-                         TK_NEQ,   TK_EQ, TK_AND, '\0'};
+    int find_list[20] = {TK_DEREF, '+',    '-',   '*',    '/',
+                         TK_MINUS, TK_NEQ, TK_EQ, TK_AND, '\0'};
     for (int j = 0; j < 20; j++) {
       if (find_list[j] == '\0')
         break;
@@ -251,6 +258,12 @@ word_t eval(int p, int q, bool *success) {
       if (*success == false)
         return 0;
       return paddr_read(val, 4);
+    }
+    if (op_type == TK_MINUS) {
+      word_t val = eval(op + 1, q, success);
+      if (*success == false)
+        return 0;
+      return 0 - val;
     }
     // op = the position of 主运算符 in the token expression;
     word_t val1 = eval(p, op - 1, success);
