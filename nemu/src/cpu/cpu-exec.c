@@ -12,7 +12,7 @@
  *
  * See the Mulan PSL v2 for more details.
  ***************************************************************************************/
-#include "/home/dreamtouch/ics2023/nemu/src/monitor/sdb/sdb.h"
+#include "../monitor/sdb/sdb.h"
 #include <cpu/cpu.h>
 #include <cpu/decode.h>
 #include <cpu/difftest.h>
