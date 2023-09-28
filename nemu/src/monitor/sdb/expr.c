@@ -302,6 +302,8 @@ word_t eval(int p, int q, bool *success) {
     case '*':
       return val1 * val2;
     case '/':
+      if (val2 == 0)
+        return -1;
       return val1 / val2;
     case TK_NEQ:
       return val1 != val2;
