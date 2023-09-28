@@ -242,13 +242,39 @@ word_t eval(int p, int q, bool *success) {
       }                                                                        \
     }                                                                          \
   }
-    int find_list[20] = {TK_DEREF, '+',    '-',   '*',    '/',
-                         TK_MINUS, TK_NEQ, TK_EQ, TK_AND, '\0'};
-    for (int j = 0; j < 20; j++) {
-      if (find_list[j] == '\0')
-        break;
-      find(find_list[j]) if (op != -1) break;
+#define find2(tok1, tok2)                                                      \
+  {                                                                            \
+    parenthese = 0;                                                            \
+    for (int i = q; i >= p && op == -1; i--) {                                 \
+      if (tokens[i].type == '(')                                               \
+        parenthese--;                                                          \
+      else if (tokens[i].type == ')')                                          \
+        parenthese++;                                                          \
+      else if (parenthese == 0) {                                              \
+        if (tokens[i].type == tok1 || tokens[i].type == tok2) {                \
+          op_type = tokens[i].type;                                            \
+          op = i;                                                              \
+        }                                                                      \
+      }                                                                        \
+    }                                                                          \
+  }
+    int find_list[20] = {TK_MINUS, TK_NEQ, TK_EQ, TK_AND, '\0'};
+
+    find(TK_DEREF);
+    if (op == -1) {
+      find2('+', '-');
+      if (op == -1) {
+        find2('*', '/');
+        if (op == -1) {
+          for (int j = 0; j < 20; j++) {
+            if (find_list[j] == '\0')
+              break;
+            find(find_list[j]) if (op != -1) break;
+          }
+        }
+      }
     }
+
     if (op_type == TK_DEREF) {
       word_t val = eval(op + 1, q, success);
       if (*success == false)
