@@ -229,7 +229,7 @@ word_t eval(int p, int q, bool *success) {
 #define find(tok)                                                              \
   {                                                                            \
     parenthese = 0;                                                            \
-    for (int i = q; i >= p && op == -1; i--) {                                 \
+    for (int i = p; i <= q && op == -1; i++) {                                 \
       if (tokens[i].type == '(')                                               \
         parenthese--;                                                          \
       else if (tokens[i].type == ')')                                          \
