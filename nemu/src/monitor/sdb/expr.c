@@ -47,10 +47,8 @@ static struct rule {
     {" +", TK_NOTYPE}, // spaces
     {"\\+", '+'},      // plus
     {"==", TK_EQ},     // equal
-    {"[1-9][0-9]*u?", TK_NUM},
-    {"0x[1-9A-F][0-9A-F]*u?", TK_HEX_NUM},
-    {"0x0u?", TK_HEX_NUM},
-    {"0u?", TK_NUM},
+    {"[0-9]*u?", TK_NUM},
+    {"0x[0-9A-F]*u?", TK_HEX_NUM},
     {"\\$[\\$a-z0-9]*", TK_REG},
     {"\\-", '-'},
     {"\\(", '('},
@@ -165,16 +163,14 @@ word_t expr(char *e, bool *success) {
 
   /* TODO: Insert codes to evaluate the expression. */
   for (int i = 0; i < nr_token; i++) {
-    if (tokens[i].type == '*' &&
-        (i == 0 || tokens[i - 1].type == '*' || tokens[i - 1].type == '-' ||
-         tokens[i - 1].type == '+' || tokens[i - 1].type == '/' ||
-         tokens[i - 1].type == '(')) {
+    if (tokens[i].type == '*' && (i == 0 || (tokens[i - 1].type != TK_NUM &&
+                                             tokens[i - 1].type != TK_HEX_NUM &&
+                                             tokens[i - 1].type != TK_REG))) {
       tokens[i].type = TK_DEREF;
     }
-    if (tokens[i].type == '-' &&
-        (i == 0 || tokens[i - 1].type == '*' || tokens[i - 1].type == '-' ||
-         tokens[i - 1].type == '+' || tokens[i - 1].type == '/' ||
-         tokens[i - 1].type == '(')) {
+    if (tokens[i].type == '-' && (i == 0 || (tokens[i - 1].type != TK_NUM &&
+                                             tokens[i - 1].type != TK_HEX_NUM &&
+                                             tokens[i - 1].type != TK_REG))) {
       tokens[i].type = TK_MINUS;
     }
   }
