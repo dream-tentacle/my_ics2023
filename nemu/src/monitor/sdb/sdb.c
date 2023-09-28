@@ -112,7 +112,11 @@ static bool check(char *ex, unsigned int ans) {
   bool *p = &flag;
   word_t result = expr(ex, p);
   if (flag) {
-    return ans == result;
+    if (ans == result)
+      return true;
+    else
+      printf("%s\n = %u, but get %u", ex, ans, result);
+    return false;
   } else
     printf("wrong expression: %s", ex);
   return false;
