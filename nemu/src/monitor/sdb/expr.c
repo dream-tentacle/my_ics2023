@@ -94,7 +94,7 @@ static bool make_token(char *e) {
   regmatch_t pmatch;
 
   nr_token = 0;
-
+  printf("%s\n", e);
   while (e[position] != '\0') {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i++) {
@@ -165,14 +165,14 @@ word_t expr(char *e, bool *success) {
          tokens[i - 1].type == '-' || tokens[i - 1].type == '*' ||
          tokens[i - 1].type == '/' || tokens[i - 1].type == TK_EQ ||
          tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == TK_AND)) {
-      tokens[i].type = TK_DEREF;
+      tokens[i].type = TK_DEREF; // 解引用
     }
     if (tokens[i].type == '-' &&
         (i == 0 || tokens[i - 1].type == '(' || tokens[i - 1].type == '+' ||
          tokens[i - 1].type == '-' || tokens[i - 1].type == '*' ||
          tokens[i - 1].type == '/' || tokens[i - 1].type == TK_EQ ||
          tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == TK_AND)) {
-      tokens[i].type = TK_MINUS;
+      tokens[i].type = TK_MINUS; // 负数
     }
   }
   word_t result = eval(0, nr_token - 1, success);
