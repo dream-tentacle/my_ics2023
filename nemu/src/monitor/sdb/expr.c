@@ -129,8 +129,7 @@ static bool make_token(char *e) {
           break;
         case TK_REG:
           tokens[nr_token].type = TK_REG;
-          strncpy(tokens[nr_token].str, substr_start + sizeof(char),
-                  substr_len); // 把$删掉
+          strncpy(tokens[nr_token].str, substr_start, substr_len);
           nr_token++;
           break;
         default:
@@ -212,8 +211,7 @@ word_t eval(int p, int q, bool *success) {
       return result;
     }
     if (tokens[p].type == TK_REG) {
-      word_t result =
-          isa_reg_str2val(tokens[p].str, success); // 前面已经删掉$了
+      word_t result = isa_reg_str2val(tokens[p].str, success);
       return result;
     }
     assert(0);
