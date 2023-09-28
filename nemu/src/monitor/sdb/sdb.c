@@ -115,7 +115,7 @@ static bool check(char *ex, unsigned int ans) {
     if (ans == result)
       return true;
     else
-      printf("%s\n = %u, but get %u", ex, ans, result);
+      printf("%s = %u, but get %u\n", ex, ans, result);
     return false;
   } else
     printf("wrong expression: %s", ex);
