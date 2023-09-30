@@ -275,6 +275,11 @@ word_t eval(int p, int q, bool *success) {
         }
       }
     }
+    if (op == -1) {
+      printf("no op found\n");
+      *success = false;
+      return 0;
+    }
     op_type = tokens[op].type;
 
     if (op_type == TK_DEREF) {
