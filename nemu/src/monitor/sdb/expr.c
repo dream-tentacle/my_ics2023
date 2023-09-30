@@ -14,7 +14,7 @@
  ***************************************************************************************/
 
 #include <isa.h>
-#include <memory/paddr.h>
+#include <memory/vaddr.h>
 
 /* We use the POSIX regex functions to process regular expressions.
  * Type 'man regex' for more information about POSIX regex functions.
@@ -164,14 +164,16 @@ word_t expr(char *e, bool *success) {
         (i == 0 || tokens[i - 1].type == '(' || tokens[i - 1].type == '+' ||
          tokens[i - 1].type == '-' || tokens[i - 1].type == '*' ||
          tokens[i - 1].type == '/' || tokens[i - 1].type == TK_EQ ||
-         tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == TK_AND)) {
+         tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == TK_AND ||
+         tokens[i - 1].type == TK_DEREF || tokens[i - 1].type == TK_MINUS)) {
       tokens[i].type = TK_DEREF; // 解引用
     }
     if (tokens[i].type == '-' &&
         (i == 0 || tokens[i - 1].type == '(' || tokens[i - 1].type == '+' ||
          tokens[i - 1].type == '-' || tokens[i - 1].type == '*' ||
          tokens[i - 1].type == '/' || tokens[i - 1].type == TK_EQ ||
-         tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == TK_AND)) {
+         tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == TK_AND ||
+         tokens[i - 1].type == TK_DEREF || tokens[i - 1].type == TK_MINUS)) {
       tokens[i].type = TK_MINUS; // 负数
     }
   }
@@ -191,6 +193,38 @@ bool check_parentheses(int p, int q) {
       return false;
   }
   return parenthese == 0;
+}
+int find_r2l(char *op, int length, int p, int q) {
+  int parenthese = 0;
+  for (int i = q; i >= p; i--) {
+    if (tokens[i].type == '(')
+      parenthese--;
+    else if (tokens[i].type == ')')
+      parenthese++;
+    else if (parenthese == 0) {
+      for (int j = 0; j < length; j++)
+        if (tokens[i].type == op[j]) {
+          return i;
+        }
+    }
+  }
+  return -1;
+}
+int find_l2r(char *op, int length, int p, int q) {
+  int parenthese = 0;
+  for (int i = p; i <= q; i++) {
+    if (tokens[i].type == '(')
+      parenthese--;
+    else if (tokens[i].type == ')')
+      parenthese++;
+    else if (parenthese == 0) {
+      for (int j = 0; j < length; j++)
+        if (tokens[i].type == op[j]) {
+          return i;
+        }
+    }
+  }
+  return -1;
 }
 word_t eval(int p, int q, bool *success) {
   if (p > q) {
@@ -223,63 +257,31 @@ word_t eval(int p, int q, bool *success) {
      */
     return eval(p + 1, q - 1, success);
   } else {
-    int parenthese = 0;
     int op = -1;
     int op_type = -1;
-#define find(tok)                                                              \
-  {                                                                            \
-    parenthese = 0;                                                            \
-    for (int i = q; i >= p && op == -1; i--) {                                 \
-      if (tokens[i].type == '(')                                               \
-        parenthese--;                                                          \
-      else if (tokens[i].type == ')')                                          \
-        parenthese++;                                                          \
-      else if (parenthese == 0) {                                              \
-        if (tokens[i].type == tok) {                                           \
-          op_type = tokens[i].type;                                            \
-          op = i;                                                              \
-        }                                                                      \
-      }                                                                        \
-    }                                                                          \
-  }
-#define find2(tok1, tok2)                                                      \
-  {                                                                            \
-    parenthese = 0;                                                            \
-    for (int i = q; i >= p && op == -1; i--) {                                 \
-      if (tokens[i].type == '(')                                               \
-        parenthese--;                                                          \
-      else if (tokens[i].type == ')')                                          \
-        parenthese++;                                                          \
-      else if (parenthese == 0) {                                              \
-        if (tokens[i].type == tok1 || tokens[i].type == tok2) {                \
-          op_type = tokens[i].type;                                            \
-          op = i;                                                              \
-        }                                                                      \
-      }                                                                        \
-    }                                                                          \
-  }
-    int find_list[20] = {TK_MINUS, TK_NEQ, TK_EQ, TK_AND, '\0'};
-
-    find(TK_DEREF);
+    char ops[] = {
+        TK_DEREF, TK_MINUS, '*', '/', '+', '-', TK_EQ, TK_NEQ, TK_AND,
+    };
+    find_r2l(ops, 2, p, q);
     if (op == -1) {
-      find2('+', '-');
+      find_l2r(ops + 2, 2, p, q);
       if (op == -1) {
-        find2('*', '/');
+        find_l2r(ops + 4, 2, p, q);
         if (op == -1) {
-          for (int j = 0; j < 20; j++) {
-            if (find_list[j] == '\0')
-              break;
-            find(find_list[j]) if (op != -1) break;
+          find_l2r(ops + 6, 2, p, q);
+          if (op == -1) {
+            find_l2r(ops + 8, 1, p, q);
           }
         }
       }
     }
+    op_type = tokens[op].type;
 
     if (op_type == TK_DEREF) {
       word_t val = eval(op + 1, q, success);
       if (*success == false)
         return 0;
-      return paddr_read(val, 4);
+      return vaddr_read(val, 4);
     }
     if (op_type == TK_MINUS) {
       word_t val = eval(op + 1, q, success);
