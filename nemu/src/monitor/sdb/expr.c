@@ -210,6 +210,7 @@ int find_r2l(char *ops, int length, int p, int q) {
       }
     }
   }
+  printf("NO\n");
   return -1;
 }
 int find_l2r(char *ops, int length, int p, int q) {
@@ -228,6 +229,7 @@ int find_l2r(char *ops, int length, int p, int q) {
       }
     }
   }
+  printf("NO\n");
   return -1;
 }
 word_t eval(int p, int q, bool *success) {
