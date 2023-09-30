@@ -206,7 +206,7 @@ int find_r2l(char *ops, int length, int p, int q) {
         if (tokens[i].type == ops[j]) {
           return i;
         }
-        printf("%d\n", ops[j]);
+        printf("%c!=%c\n", tokens[i].type, ops[j]);
       }
     }
   }
@@ -224,7 +224,7 @@ int find_l2r(char *ops, int length, int p, int q) {
         if (tokens[i].type == ops[j]) {
           return i;
         }
-        printf("%d\n", ops[j]);
+        printf("%c!=%c\n", tokens[i].type, ops[j]);
       }
     }
   }
