@@ -262,17 +262,18 @@ word_t eval(int p, int q, bool *success) {
     int op = -1;
     int op_type = -1;
     char ops[] = {
-        TK_DEREF, TK_MINUS, '*', '/', '+', '-', TK_EQ, TK_NEQ, TK_AND,
+
+        TK_AND, TK_EQ, TK_NEQ, '+', '-', '*', '/', TK_DEREF, TK_MINUS,
     };
-    op = find_r2l(ops, 2, p, q);
+    op = find_r2l(ops, 1, p, q);
     if (op == -1) {
-      op = find_l2r(ops + 2, 2, p, q);
+      op = find_r2l(ops + 1, 2, p, q);
       if (op == -1) {
-        op = find_l2r(ops + 4, 2, p, q);
+        op = find_r2l(ops + 3, 2, p, q);
         if (op == -1) {
-          op = find_l2r(ops + 6, 2, p, q);
+          op = find_r2l(ops + 5, 2, p, q);
           if (op == -1) {
-            op = find_l2r(ops + 8, 1, p, q);
+            op = find_l2r(ops + 6, 1, p, q);
           }
         }
       }
