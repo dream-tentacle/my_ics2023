@@ -206,11 +206,9 @@ int find_r2l(char *ops, int length, int p, int q) {
         if (tokens[i].type == ops[j]) {
           return i;
         }
-        printf("%c!=%c\n", tokens[i].type, ops[j]);
       }
     }
   }
-  printf("NO\n");
   return -1;
 }
 int find_l2r(char *ops, int length, int p, int q) {
@@ -225,11 +223,9 @@ int find_l2r(char *ops, int length, int p, int q) {
         if (tokens[i].type == ops[j]) {
           return i;
         }
-        printf("%d!=%d\n", tokens[i].type, ops[j]);
       }
     }
   }
-  printf("NO\n");
   return -1;
 }
 word_t eval(int p, int q, bool *success) {
@@ -268,15 +264,15 @@ word_t eval(int p, int q, bool *success) {
     char ops[] = {
         TK_DEREF, TK_MINUS, '*', '/', '+', '-', TK_EQ, TK_NEQ, TK_AND,
     };
-    find_r2l(ops, 2, p, q);
+    op = find_r2l(ops, 2, p, q);
     if (op == -1) {
-      find_l2r(ops + 2, 2, p, q);
+      op = find_l2r(ops + 2, 2, p, q);
       if (op == -1) {
-        find_l2r(ops + 4, 2, p, q);
+        op = find_l2r(ops + 4, 2, p, q);
         if (op == -1) {
-          find_l2r(ops + 6, 2, p, q);
+          op = find_l2r(ops + 6, 2, p, q);
           if (op == -1) {
-            find_l2r(ops + 8, 1, p, q);
+            op = find_l2r(ops + 8, 1, p, q);
           }
         }
       }
