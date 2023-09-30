@@ -225,7 +225,7 @@ int find_l2r(char *ops, int length, int p, int q) {
         if (tokens[i].type == ops[j]) {
           return i;
         }
-        printf("%c!=%c\n", tokens[i].type, ops[j]);
+        printf("%d!=%d\n", tokens[i].type, ops[j]);
       }
     }
   }
