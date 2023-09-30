@@ -273,7 +273,7 @@ word_t eval(int p, int q, bool *success) {
         if (op == -1) {
           op = find_r2l(ops + 5, 2, p, q);
           if (op == -1) {
-            op = find_l2r(ops + 6, 1, p, q);
+            op = find_l2r(ops + 7, 2, p, q);
           }
         }
       }
