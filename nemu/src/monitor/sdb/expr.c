@@ -194,7 +194,7 @@ bool check_parentheses(int p, int q) {
   }
   return parenthese == 0;
 }
-int find_r2l(char *op, int length, int p, int q) {
+int find_r2l(char *ops, int length, int p, int q) {
   int parenthese = 0;
   for (int i = q; i >= p; i--) {
     if (tokens[i].type == '(')
@@ -202,15 +202,17 @@ int find_r2l(char *op, int length, int p, int q) {
     else if (tokens[i].type == ')')
       parenthese++;
     else if (parenthese == 0) {
-      for (int j = 0; j < length; j++)
-        if (tokens[i].type == op[j]) {
+      for (int j = 0; j < length; j++) {
+        if (tokens[i].type == ops[j]) {
           return i;
         }
+        printf("%c\n", ops[j]);
+      }
     }
   }
   return -1;
 }
-int find_l2r(char *op, int length, int p, int q) {
+int find_l2r(char *ops, int length, int p, int q) {
   int parenthese = 0;
   for (int i = p; i <= q; i++) {
     if (tokens[i].type == '(')
@@ -218,10 +220,12 @@ int find_l2r(char *op, int length, int p, int q) {
     else if (tokens[i].type == ')')
       parenthese++;
     else if (parenthese == 0) {
-      for (int j = 0; j < length; j++)
-        if (tokens[i].type == op[j]) {
+      for (int j = 0; j < length; j++) {
+        if (tokens[i].type == ops[j]) {
           return i;
         }
+        printf("%c\n", ops[j]);
+      }
     }
   }
   return -1;
