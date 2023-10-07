@@ -141,10 +141,10 @@ static bool make_token(char *e) {
     }
 
     if (i == NR_REGEX) {
-      assert(e[position] > 97);
-      assert(e[position] > 109);
-      assert(e[position] > 120);
-
+      assert(e[position] == 'u');
+      assert(e[position - 1] >= 48);
+      assert(e[position - 1] > 57);
+      assert(e[position - 1] > 96);
       printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
       return false;
     }
