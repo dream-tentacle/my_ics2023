@@ -155,6 +155,7 @@ word_t expr(char *e, bool *success) {
   nr_token = 0;
   if (!make_token(e)) {
     *success = false;
+    assert(0);
     return 0;
   }
 
@@ -178,6 +179,7 @@ word_t expr(char *e, bool *success) {
     }
   }
   word_t result = eval(0, nr_token - 1, success);
+  assert(success);
   return result;
 }
 bool check_parentheses(int p, int q) {
@@ -250,6 +252,7 @@ word_t eval(int p, int q, bool *success) {
     }
     if (tokens[p].type == TK_REG) {
       word_t result = isa_reg_str2val(tokens[p].str, success);
+      assert(*success);
       return result;
     }
     assert(0);
@@ -280,6 +283,7 @@ word_t eval(int p, int q, bool *success) {
     }
     if (op == -1) {
       printf("no op found\n");
+      assert(0);
       *success = false;
       return 0;
     }
@@ -287,12 +291,14 @@ word_t eval(int p, int q, bool *success) {
 
     if (op_type == TK_DEREF) {
       word_t val = eval(op + 1, q, success);
+      assert(*success);
       if (*success == false)
         return 0;
       return vaddr_read(val, 4);
     }
     if (op_type == TK_MINUS) {
       word_t val = eval(op + 1, q, success);
+      assert(*success);
       if (*success == false)
         return 0;
       return 0 - val;
