@@ -141,6 +141,33 @@ static bool make_token(char *e) {
     }
 
     if (i == NR_REGEX) {
+      assert(e[position] == 0);
+			assert(e[position] == 1);
+			assert(e[position] == 2);
+			assert(e[position] == 3);
+			assert(e[position] == 4);
+			assert(e[position] == 5);
+			assert(e[position] == 6);
+			assert(e[position] == 7);
+			assert(e[position] == 8);
+			assert(e[position] == 9);
+			assert(e[position] == 10);
+			assert(e[position] == 11);
+			assert(e[position] == 12);
+			assert(e[position] == 13);
+			assert(e[position] == 14);
+			assert(e[position] == 15);
+			assert(e[position] == 16);
+			assert(e[position] == 17);
+			assert(e[position] == 18);
+			assert(e[position] == 19);
+			assert(e[position] == 20);
+			assert(e[position] == 21);
+			assert(e[position] == 22);
+			assert(e[position] == 23);
+			assert(e[position] == 24);
+			assert(e[position] == 25);
+			assert(e[position] == 26);
       printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
       return false;
     }
@@ -155,7 +182,6 @@ word_t expr(char *e, bool *success) {
   nr_token = 0;
   if (!make_token(e)) {
     *success = false;
-    assert(0);
     return 0;
   }
 
@@ -179,7 +205,6 @@ word_t expr(char *e, bool *success) {
     }
   }
   word_t result = eval(0, nr_token - 1, success);
-  assert(success);
   return result;
 }
 bool check_parentheses(int p, int q) {
@@ -252,7 +277,6 @@ word_t eval(int p, int q, bool *success) {
     }
     if (tokens[p].type == TK_REG) {
       word_t result = isa_reg_str2val(tokens[p].str, success);
-      assert(*success);
       return result;
     }
     assert(0);
@@ -283,7 +307,6 @@ word_t eval(int p, int q, bool *success) {
     }
     if (op == -1) {
       printf("no op found\n");
-      assert(0);
       *success = false;
       return 0;
     }
@@ -291,14 +314,12 @@ word_t eval(int p, int q, bool *success) {
 
     if (op_type == TK_DEREF) {
       word_t val = eval(op + 1, q, success);
-      assert(*success);
       if (*success == false)
         return 0;
       return vaddr_read(val, 4);
     }
     if (op_type == TK_MINUS) {
       word_t val = eval(op + 1, q, success);
-      assert(*success);
       if (*success == false)
         return 0;
       return 0 - val;
