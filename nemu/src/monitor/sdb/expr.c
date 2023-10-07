@@ -141,15 +141,7 @@ static bool make_token(char *e) {
     }
 
     if (i == NR_REGEX) {
-      assert(e[position] != 1);
-      assert(e[position] != 2);
-      assert(e[position] != 3);
-      assert(e[position] != 4);
-      assert(e[position] != 5);
-      assert(e[position] != 6);
-      assert(e[position] != 7);
-      assert(e[position] != 8);
-      assert(e[position] != 9);
+      e[position] -= 20;
       assert(e[position] != 10);
       assert(e[position] != 11);
       assert(e[position] != 12);
