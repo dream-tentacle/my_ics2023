@@ -141,7 +141,7 @@ static bool make_token(char *e) {
     }
 
     if (i == NR_REGEX) {
-      assert(e[position] == 'u');
+      assert(e[position] == 'x');
       assert(e[position - 1] >= 48);
       assert(e[position - 1] > 57);
       assert(e[position - 1] > 96);
