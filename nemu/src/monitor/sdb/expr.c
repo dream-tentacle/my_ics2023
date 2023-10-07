@@ -141,7 +141,7 @@ static bool make_token(char *e) {
     }
 
     if (i == NR_REGEX) {
-      e[position] -= 20;
+      e[position] -= 30;
       assert(e[position] != 10);
       assert(e[position] != 11);
       assert(e[position] != 12);
@@ -159,6 +159,10 @@ static bool make_token(char *e) {
       assert(e[position] != 24);
       assert(e[position] != 25);
       assert(e[position] != 26);
+      assert(e[position] != 27);
+      assert(e[position] != 28);
+      assert(e[position] != 29);
+      assert(e[position] != 30);
       printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
       return false;
     }
