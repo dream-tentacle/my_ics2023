@@ -102,7 +102,7 @@ static int cmd_p(char *args) {
   if (flag) {
     printf("%u\n", result);
   } else {
-    assert(0);
+    assert(strlen(args) == 0);
   }
   return 0;
 }
