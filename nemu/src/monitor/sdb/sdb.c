@@ -102,7 +102,7 @@ static int cmd_p(char *args) {
   if (flag) {
     printf("%u\n", result);
   } else {
-    printf("Invalid expression!\n");
+    assert(0);
   }
   return 0;
 }
