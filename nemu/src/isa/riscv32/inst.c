@@ -56,7 +56,6 @@ enum {
     *imm = (SEXT(BITS(i, 31, 31), 1) << 20) |                        \
            (BITS(i, 30, 21) << 1) | (BITS(i, 20, 20) << 11) |        \
            (BITS(i, 19, 12) << 12);                                  \
-    printf("imm=%x\n", *imm);                                        \
   } while (0)
 
 static void decode_operand(Decode *s, int *rd, word_t *src1,
@@ -81,8 +80,6 @@ static void decode_operand(Decode *s, int *rd, word_t *src1,
   case TYPE_J:
     immJ();
     break;
-  default:
-    panic("unknown type!");
   }
 }
 
@@ -108,8 +105,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("??????? ????? ????? 000 ????? 00100 11", addi, I,
           R(rd) = src1 + imm);
   INSTPAT("??????? ????? ????? ??? ????? 11011 11", jal, J,
-          (R(rd) = s->pc + 4, s->dnpc += imm);
-          printf("%x %x %x\n", s->snpc, s->dnpc, imm));
+          (R(rd) = s->pc + 4, s->dnpc += imm));
   INSTPAT("??????? ????? ????? 000 ????? 11001 11", jalr, I,
           (R(rd) = s->pc + 4, s->dnpc = (src1 + imm) & ~1));
   INSTPAT("??????? ????? ????? 010 ????? 01000 11", sw, S,
