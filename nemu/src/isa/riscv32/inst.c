@@ -195,6 +195,14 @@ static int decode_exec(Decode *s) {
           R(rd) = (sword_t)(((int64_t)((sword_t)src1) *
                              (int64_t)((sword_t)src2)) >>
                             32));
+  INSTPAT("0000001 ????? ????? 010 ????? 01100 11", mulhsu, R,
+          R(rd) = (sword_t)(((int64_t)((sword_t)src1) *
+                             (uint64_t)(src2)) >>
+                            32));
+
+  INSTPAT("0000001 ????? ????? 011 ????? 01100 11", mulh, R,
+          R(rd) =
+              (sword_t)(((uint64_t)(src1) * (uint64_t)(src2)) >> 32));
   INSTPAT("0000001 ????? ????? 100 ????? 01100 11", div, R,
           Assert(src2 != 0, "div by zero in riscv32/inst.c");
           R(rd) = (sword_t)(src1) / (sword_t)(src2));
