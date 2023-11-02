@@ -55,7 +55,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
         now->last_result = result;
         nemu_state.state = NEMU_STOP;
         printf("A watchpoint is triggered:\n");
-        printf("%s = %u\n", now->expr, result);
+        printf("%s = %u = %x\n", now->expr, result, result);
       }
     } else {
       printf("Invalid watchpoint expression: \"%s\"\n", now->expr);
