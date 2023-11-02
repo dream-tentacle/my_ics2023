@@ -144,6 +144,8 @@ static int decode_exec(Decode *s) {
               s->pc + imm);
   INSTPAT("??????? ????? ????? 111 ????? 11000 11", bgeu, B,
           if (src1 >= src2) s->dnpc = s->pc + imm);
+  INSTPAT("0000001 ????? ????? 000 ????? 01100 11", mul, R,
+          R(rd) = (sword_t)(src1) * (sword_t)(src2));
 
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N,
           NEMUTRAP(s->pc, R(10))); // R(10) is $a0
