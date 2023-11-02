@@ -2,12 +2,12 @@
  * Copyright (c) 2014-2022 Zihao Yu, Nanjing University
  *
  * NEMU is licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan
- *PSL v2. You may obtain a copy of Mulan PSL v2 at:
+ * You can use this software according to the terms and conditions of
+ *the Mulan PSL v2. You may obtain a copy of Mulan PSL v2 at:
  *          http://license.coscl.org.cn/MulanPSL2
  *
- * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY
- *KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES
+ *OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
  *NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  *
  * See the Mulan PSL v2 for more details.
@@ -18,10 +18,10 @@
 #include <cpu/difftest.h>
 #include <locale.h>
 
-/* The assembly code of instructions executed is only output to the screen
- * when the number of instructions executed is less than this value.
- * This is useful when you use the `si' command.
- * You can modify this value as you want.
+/* The assembly code of instructions executed is only output to the
+ * screen when the number of instructions executed is less than this
+ * value. This is useful when you use the `si' command. You can modify
+ * this value as you want.
  */
 #define MAX_INST_TO_PRINT 10
 
@@ -87,7 +87,8 @@ static void exec_once(Decode *s, vaddr_t pc) {
   p += space_len;
 
 #ifndef CONFIG_ISA_loongarch32r
-  void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+  void disassemble(char *str, int size, uint64_t pc, uint8_t *code,
+                   int nbyte);
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
               MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc),
               (uint8_t *)&s->isa.inst.val, ilen);
@@ -106,6 +107,8 @@ static void execute(uint64_t n) {
       break;
     IFDEF(CONFIG_DEVICE, device_update());
     trace_and_difftest(&s, cpu.pc);
+    if (nemu_state.state != NEMU_RUNNING)
+      break;
   }
 }
 
@@ -133,7 +136,8 @@ void cpu_exec(uint64_t n) {
   switch (nemu_state.state) {
   case NEMU_END:
   case NEMU_ABORT:
-    printf("Program execution has ended. To restart the program, exit NEMU "
+    printf("Program execution has ended. To restart the program, "
+           "exit NEMU "
            "and run again.\n");
     return;
   default:
