@@ -92,6 +92,10 @@ static void decode_operand(Decode *s, int *rd, word_t *src1,
     src1R();
     src2R();
     break;
+  case TYPE_R:
+    src1R();
+    src2R();
+    break;
   }
 }
 
@@ -165,8 +169,7 @@ static int decode_exec(Decode *s) {
   INSTPAT("0100000 ????? ????? 101 ????? 01000 11", srai, R,
           R(rd) = (sword_t)(src1) >> imm);
   INSTPAT("0000000 ????? ????? 000 ????? 01100 11", add, R,
-          R(rd) = src1 + src2;
-          printf("%x %x %x", src1, src2, R(rd)););
+          R(rd) = src1 + src2;);
   INSTPAT("0100000 ????? ????? 000 ????? 01100 11", sub, R,
           R(rd) = src1 - src2);
   INSTPAT("0000000 ????? ????? 001 ????? 01100 11", sll, R,
