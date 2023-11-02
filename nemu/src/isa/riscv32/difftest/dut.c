@@ -20,12 +20,13 @@
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
   for (int i = 0; i < 32; i++) {
     if (ref_r->gpr[i] != cpu.gpr[i]) {
-      printf("%d is not good\n", i);
+      printf("%d is not good, ref = %x, dut = %x\n", i, ref_r->gpr[i],
+             cpu.gpr[i]);
       return false;
     }
   }
   if (ref_r->pc != cpu.pc) {
-    printf("pc is not good, ref_pc = %x, pc = %x\n", ref_r->pc,
+    printf("pc is not good, ref_pc = %x, dut_pc = %x\n", ref_r->pc,
            cpu.pc);
     return false;
   }
