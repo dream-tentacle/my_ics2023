@@ -56,6 +56,7 @@ enum {
     *imm = (SEXT(BITS(i, 31, 31), 1) << 20) |                        \
            (BITS(i, 30, 21) << 1) | (BITS(i, 20, 20) << 11) |        \
            (BITS(i, 19, 12) << 12);                                  \
+    printf("imm=%x\n", *imm);                                        \
   } while (0)
 
 static void decode_operand(Decode *s, int *rd, word_t *src1,
