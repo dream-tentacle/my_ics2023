@@ -78,7 +78,11 @@ static void decode_operand(Decode *s, int *rd, word_t *src1,
     src2R();
     immS();
     break;
-  default:;
+  case TYPE_J:
+    immJ();
+    break;
+  default:
+    panic("unknown type!");
   }
 }
 
