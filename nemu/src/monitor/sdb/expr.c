@@ -2,12 +2,12 @@
  * Copyright (c) 2014-2022 Zihao Yu, Nanjing University
  *
  * NEMU is licensed under Mulan PSL v2.
- * You can use this software according to the terms and conditions of the Mulan
- *PSL v2. You may obtain a copy of Mulan PSL v2 at:
+ * You can use this software according to the terms and conditions of
+ *the Mulan PSL v2. You may obtain a copy of Mulan PSL v2 at:
  *          http://license.coscl.org.cn/MulanPSL2
  *
- * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY
- *KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
+ * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES
+ *OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO
  *NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  *
  * See the Mulan PSL v2 for more details.
@@ -75,7 +75,8 @@ void init_regex() {
     ret = regcomp(&re[i], rules[i].regex, REG_EXTENDED);
     if (ret != 0) {
       regerror(ret, &re[i], error_msg, 128);
-      panic("regex compilation failed: %s\n%s", error_msg, rules[i].regex);
+      panic("regex compilation failed: %s\n%s", error_msg,
+            rules[i].regex);
     }
   }
 }
@@ -102,14 +103,17 @@ static bool make_token(char *e) {
           pmatch.rm_so == 0) {
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
-        // Log("match rules[%d] = \"%s\" at position %d with len %d: %.*s", i,
-        //     rules[i].regex, position, substr_len, substr_len, substr_start);
+        // Log("match rules[%d] = \"%s\" at position %d with len %d:
+        // %.*s", i,
+        //     rules[i].regex, position, substr_len, substr_len,
+        //     substr_start);
 
         position += substr_len;
 
-        /* TODO: Now a new token is recognized with rules[i]. Add codes
-         * to record the token in the array `tokens'. For certain types
-         * of tokens, some extra actions should be performed.
+        /* TODO: Now a new token is recognized with rules[i]. Add
+         * codes to record the token in the array `tokens'. For
+         * certain types of tokens, some extra actions should be
+         * performed.
          */
 
         switch (rules[i].token_type) {
@@ -127,7 +131,8 @@ static bool make_token(char *e) {
           break;
         case TK_REG:
           tokens[nr_token].type = TK_REG;
-          strncpy(tokens[nr_token].str, substr_start + 1, substr_len - 1);
+          strncpy(tokens[nr_token].str, substr_start + 1,
+                  substr_len - 1);
           nr_token++;
           break;
         default:
@@ -141,11 +146,8 @@ static bool make_token(char *e) {
     }
 
     if (i == NR_REGEX) {
-      assert(e[position] == 'x');
-      assert(e[position - 1] == '0');
-      assert(e[position + 1] >= '0');
-
-      printf("no match at position %d\n%s\n%*.s^\n", position, e, position, "");
+      printf("no match at position %d\n%s\n%*.s^\n", position, e,
+             position, "");
       return false;
     }
   }
@@ -165,19 +167,25 @@ word_t expr(char *e, bool *success) {
   /* TODO: Insert codes to evaluate the expression. */
   for (int i = 0; i < nr_token; i++) {
     if (tokens[i].type == '*' &&
-        (i == 0 || tokens[i - 1].type == '(' || tokens[i - 1].type == '+' ||
-         tokens[i - 1].type == '-' || tokens[i - 1].type == '*' ||
-         tokens[i - 1].type == '/' || tokens[i - 1].type == TK_EQ ||
-         tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == TK_AND ||
-         tokens[i - 1].type == TK_DEREF || tokens[i - 1].type == TK_MINUS)) {
+        (i == 0 || tokens[i - 1].type == '(' ||
+         tokens[i - 1].type == '+' || tokens[i - 1].type == '-' ||
+         tokens[i - 1].type == '*' || tokens[i - 1].type == '/' ||
+         tokens[i - 1].type == TK_EQ ||
+         tokens[i - 1].type == TK_NEQ ||
+         tokens[i - 1].type == TK_AND ||
+         tokens[i - 1].type == TK_DEREF ||
+         tokens[i - 1].type == TK_MINUS)) {
       tokens[i].type = TK_DEREF; // 解引用
     }
     if (tokens[i].type == '-' &&
-        (i == 0 || tokens[i - 1].type == '(' || tokens[i - 1].type == '+' ||
-         tokens[i - 1].type == '-' || tokens[i - 1].type == '*' ||
-         tokens[i - 1].type == '/' || tokens[i - 1].type == TK_EQ ||
-         tokens[i - 1].type == TK_NEQ || tokens[i - 1].type == TK_AND ||
-         tokens[i - 1].type == TK_DEREF || tokens[i - 1].type == TK_MINUS)) {
+        (i == 0 || tokens[i - 1].type == '(' ||
+         tokens[i - 1].type == '+' || tokens[i - 1].type == '-' ||
+         tokens[i - 1].type == '*' || tokens[i - 1].type == '/' ||
+         tokens[i - 1].type == TK_EQ ||
+         tokens[i - 1].type == TK_NEQ ||
+         tokens[i - 1].type == TK_AND ||
+         tokens[i - 1].type == TK_DEREF ||
+         tokens[i - 1].type == TK_MINUS)) {
       tokens[i].type = TK_MINUS; // 负数
     }
   }
