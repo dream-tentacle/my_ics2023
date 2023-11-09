@@ -58,7 +58,7 @@ int strncmp(const char *s1, const char *s2, size_t n) {
 
 void *memset(void *s, int c, size_t n) {
   size_t i;
-  char *ch = (char *)s;
+  unsigned char *ch = (unsigned char *)s;
   for (i = 0; i < n; i++)
     ch[i] = c;
   return s;
@@ -66,18 +66,23 @@ void *memset(void *s, int c, size_t n) {
 
 void *memmove(void *dst, const void *src, size_t n) {
   size_t i;
-  char *ch = (char *)dst;
-  char *ch2 = (char *)src;
-  for (i = 0; i < n; i++)
-    ch[i] = ch2[i];
+  unsigned char *ch = (unsigned char *)dst;
+  unsigned char *ch2 = (unsigned char *)src;
+  if (ch > ch2) {
+    for (i = n - 1; i >= 0; i--)
+      ch[i] = ch2[i];
+  } else {
+    for (i = 0; i < n; i++)
+      ch[i] = ch2[i];
+  }
 
   return dst;
 }
 
 void *memcpy(void *out, const void *in, size_t n) {
   size_t i;
-  char *ch = (char *)out;
-  char *ch2 = (char *)in;
+  unsigned char *ch = (unsigned char *)out;
+  unsigned char *ch2 = (unsigned char *)in;
   for (i = 0; i < n; i++)
     ch[i] = ch2[i];
 
@@ -86,10 +91,11 @@ void *memcpy(void *out, const void *in, size_t n) {
 
 int memcmp(const void *s1, const void *s2, size_t n) {
   size_t i;
-  char *ch1 = (char *)s1, *ch2 = (char *)s2;
-  for (i = 0; i < n && ch1[i] == ch2[i] && ch1[i] != '\0'; i++)
-    ;
-  return ch1[i] - ch2[i];
+  const unsigned char *ch1 = s1, *ch2 = s2;
+  for (i = 0; i < n; i++)
+    if (ch1[i] != ch2[i])
+      return ch1[i] - ch2[i];
+  return 0;
 }
 
 #endif
