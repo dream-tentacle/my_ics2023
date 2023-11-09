@@ -161,3 +161,7 @@ clean-all: $(CLEAN_ALL) clean
 $(CLEAN_ALL):
 	-@$(MAKE) -s -C $@ clean
 .PHONY: clean-all $(CLEAN_ALL)
+
+no_batch:
+	with_batch := 
+.PHONY: no_batch
