@@ -14,8 +14,8 @@ LDFLAGS   += --gc-sections -e _start
 # 默认情况下，with_batch参数为"-b"
 with_batch := -b
 
-# 如果用户输入了"-nb"参数，则将with_batch参数设为空
-ifeq ($(filter -nb,$(MAKEFLAGS)),)
+# 如果用户输入了"nob"参数，则将with_batch参数设为空
+ifeq ($(filter nob,$(MAKEFLAGS)),)
 else
     with_batch :=
 endif
