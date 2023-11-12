@@ -106,7 +106,7 @@ static void exec_once(Decode *s, vaddr_t pc) {
   } else {
     strcpy(ring_buffer[++ring_cnt], s->logbuf);
   }
-  printf("%s\n", s->logbuf);
+  printf("%s\n", ring_buffer[ring_cnt]);
 #endif
 }
 
