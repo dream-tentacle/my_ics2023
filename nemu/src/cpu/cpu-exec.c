@@ -138,7 +138,7 @@ static void statistic() {
 }
 void print_ring_buffer() {
   for (int i = 1; i < ring_cnt; i++) {
-    printf("     %s\n\n", ring_buffer[i]);
+    printf("     %s\n", ring_buffer[i]);
   }
   if (ring_cnt > 0)
     printf(" --> %s\n", ring_buffer[ring_cnt]);
@@ -147,9 +147,11 @@ void print_ring_buffer() {
 }
 
 void assert_fail_msg() {
-  print_ring_buffer();
   isa_reg_display();
   statistic();
+#ifdef CONFIG_ITRACE
+  print_ring_buffer();
+#endif
 }
 
 /* Simulate how the CPU works. */
