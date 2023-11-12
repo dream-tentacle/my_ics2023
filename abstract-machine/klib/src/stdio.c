@@ -1,20 +1,52 @@
 #include <am.h>
-#include <klib.h>
 #include <klib-macros.h>
+#include <klib.h>
 #include <stdarg.h>
 
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-int printf(const char *fmt, ...) {
-  panic("Not implemented");
-}
+int printf(const char *fmt, ...) { panic("Not implemented"); }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
   panic("Not implemented");
 }
 
 int sprintf(char *out, const char *fmt, ...) {
-  panic("Not implemented");
+  int re = 0;
+  int cnt = 0;
+  va_list ap;
+  va_start(ap, fmt);
+  while (fmt[cnt] != '\0') {
+    if (fmt[cnt] == '%' && fmt[cnt + 1] == 'd') {
+      int tmp = va_arg(ap, int);
+      int offset = 0;
+      while (tmp) {
+        out[re + offset] = tmp % 10 - '0';
+        tmp /= 10;
+        offset++;
+      }
+      for (int i = 0; i < offset / 2; i++) {
+        tmp = out[re + i];
+        out[re + i] = out[re + offset - 1 - i];
+        out[re + offset - 1 - i] = tmp;
+      }
+      re += offset;
+      cnt += 2;
+    } else if (fmt[cnt] == '%' && fmt[cnt + 1] == 's') {
+      char *tmp = va_arg(ap, char *);
+      while (*tmp != '\0') {
+        out[re] = *tmp;
+        cnt++;
+        tmp++;
+      }
+    } else {
+      out[re] = fmt[cnt];
+      re++;
+      cnt++;
+    }
+  }
+  out[re + 1] = '\0';
+  return re;
 }
 
 int snprintf(char *out, size_t n, const char *fmt, ...) {
