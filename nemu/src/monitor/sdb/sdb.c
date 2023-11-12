@@ -44,6 +44,8 @@ static char *rl_gets() {
 
   return line_read;
 }
+char ring_buffer[100][20];
+int ring_cnt = 0;
 
 static int cmd_c(char *args) {
   cpu_exec(-1);
