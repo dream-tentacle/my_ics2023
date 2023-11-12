@@ -34,7 +34,7 @@ static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
 char my_ring_buffer[100][20];
-int ring_cnt;
+int my_ring_cnt;
 
 void device_update();
 
@@ -98,13 +98,13 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
-  if (ring_cnt == 20) {
+  if (my_ring_cnt == 20) {
     for (int i = 1; i < 20; i++) {
       strcpy(my_ring_buffer[i], my_ring_buffer[i + 1]);
     }
     strcpy(my_ring_buffer[20], s->logbuf);
   } else {
-    strcpy(my_ring_buffer[++ring_cnt], s->logbuf);
+    strcpy(my_ring_buffer[++my_ring_cnt], s->logbuf);
   }
 #endif
 }
