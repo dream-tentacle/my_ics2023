@@ -21,14 +21,15 @@ int sprintf(char *out, const char *fmt, ...) {
       int tmp = va_arg(ap, int);
       int offset = 0;
       while (tmp) {
-        out[re + offset] = tmp % 10 - '0';
+        out[re + offset] = (char)(tmp % 10 + '0');
         tmp /= 10;
         offset++;
       }
+      char x;
       for (int i = 0; i < offset / 2; i++) {
-        tmp = out[re + i];
+        x = out[re + i];
         out[re + i] = out[re + offset - 1 - i];
-        out[re + offset - 1 - i] = tmp;
+        out[re + offset - 1 - i] = x;
       }
       re += offset;
       cnt += 2;
@@ -36,16 +37,17 @@ int sprintf(char *out, const char *fmt, ...) {
       char *tmp = va_arg(ap, char *);
       while (*tmp != '\0') {
         out[re] = *tmp;
-        cnt++;
+        re++;
         tmp++;
       }
+      cnt += 2;
     } else {
       out[re] = fmt[cnt];
       re++;
       cnt++;
     }
   }
-  out[re + 1] = '\0';
+  out[re] = '\0';
   return re;
 }
 
