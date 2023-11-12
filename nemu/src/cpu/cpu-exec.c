@@ -33,7 +33,7 @@ uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
-char ring_buffer[100][20];
+char my_ring_buffer[100][20];
 int ring_cnt;
 
 void device_update();
@@ -100,11 +100,11 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #endif
   if (ring_cnt == 20) {
     for (int i = 1; i < 20; i++) {
-      strcpy(ring_buffer[i], ring_buffer[i + 1]);
+      strcpy(my_ring_buffer[i], my_ring_buffer[i + 1]);
     }
-    strcpy(ring_buffer[20], s->logbuf);
+    strcpy(my_ring_buffer[20], s->logbuf);
   } else {
-    strcpy(ring_buffer[++ring_cnt], s->logbuf);
+    strcpy(my_ring_buffer[++ring_cnt], s->logbuf);
   }
 #endif
 }
