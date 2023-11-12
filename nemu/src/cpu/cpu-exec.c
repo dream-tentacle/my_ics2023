@@ -137,10 +137,10 @@ static void statistic() {
 }
 void print_ring_buffer() {
   for (int i = 1; i < ring_cnt; i++) {
-    printf("                    %s\n", ring_buffer[i]);
+    printf("     %s\n", ring_buffer[i]);
   }
   if (ring_cnt > 0)
-    printf("Here is a fault --> %s\n", ring_buffer[ring_cnt]);
+    printf(" --> %s\n", ring_buffer[ring_cnt]);
   else
     printf("strange! ring_cnt = 0!\n");
 }
