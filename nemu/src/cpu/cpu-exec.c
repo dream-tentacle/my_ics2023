@@ -147,9 +147,9 @@ void print_ring_buffer() {
 }
 
 void assert_fail_msg() {
+  print_ring_buffer();
   isa_reg_display();
   statistic();
-  print_ring_buffer();
 }
 
 /* Simulate how the CPU works. */
