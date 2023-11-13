@@ -35,6 +35,7 @@ static bool g_print_step = false;
 
 char ring_buffer[21][100];
 int ring_cnt;
+Decode *last_decode;
 
 void device_update();
 
@@ -136,13 +137,36 @@ static void statistic() {
         "simulation frequency");
 }
 void print_ring_buffer() {
-  for (int i = 1; i < ring_cnt; i++) {
+  for (int i = 1; i <= ring_cnt; i++) {
     printf("     %s\n", ring_buffer[i]);
   }
-  if (ring_cnt > 0)
-    printf(" --> %s\n", ring_buffer[ring_cnt]);
-  else
-    printf("strange! ring_cnt = 0!\n");
+  char *p = last_decode->logbuf;
+  p += snprintf(p, sizeof(last_decode->logbuf), FMT_WORD ":",
+                last_decode->pc);
+  int ilen = last_decode->snpc - last_decode->pc;
+  int i;
+  uint8_t *inst = (uint8_t *)&last_decode->isa.inst.val;
+  for (i = ilen - 1; i >= 0; i--) {
+    p += snprintf(p, 4, " %02x", inst[i]);
+  }
+  int ilen_max = MUXDEF(CONFIG_ISA_x86, 8, 4);
+  int space_len = ilen_max - ilen;
+  if (space_len < 0)
+    space_len = 0;
+  space_len = space_len * 3 + 1;
+  memset(p, ' ', space_len);
+  p += space_len;
+
+#ifndef CONFIG_ISA_loongarch32r
+  void disassemble(char *str, int size, uint64_t pc, uint8_t *code,
+                   int nbyte);
+  disassemble(
+      p, last_decode->logbuf + sizeof(last_decode->logbuf) - p,
+      MUXDEF(CONFIG_ISA_x86, last_decode->snpc, last_decode->pc),
+      (uint8_t *)&last_decode->isa.inst.val, ilen);
+#else
+  p[0] = '\0';
+#endif
 }
 
 void assert_fail_msg() {
