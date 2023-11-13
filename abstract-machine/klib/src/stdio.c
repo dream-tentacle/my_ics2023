@@ -43,7 +43,7 @@ int printf(const char *fmt, ...) {
         putch(int_string[i]);
         re++;
       }
-      cnt += 2;
+      cnt += 4;
     } else if (fmt[cnt] == '%' && fmt[cnt + 1] == 's') {
       char *tmp = va_arg(ap, char *);
       while (*tmp != '\0') {
@@ -100,7 +100,7 @@ int sprintf(char *out, const char *fmt, ...) {
       for (int i = int_len - 1; i >= 0; i--) {
         out[re++] = int_string[i];
       }
-      cnt += 2;
+      cnt += 4;
     } else if (fmt[cnt] == '%' && fmt[cnt + 1] == 's') {
       char *tmp = va_arg(ap, char *);
       while (*tmp != '\0') {
