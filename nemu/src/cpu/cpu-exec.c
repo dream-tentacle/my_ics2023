@@ -130,18 +130,23 @@ static void statistic() {
 void print_ring_buffer() {
     printf("ring_cnt: %d, ring_top: %d\n", ring_cnt, ring_top);
     if (ring_cnt == 20) {
-        printf("ring_cnt == 20\n");
         for (int i = ring_top + 1; i <= ring_cnt; i++) {
             printf("      ");
             printf(FMT_WORD ":", ring_buffer[i]);
         }
         for (int i = 1; i <= ring_top; i++) {
-            printf("%s", i == ring_top ? "      " : " ---> ");
+            if (i == ring_top)
+                print(" ---> ");
+            else
+                print("      ");
             printf(FMT_WORD ":", ring_buffer[i]);
         }
     } else {
         for (int i = 1; i <= ring_cnt; i++) {
-            printf("%s", i == ring_top ? "      " : " ---> ");
+            if (i == ring_cnt)
+                print(" ---> ");
+            else
+                print("      ");
             printf(FMT_WORD ":", ring_buffer[i]);
         }
     }
