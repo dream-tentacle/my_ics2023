@@ -25,8 +25,7 @@
  */
 #define MAX_INST_TO_PRINT 10
 
-uint32_t ring_buffer[21];
-int ring_cnt = 0, ring_top = 20;
+ring_cnt = 0, ring_top = 20;
 
 void init_regex();
 void init_wp_pool();
