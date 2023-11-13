@@ -229,5 +229,15 @@ static int decode_exec(Decode *s) {
 
 int isa_exec_once(Decode *s) {
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
+  if (ring_cnt == 20) {
+    if (ring_top == 20) {
+      ring_top = 1;
+    } else
+      ring_top++;
+    ring_buffer[ring_top] = s->isa.inst.val;
+  } else {
+    ring_cnt++;
+    ring_buffer[ring_cnt] = s->isa.inst.val;
+  }
   return decode_exec(s);
 }

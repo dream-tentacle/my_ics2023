@@ -25,6 +25,9 @@
  */
 #define MAX_INST_TO_PRINT 10
 
+uint32_t ring_buffer[21];
+int ring_cnt = 0, ring_top = 20;
+
 void init_regex();
 void init_wp_pool();
 
@@ -32,9 +35,6 @@ CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
-
-char ring_buffer[21][100];
-int ring_cnt;
 
 void device_update();
 
@@ -98,14 +98,6 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #else
   p[0] = '\0'; // the upstream llvm does not support loongarch32r
 #endif
-  if (ring_cnt == 20) {
-    for (int i = 1; i < 20; i++) {
-      strcpy(ring_buffer[i], ring_buffer[i + 1]);
-    }
-    strcpy(ring_buffer[20], s->logbuf);
-  } else {
-    strcpy(ring_buffer[++ring_cnt], s->logbuf);
-  }
 #endif
 }
 
@@ -136,13 +128,16 @@ static void statistic() {
         "simulation frequency");
 }
 void print_ring_buffer() {
-  for (int i = 1; i < ring_cnt; i++) {
-    printf("     %s\n", ring_buffer[i]);
+  if (ring_cnt == 20) {
+    for (int i = ring_top + 1; i <= ring_cnt; i++) {
+      printf("      ");
+      printf(FMT_WORD ":", ring_buffer[i]);
+    }
+    for (int i = 1; i <= ring_top; i++) {
+      printf("%s", i == ring_top ? "      " : " ---> ");
+      printf(FMT_WORD ":", ring_buffer[i]);
+    }
   }
-  if (ring_cnt > 0)
-    printf(" --> %s\n", ring_buffer[ring_cnt]);
-  else
-    printf("strange! ring_cnt = 0!\n");
 }
 
 void assert_fail_msg() {
