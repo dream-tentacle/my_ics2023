@@ -223,8 +223,6 @@ static int decode_exec(Decode* s) {
     return 0;
 }
 
-uint32_t ring_buffer[21];
-int ring_cnt, ring_top;
 int isa_exec_once(Decode* s) {
     s->isa.inst.val = inst_fetch(&s->snpc, 4);
     if (ring_cnt == 20) {
