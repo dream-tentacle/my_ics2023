@@ -136,6 +136,7 @@ static void statistic() {
     Log("Finish running in less than 1 us and can not calculate the "
         "simulation frequency");
 }
+#ifdef CONFIG_ITRACE
 void print_ring_buffer() {
   for (int i = 1; i <= ring_cnt; i++) {
     printf("     %s\n", ring_buffer[i]);
@@ -169,6 +170,7 @@ void print_ring_buffer() {
 #endif
   printf(" --> %s\n", last_decode->logbuf);
 }
+#endif
 
 void assert_fail_msg() {
   isa_reg_display();
