@@ -20,7 +20,7 @@
 #ifndef RING_BUFFER
 #define RING_BUFFER
 uint32_t ring_buffer[21];
-int ring_cnt = 0, ring_top = 20;
+int ring_cnt, ring_top;
 #endif
 void cpu_exec(uint64_t n);
 

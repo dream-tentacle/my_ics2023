@@ -134,6 +134,11 @@ void print_ring_buffer() {
             printf("%s", i == ring_top ? "      " : " ---> ");
             printf(FMT_WORD ":", ring_buffer[i]);
         }
+    } else {
+        for (int i = 1; i <= ring_cnt; i++) {
+            printf("%s", i == ring_top ? "      " : " ---> ");
+            printf(FMT_WORD ":", ring_buffer[i]);
+        }
     }
 }
 
