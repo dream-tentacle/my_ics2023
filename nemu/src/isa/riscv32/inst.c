@@ -234,8 +234,6 @@ int isa_exec_once(Decode* s) {
     } else {
         ring_cnt++;
         ring_buffer[ring_cnt] = s->isa.inst.val;
-        if (ring_cnt == 20)
-            ring_top = 20;
     }
     return decode_exec(s);
 }

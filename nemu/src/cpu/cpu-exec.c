@@ -26,7 +26,7 @@
 #define MAX_INST_TO_PRINT 10
 
 uint32_t ring_buffer[21];
-int ring_cnt = 0, ring_top;
+int ring_cnt = 0, ring_top = 20;
 
 void init_regex();
 void init_wp_pool();
@@ -130,6 +130,7 @@ static void statistic() {
 void print_ring_buffer() {
     printf("ring_cnt: %d, ring_top: %d\n", ring_cnt, ring_top);
     if (ring_cnt == 20) {
+        printf("ring_cnt == 20\n");
         for (int i = ring_top + 1; i <= ring_cnt; i++) {
             printf("      ");
             printf(FMT_WORD ":", ring_buffer[i]);
