@@ -40,7 +40,7 @@ int printf(const char *fmt, ...) {
       int tmp = va_arg(ap, int);
       int offset = 0;
       if (tmp == 0) {
-        DO_NEXT('x');
+        DO_NEXT('0');
         cnt += 2;
         continue;
       }
