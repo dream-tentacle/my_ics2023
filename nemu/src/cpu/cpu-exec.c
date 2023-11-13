@@ -132,14 +132,14 @@ void print_ring_buffer() {
     if (ring_cnt == 20) {
         for (int i = ring_top + 1; i <= ring_cnt; i++) {
             printf("      ");
-            printf("0x%08:", ring_buffer[i]);
+            printf("0x%08x:", ring_buffer[i]);
         }
         for (int i = 1; i <= ring_top; i++) {
             if (i == ring_top)
                 printf(" ---> ");
             else
                 printf("      ");
-            printf("0x%08:", ring_buffer[i]);
+            printf("0x%08x:", ring_buffer[i]);
         }
     } else {
         for (int i = 1; i <= ring_cnt; i++) {
