@@ -140,7 +140,6 @@ void print_ring_buffer() {
   for (int i = 1; i <= ring_cnt; i++) {
     printf("     %s\n", ring_buffer[i]);
   }
-  last_decode->snpc += 4;
   char *p = last_decode->logbuf;
   p += snprintf(p, sizeof(last_decode->logbuf), FMT_WORD ":",
                 last_decode->pc);
