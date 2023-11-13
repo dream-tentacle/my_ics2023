@@ -17,11 +17,7 @@
 #define __CPU_CPU_H__
 
 #include <common.h>
-#ifndef RING_BUFFER
-#define RING_BUFFER
-uint32_t ring_buffer[21];
-int ring_cnt, ring_top;
-#endif
+
 void cpu_exec(uint64_t n);
 
 void set_nemu_state(int state, vaddr_t pc, int halt_ret);
