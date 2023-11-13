@@ -132,21 +132,21 @@ void print_ring_buffer() {
     if (ring_cnt == 20) {
         for (int i = ring_top + 1; i <= ring_cnt; i++) {
             printf("      ");
-            printf(FMT_WORD ":", ring_buffer[i]);
+            printf("0x%08:", ring_buffer[i]);
         }
         for (int i = 1; i <= ring_top; i++) {
             if (i == ring_top)
-                print(" ---> ");
+                printf(" ---> ");
             else
-                print("      ");
-            printf(FMT_WORD ":", ring_buffer[i]);
+                printf("      ");
+            printf("0x%08:", ring_buffer[i]);
         }
     } else {
         for (int i = 1; i <= ring_cnt; i++) {
             if (i == ring_cnt)
-                print(" ---> ");
+                printf(" ---> ");
             else
-                print("      ");
+                printf("      ");
             printf(FMT_WORD ":", ring_buffer[i]);
         }
     }
