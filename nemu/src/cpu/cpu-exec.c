@@ -128,6 +128,7 @@ static void statistic() {
             "simulation frequency");
 }
 void print_ring_buffer() {
+    printf("ring_cnt: %d\n", ring_cnt);
     if (ring_cnt == 20) {
         for (int i = ring_top + 1; i <= ring_cnt; i++) {
             printf("      ");
