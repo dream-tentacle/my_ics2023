@@ -7,7 +7,7 @@
 
 int printf(const char *fmt, ...) {
   int re = 0;
-  char c[20];
+  char c[10000];
   int cnt = 0;
   va_list ap;
   va_start(ap, fmt);
