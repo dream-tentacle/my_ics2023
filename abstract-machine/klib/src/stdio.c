@@ -26,6 +26,7 @@
 // macro
 #define MUXDEF(macro, X, Y) MUX_MACRO_PROPERTY(__P_DEF_, macro, X, Y)
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
+
 #define DO_NEXT(x) MUXDEF(to_putch, out[re++] = (x), putch(x); re++)
 
 int printf(const char *fmt, ...) {
