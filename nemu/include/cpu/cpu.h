@@ -18,7 +18,7 @@
 
 #include <common.h>
 uint32_t ring_buffer[21];
-int ring_cnt, ring_top;
+int ring_cnt = 0, ring_top = 20;
 void cpu_exec(uint64_t n);
 
 void set_nemu_state(int state, vaddr_t pc, int halt_ret);

@@ -12,11 +12,11 @@
  *
  * See the Mulan PSL v2 for more details.
  ***************************************************************************************/
-#include "../monitor/sdb/sdb.h"
 #include <cpu/cpu.h>
 #include <cpu/decode.h>
 #include <cpu/difftest.h>
 #include <locale.h>
+#include "../monitor/sdb/sdb.h"
 
 /* The assembly code of instructions executed is only output to the
  * screen when the number of instructions executed is less than this
@@ -25,165 +25,164 @@
  */
 #define MAX_INST_TO_PRINT 10
 
-ring_cnt = 0, ring_top = 20;
-
 void init_regex();
 void init_wp_pool();
 
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
-static uint64_t g_timer = 0; // unit: us
+static uint64_t g_timer = 0;  // unit: us
 static bool g_print_step = false;
 
 void device_update();
 
-static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
+static void trace_and_difftest(Decode* _this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
-  if (ITRACE_COND) {
-    log_write("%s\n", _this->logbuf);
-  }
-#endif
-  if (g_print_step) {
-    IFDEF(CONFIG_ITRACE, puts(_this->logbuf));
-  }
-  IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
-  WP *now = get_head();
-  while (now != NULL) {
-    bool flag = true;
-    bool *p = &flag;
-    word_t result = expr(now->expr, p);
-    if (flag) {
-      if (result != now->last_result) {
-        now->last_result = result;
-        nemu_state.state = NEMU_STOP;
-        printf("A watchpoint is triggered:\n");
-        printf("%s = %u = 0x%x\n", now->expr, result, result);
-      }
-    } else {
-      printf("Invalid watchpoint expression: \"%s\"\n", now->expr);
+    if (ITRACE_COND) {
+        log_write("%s\n", _this->logbuf);
     }
-    now = now->next;
-  }
+#endif
+    if (g_print_step) {
+        IFDEF(CONFIG_ITRACE, puts(_this->logbuf));
+    }
+    IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+    WP* now = get_head();
+    while (now != NULL) {
+        bool flag = true;
+        bool* p = &flag;
+        word_t result = expr(now->expr, p);
+        if (flag) {
+            if (result != now->last_result) {
+                now->last_result = result;
+                nemu_state.state = NEMU_STOP;
+                printf("A watchpoint is triggered:\n");
+                printf("%s = %u = 0x%x\n", now->expr, result, result);
+            }
+        } else {
+            printf("Invalid watchpoint expression: \"%s\"\n", now->expr);
+        }
+        now = now->next;
+    }
 }
 
-static void exec_once(Decode *s, vaddr_t pc) {
-  s->pc = pc;
-  s->snpc = pc;
-  isa_exec_once(s);
-  cpu.pc = s->dnpc;
+static void exec_once(Decode* s, vaddr_t pc) {
+    s->pc = pc;
+    s->snpc = pc;
+    isa_exec_once(s);
+    cpu.pc = s->dnpc;
 #ifdef CONFIG_ITRACE
-  char *p = s->logbuf;
-  p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
-  int ilen = s->snpc - s->pc;
-  int i;
-  uint8_t *inst = (uint8_t *)&s->isa.inst.val;
-  for (i = ilen - 1; i >= 0; i--) {
-    p += snprintf(p, 4, " %02x", inst[i]);
-  }
-  int ilen_max = MUXDEF(CONFIG_ISA_x86, 8, 4);
-  int space_len = ilen_max - ilen;
-  if (space_len < 0)
-    space_len = 0;
-  space_len = space_len * 3 + 1;
-  memset(p, ' ', space_len);
-  p += space_len;
+    char* p = s->logbuf;
+    p += snprintf(p, sizeof(s->logbuf), FMT_WORD ":", s->pc);
+    int ilen = s->snpc - s->pc;
+    int i;
+    uint8_t* inst = (uint8_t*)&s->isa.inst.val;
+    for (i = ilen - 1; i >= 0; i--) {
+        p += snprintf(p, 4, " %02x", inst[i]);
+    }
+    int ilen_max = MUXDEF(CONFIG_ISA_x86, 8, 4);
+    int space_len = ilen_max - ilen;
+    if (space_len < 0)
+        space_len = 0;
+    space_len = space_len * 3 + 1;
+    memset(p, ' ', space_len);
+    p += space_len;
 
 #ifndef CONFIG_ISA_loongarch32r
-  void disassemble(char *str, int size, uint64_t pc, uint8_t *code,
-                   int nbyte);
-  disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
-              MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc),
-              (uint8_t *)&s->isa.inst.val, ilen);
+    void disassemble(char* str, int size, uint64_t pc, uint8_t* code,
+                     int nbyte);
+    disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
+                MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc),
+                (uint8_t*)&s->isa.inst.val, ilen);
 #else
-  p[0] = '\0'; // the upstream llvm does not support loongarch32r
+    p[0] = '\0';  // the upstream llvm does not support loongarch32r
 #endif
 #endif
 }
 
 static void execute(uint64_t n) {
-  Decode s;
-  for (; n > 0; n--) {
-    exec_once(&s, cpu.pc);
-    g_nr_guest_inst++;
-    if (nemu_state.state != NEMU_RUNNING)
-      break;
-    IFDEF(CONFIG_DEVICE, device_update());
-    trace_and_difftest(&s, cpu.pc);
-    if (nemu_state.state != NEMU_RUNNING)
-      break;
-  }
+    Decode s;
+    for (; n > 0; n--) {
+        exec_once(&s, cpu.pc);
+        g_nr_guest_inst++;
+        if (nemu_state.state != NEMU_RUNNING)
+            break;
+        IFDEF(CONFIG_DEVICE, device_update());
+        trace_and_difftest(&s, cpu.pc);
+        if (nemu_state.state != NEMU_RUNNING)
+            break;
+    }
 }
 
 static void statistic() {
-  IFNDEF(CONFIG_TARGET_AM, setlocale(LC_NUMERIC, ""));
+    IFNDEF(CONFIG_TARGET_AM, setlocale(LC_NUMERIC, ""));
 #define NUMBERIC_FMT MUXDEF(CONFIG_TARGET_AM, "%", "%'") PRIu64
-  Log("host time spent = " NUMBERIC_FMT " us", g_timer);
-  Log("total guest instructions = " NUMBERIC_FMT, g_nr_guest_inst);
-  if (g_timer > 0)
-    Log("simulation frequency = " NUMBERIC_FMT " inst/s",
-        g_nr_guest_inst * 1000000 / g_timer);
-  else
-    Log("Finish running in less than 1 us and can not calculate the "
-        "simulation frequency");
+    Log("host time spent = " NUMBERIC_FMT " us", g_timer);
+    Log("total guest instructions = " NUMBERIC_FMT, g_nr_guest_inst);
+    if (g_timer > 0)
+        Log("simulation frequency = " NUMBERIC_FMT " inst/s",
+            g_nr_guest_inst * 1000000 / g_timer);
+    else
+        Log("Finish running in less than 1 us and can not calculate the "
+            "simulation frequency");
 }
 void print_ring_buffer() {
-  if (ring_cnt == 20) {
-    for (int i = ring_top + 1; i <= ring_cnt; i++) {
-      printf("      ");
-      printf(FMT_WORD ":", ring_buffer[i]);
+    if (ring_cnt == 20) {
+        for (int i = ring_top + 1; i <= ring_cnt; i++) {
+            printf("      ");
+            printf(FMT_WORD ":", ring_buffer[i]);
+        }
+        for (int i = 1; i <= ring_top; i++) {
+            printf("%s", i == ring_top ? "      " : " ---> ");
+            printf(FMT_WORD ":", ring_buffer[i]);
+        }
     }
-    for (int i = 1; i <= ring_top; i++) {
-      printf("%s", i == ring_top ? "      " : " ---> ");
-      printf(FMT_WORD ":", ring_buffer[i]);
-    }
-  }
 }
 
 void assert_fail_msg() {
-  isa_reg_display();
-  statistic();
+    isa_reg_display();
+    statistic();
 #ifdef CONFIG_ITRACE
-  print_ring_buffer();
+    print_ring_buffer();
 #endif
 }
 
 /* Simulate how the CPU works. */
 void cpu_exec(uint64_t n) {
-  g_print_step = (n < MAX_INST_TO_PRINT);
-  switch (nemu_state.state) {
-  case NEMU_END:
-  case NEMU_ABORT:
-    printf("Program execution has ended. To restart the program, "
-           "exit NEMU "
-           "and run again.\n");
-    return;
-  default:
-    nemu_state.state = NEMU_RUNNING;
-  }
+    g_print_step = (n < MAX_INST_TO_PRINT);
+    switch (nemu_state.state) {
+        case NEMU_END:
+        case NEMU_ABORT:
+            printf(
+                "Program execution has ended. To restart the program, "
+                "exit NEMU "
+                "and run again.\n");
+            return;
+        default:
+            nemu_state.state = NEMU_RUNNING;
+    }
 
-  uint64_t timer_start = get_time();
+    uint64_t timer_start = get_time();
 
-  execute(n);
+    execute(n);
 
-  uint64_t timer_end = get_time();
-  g_timer += timer_end - timer_start;
+    uint64_t timer_end = get_time();
+    g_timer += timer_end - timer_start;
 
-  switch (nemu_state.state) {
-  case NEMU_RUNNING:
-    nemu_state.state = NEMU_STOP;
-    break;
+    switch (nemu_state.state) {
+        case NEMU_RUNNING:
+            nemu_state.state = NEMU_STOP;
+            break;
 
-  case NEMU_END:
-  case NEMU_ABORT:
-    Log("nemu: %s at pc = " FMT_WORD,
-        (nemu_state.state == NEMU_ABORT
-             ? ANSI_FMT("ABORT", ANSI_FG_RED)
-             : (nemu_state.halt_ret == 0
-                    ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN)
-                    : ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
-        nemu_state.halt_pc);
-    // fall through
-  case NEMU_QUIT:
-    statistic();
-  }
+        case NEMU_END:
+        case NEMU_ABORT:
+            Log("nemu: %s at pc = " FMT_WORD,
+                (nemu_state.state == NEMU_ABORT
+                     ? ANSI_FMT("ABORT", ANSI_FG_RED)
+                     : (nemu_state.halt_ret == 0
+                            ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN)
+                            : ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
+                nemu_state.halt_pc);
+            // fall through
+        case NEMU_QUIT:
+            statistic();
+    }
 }
