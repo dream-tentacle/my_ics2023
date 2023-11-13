@@ -25,6 +25,25 @@ int printf(const char *fmt, ...) {
         re++;
       }
       cnt += 2;
+    }
+    if (fmt[cnt] == '%' && fmt[cnt + 1] == '0' &&
+        fmt[cnt + 2] == '2' && fmt[cnt + 3] == 'd') {
+      int tmp = va_arg(ap, int);
+      int int_len = 0;
+      char int_string[30];
+      while (tmp) {
+        int_string[int_len++] = (char)(tmp % 10 + '0');
+        tmp /= 10;
+      }
+      for (int i = 2; i > int_len; i--) {
+        putch('0');
+        re++;
+      }
+      for (int i = int_len - 1; i >= 0; i--) {
+        putch(int_string[i]);
+        re++;
+      }
+      cnt += 2;
     } else if (fmt[cnt] == '%' && fmt[cnt + 1] == 's') {
       char *tmp = va_arg(ap, char *);
       while (*tmp != '\0') {
@@ -39,6 +58,7 @@ int printf(const char *fmt, ...) {
       re++;
     }
   }
+  va_end(ap);
   return re;
 }
 
@@ -54,19 +74,32 @@ int sprintf(char *out, const char *fmt, ...) {
   while (fmt[cnt] != '\0') {
     if (fmt[cnt] == '%' && fmt[cnt + 1] == 'd') {
       int tmp = va_arg(ap, int);
-      int offset = 0;
+      int int_len = 0;
+      char int_string[30];
       while (tmp) {
-        out[re + offset] = (char)(tmp % 10 + '0');
+        int_string[int_len++] = (char)(tmp % 10 + '0');
         tmp /= 10;
-        offset++;
       }
-      char x;
-      for (int i = 0; i < offset / 2; i++) {
-        x = out[re + i];
-        out[re + i] = out[re + offset - 1 - i];
-        out[re + offset - 1 - i] = x;
+      for (int i = int_len - 1; i >= 0; i--) {
+        out[re++] = int_string[i];
       }
-      re += offset;
+      cnt += 2;
+    }
+    if (fmt[cnt] == '%' && fmt[cnt + 1] == '0' &&
+        fmt[cnt + 2] == '2' && fmt[cnt + 3] == 'd') {
+      int tmp = va_arg(ap, int);
+      int int_len = 0;
+      char int_string[30];
+      while (tmp) {
+        int_string[int_len++] = (char)(tmp % 10 + '0');
+        tmp /= 10;
+      }
+      for (int i = 2; i > int_len; i--) {
+        out[re++] = '0';
+      }
+      for (int i = int_len - 1; i >= 0; i--) {
+        out[re++] = int_string[i];
+      }
       cnt += 2;
     } else if (fmt[cnt] == '%' && fmt[cnt + 1] == 's') {
       char *tmp = va_arg(ap, char *);
@@ -82,6 +115,7 @@ int sprintf(char *out, const char *fmt, ...) {
       cnt++;
     }
   }
+  va_end(ap);
   out[re] = '\0';
   return re;
 }
