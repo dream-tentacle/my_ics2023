@@ -20,7 +20,7 @@ int printf(const char *fmt, ...) {
         tmp /= 10;
         offset++;
       }
-      for (int i = offset - 1; i > 0; i--) {
+      for (int i = offset - 1; i >= 0; i--) {
         putch(c[i]);
         re++;
       }
