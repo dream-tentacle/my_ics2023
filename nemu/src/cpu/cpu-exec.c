@@ -168,7 +168,7 @@ void print_ring_buffer() {
 #else
   p[0] = '\0';
 #endif
-  printf(" --> %s\n", p);
+  printf(" --> %s\n", last_decode->logbuf);
 }
 
 void assert_fail_msg() {
