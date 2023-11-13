@@ -150,6 +150,7 @@ void print_ring_buffer() {
             printf(FMT_WORD ":", ring_buffer[i]);
         }
     }
+    printf("ring_cnt: %d, ring_top: %d\n", ring_cnt, ring_top);
 }
 
 void assert_fail_msg() {
