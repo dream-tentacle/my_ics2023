@@ -66,7 +66,8 @@ int printf(const char *fmt, ...) {
       bool neg_flag = false;
       if (tmp == 0) {
         DO_NEXT('0');
-        cnt += 2;
+        DO_NEXT('0');
+        cnt += 4;
         continue;
       }
       if (tmp < 0) {
@@ -119,7 +120,7 @@ int sprintf(char *out, const char *fmt, ...) {
       int tmp = va_arg(ap, int);
       int offset = 0;
       if (tmp == 0) {
-        DO_NEXT('x');
+        DO_NEXT('0');
         cnt += 2;
         continue;
       }
@@ -145,7 +146,8 @@ int sprintf(char *out, const char *fmt, ...) {
       bool neg_flag = false;
       if (tmp == 0) {
         DO_NEXT('0');
-        cnt += 2;
+        DO_NEXT('0');
+        cnt += 4;
         continue;
       }
       if (tmp < 0) {
