@@ -30,6 +30,7 @@
 #define DO_NEXT(x) MUXDEF(to_putch, out[re++] = (x), putch(x); re++)
 
 int printf(const char *fmt, ...) {
+  return 0;
 #define to_putch
   int re = 0;
   char c[10000];
@@ -110,6 +111,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 }
 
 int sprintf(char *out, const char *fmt, ...) {
+  return 0;
 #undef to_putch
   int re = 0;
   char c[10000];
