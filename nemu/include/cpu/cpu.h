@@ -17,7 +17,7 @@
 #define __CPU_CPU_H__
 
 #include <common.h>
-uint64_t ring_buffer[21];
+uint32_t ring_buffer[21];
 int ring_cnt, ring_top;
 void cpu_exec(uint64_t n);
 
