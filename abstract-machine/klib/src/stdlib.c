@@ -37,7 +37,7 @@ void *malloc(size_t size) {
     addr = (unsigned char *)heap.start;
   }
   *addr += size;
-  return addr;
+  return (void *)addr;
 #endif
   return NULL;
 }
