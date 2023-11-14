@@ -37,8 +37,9 @@ void *malloc(size_t size) {
     addr = (unsigned char *)heap.start;
   }
   *addr += size;
-#endif
   return addr;
+#endif
+  return NULL;
 }
 
 void free(void *ptr) {}
