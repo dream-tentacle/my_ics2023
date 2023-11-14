@@ -130,7 +130,6 @@ static void statistic() {
 }
 #ifdef CONFIG_ITRACE
 void print_ring_buffer() {
-<<<<<<< HEAD
   for (int i = 1; i <= ring_cnt; i++) {
     printf("     %s\n", ring_buffer[i]);
   }
@@ -162,31 +161,6 @@ void print_ring_buffer() {
   p[0] = '\0';
 #endif
   printf(" --> %s\n", last_decode->logbuf);
-=======
-  printf("ring_cnt: %d, ring_top: %d\n", ring_cnt, ring_top);
-  if (ring_cnt == 20) {
-    for (int i = ring_top + 1; i <= ring_cnt; i++) {
-      printf("      ");
-      printf("0x%08x:", ring_buffer[i]);
-    }
-    for (int i = 1; i <= ring_top; i++) {
-      if (i == ring_top)
-        printf(" ---> ");
-      else
-        printf("      ");
-      printf("0x%08x:", ring_buffer[i]);
-    }
-  } else {
-    for (int i = 1; i <= ring_cnt; i++) {
-      if (i == ring_cnt)
-        printf(" ---> ");
-      else
-        printf("      ");
-      printf(FMT_WORD ":", ring_buffer[i]);
-    }
-  }
-  printf("ring_cnt: %d, ring_top: %d\n", ring_cnt, ring_top);
->>>>>>> 4231491fdd8001437ef136b8ba70b3a7197a600b
 }
 #endif
 
