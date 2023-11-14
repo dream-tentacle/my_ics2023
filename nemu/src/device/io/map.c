@@ -66,11 +66,7 @@ word_t map_read(paddr_t addr, int len, IOMap *map) {
   invoke_callback(map->callback, offset, len,
                   false); // prepare data to read
   word_t ret = host_read(map->space + offset, len);
-  char *p = get_name(addr);
-  if (p == NULL)
-    Log("Unknown device reads! Address:%d", (int)addr);
-  else
-    Log("%s reads\n", p);
+  Log("%s reads\n", map->name);
   return ret;
 }
 
@@ -81,9 +77,5 @@ void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
   host_write(map->space + offset, len, data);
   invoke_callback(map->callback, offset, len, true);
 
-  char *p = get_name(addr);
-  if (p == NULL)
-    Log("Unknown device writes! Address:%d", (int)addr);
-  else
-    Log("%s writes\n", p);
+  Log("%s writes\n", map->name);
 }
