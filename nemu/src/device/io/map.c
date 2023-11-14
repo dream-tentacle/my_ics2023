@@ -58,7 +58,8 @@ void init_map() {
   assert(io_space);
   p_space = io_space;
 }
-
+char device_buffer[30][30];
+int device_buffer_cnt = 0;
 word_t map_read(paddr_t addr, int len, IOMap *map) {
   assert(len >= 1 && len <= 8);
   check_bound(map, addr);
@@ -66,7 +67,15 @@ word_t map_read(paddr_t addr, int len, IOMap *map) {
   invoke_callback(map->callback, offset, len,
                   false); // prepare data to read
   word_t ret = host_read(map->space + offset, len);
-  Log("%s reads\n", map->name);
+  if (device_buffer_cnt == 20) {
+    for (int i = 1; i < 20; i++) {
+      strcpy(device_buffer[i], device_buffer[i + 1]);
+    }
+    sprintf(device_buffer[20], "device %s reads", map->name);
+  } else {
+    sprintf(device_buffer[++device_buffer_cnt], "device %s reads",
+            map->name);
+  }
   return ret;
 }
 
@@ -77,5 +86,13 @@ void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
   host_write(map->space + offset, len, data);
   invoke_callback(map->callback, offset, len, true);
 
-  Log("%s writes\n", map->name);
+  if (device_buffer_cnt == 20) {
+    for (int i = 1; i < 20; i++) {
+      strcpy(device_buffer[i], device_buffer[i + 1]);
+    }
+    sprintf(device_buffer[20], "device %s writes", map->name);
+  } else {
+    sprintf(device_buffer[++device_buffer_cnt], "device %s writes",
+            map->name);
+  }
 }

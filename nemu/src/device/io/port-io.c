@@ -36,13 +36,6 @@ void add_pio_map(const char *name, ioaddr_t addr, void *space,
 
   nr_map++;
 }
-char *get_name(ioaddr_t addr) {
-  for (int i = 0; i < NR_MAP; i++) {
-    if (maps[i].low == addr)
-      return (char *)maps[i].name;
-  }
-  return NULL;
-}
 /* CPU interface */
 uint32_t pio_read(ioaddr_t addr, int len) {
   assert(addr + len - 1 < PORT_IO_SPACE_MAX);

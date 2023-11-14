@@ -17,7 +17,9 @@
 #include <cpu/decode.h>
 #include <cpu/difftest.h>
 #include <locale.h>
-
+#ifdef CONFIG_DEVICE
+#include <device/map.h>
+#endif
 /* The assembly code of instructions executed is only output to the
  * screen when the number of instructions executed is less than this
  * value. This is useful when you use the `si' command. You can modify
@@ -171,12 +173,21 @@ void print_ring_buffer() {
   printf(" --> %s\n", last_decode->logbuf);
 }
 #endif
-
+#ifdef CONFIG_DEVICE
+void print_device_buffer() {
+  for (int i = 1; i <= device_buffer_cnt; i++) {
+    printf("%s\n", device_buffer[i]);
+  }
+}
+#endif
 void assert_fail_msg() {
   isa_reg_display();
   statistic();
 #ifdef CONFIG_ITRACE
   print_ring_buffer();
+#endif
+#ifdef CONFIG_DEVICE
+  print_device_buffer();
 #endif
 }
 
