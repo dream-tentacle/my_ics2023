@@ -33,8 +33,8 @@ typedef struct {
 static inline bool map_inside(IOMap *map, paddr_t addr) {
   return (addr >= map->low && addr <= map->high);
 }
-char device_buffer[30][30];
-int device_buffer_cnt;
+extern char device_buffer[30][30];
+extern int device_buffer_cnt;
 static inline int find_mapid_by_addr(IOMap *maps, int size,
                                      paddr_t addr) {
   int i;
