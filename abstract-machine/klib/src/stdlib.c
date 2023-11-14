@@ -26,17 +26,15 @@ int atoi(const char *nptr) {
   }
   return x;
 }
-char *addr;
-bool addr_init = false;
+unsigned char *addr = NULL;
 void *malloc(size_t size) {
   // On native, malloc() will be called during initializaion of C
   // runtime. Therefore do not call panic() here, else it will yield a
   // dead recursion:
   //   panic() -> putchar() -> (glibc) -> malloc() -> panic()
 #if !(defined(__ISA_NATIVE__) && defined(__NATIVE_USE_KLIB__))
-  if (!addr_init) {
-    addr = (char *)heap.start;
-    addr_init = true;
+  if (addr == NULL) {
+    addr = (unsigned char *)heap.start;
   }
   *addr += size;
 #endif
