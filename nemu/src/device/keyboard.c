@@ -22,21 +22,18 @@
 #include <SDL2/SDL.h>
 
 // Note that this is not the standard
-#define NEMU_KEYS(f)                                                 \
-  f(ESCAPE) f(F1) f(F2) f(F3) f(F4) f(F5) f(F6) f(F7) f(F8) f(F9) f( \
-      F10) f(F11) f(F12) f(GRAVE) f(1) f(2) f(3) f(4) f(5) f(6) f(7) \
-      f(8) f(9) f(0) f(MINUS) f(EQUALS) f(BACKSPACE) f(TAB) f(Q) f(  \
-          W) f(E) f(R) f(T) f(Y) f(U) f(I) f(O) f(P) f(LEFTBRACKET)  \
-          f(RIGHTBRACKET) f(BACKSLASH) f(CAPSLOCK) f(A) f(S) f(D)    \
-              f(F) f(G) f(H) f(J) f(K) f(L) f(SEMICOLON)             \
-                  f(APOSTROPHE) f(RETURN) f(LSHIFT) f(Z) f(X) f(C)   \
-                      f(V) f(B) f(N) f(M) f(COMMA) f(PERIOD)         \
-                          f(SLASH) f(RSHIFT) f(LCTRL) f(APPLICATION) \
-                              f(LALT) f(SPACE) f(RALT) f(RCTRL)      \
-                                  f(UP) f(DOWN) f(LEFT) f(RIGHT)     \
-                                      f(INSERT) f(DELETE) f(HOME)    \
-                                          f(END) f(PAGEUP)           \
-                                              f(PAGEDOWN)
+#define NEMU_KEYS(f)                                                           \
+  f(ESCAPE) f(F1) f(F2) f(F3) f(F4) f(F5) f(F6) f(F7) f(F8) f(F9) f(F10)       \
+      f(F11) f(F12) f(GRAVE) f(1) f(2) f(3) f(4) f(5) f(6) f(7) f(8) f(9) f(0) \
+          f(MINUS) f(EQUALS) f(BACKSPACE) f(TAB) f(Q) f(W) f(E) f(R) f(T) f(Y) \
+              f(U) f(I) f(O) f(P) f(LEFTBRACKET) f(RIGHTBRACKET) f(BACKSLASH)  \
+                  f(CAPSLOCK) f(A) f(S) f(D) f(F) f(G) f(H) f(J) f(K) f(L)     \
+                      f(SEMICOLON) f(APOSTROPHE) f(RETURN) f(LSHIFT) f(Z) f(X) \
+                          f(C) f(V) f(B) f(N) f(M) f(COMMA) f(PERIOD) f(SLASH) \
+                              f(RSHIFT) f(LCTRL) f(APPLICATION) f(LALT)        \
+                                  f(SPACE) f(RALT) f(RCTRL) f(UP) f(DOWN)      \
+                                      f(LEFT) f(RIGHT) f(INSERT) f(DELETE)     \
+                                          f(HOME) f(END) f(PAGEUP) f(PAGEDOWN)
 
 #define NEMU_KEY_NAME(k) NEMU_KEY_##k,
 
@@ -67,14 +64,12 @@ static uint32_t key_dequeue() {
 }
 
 void send_key(uint8_t scancode, bool is_keydown) {
-  if (nemu_state.state == NEMU_RUNNING &&
-      keymap[scancode] != NEMU_KEY_NONE) {
-    uint32_t am_scancode =
-        keymap[scancode] | (is_keydown ? KEYDOWN_MASK : 0);
+  if (nemu_state.state == NEMU_RUNNING && keymap[scancode] != NEMU_KEY_NONE) {
+    uint32_t am_scancode = keymap[scancode] | (is_keydown ? KEYDOWN_MASK : 0);
     key_enqueue(am_scancode);
   }
 }
-#else // !CONFIG_TARGET_AM
+#else  // !CONFIG_TARGET_AM
 #define NEMU_KEY_NONE 0
 
 static uint32_t key_dequeue() {
@@ -86,22 +81,22 @@ static uint32_t key_dequeue() {
 
 static uint32_t *i8042_data_port_base = NULL;
 
-static void i8042_data_io_handler(uint32_t offset, int len,
-                                  bool is_write) {
+static void i8042_data_io_handler(uint32_t offset, int len, bool is_write) {
   assert(!is_write);
   assert(offset == 0);
   i8042_data_port_base[0] = key_dequeue();
+  printf("%u", i8042_data_port_base[0]);
 }
 
 void init_i8042() {
   i8042_data_port_base = (uint32_t *)new_space(4);
   i8042_data_port_base[0] = NEMU_KEY_NONE;
 #ifdef CONFIG_HAS_PORT_IO
-  add_pio_map("keyboard", CONFIG_I8042_DATA_PORT,
-              i8042_data_port_base, 4, i8042_data_io_handler);
+  add_pio_map("keyboard", CONFIG_I8042_DATA_PORT, i8042_data_port_base, 4,
+              i8042_data_io_handler);
 #else
-  add_mmio_map("keyboard", CONFIG_I8042_DATA_MMIO,
-               i8042_data_port_base, 4, i8042_data_io_handler);
+  add_mmio_map("keyboard", CONFIG_I8042_DATA_MMIO, i8042_data_port_base, 4,
+               i8042_data_io_handler);
 #endif
   IFNDEF(CONFIG_TARGET_AM, init_keymap());
 }
