@@ -58,6 +58,24 @@ int printf(const char *fmt, ...) {
       }
       cnt += 2;
     }
+    if (fmt[cnt] == '%' && fmt[cnt + 1] == 'u') {
+      unsigned tmp = va_arg(ap, unsigned int);
+      int offset = 0;
+      if (tmp == 0) {
+        DO_NEXT('0');
+        cnt += 2;
+        continue;
+      }
+      while (tmp != 0) {
+        c[offset] = (char)(tmp % 10 + '0');
+        tmp /= 10;
+        offset++;
+      }
+      for (int i = offset - 1; i >= 0; i--) {
+        DO_NEXT(c[i]);
+      }
+      cnt += 2;
+    }
     if (fmt[cnt] == '%' && fmt[cnt + 1] == '0' && fmt[cnt + 2] == '2' &&
         fmt[cnt + 3] == 'd') {
       int tmp = va_arg(ap, int);
