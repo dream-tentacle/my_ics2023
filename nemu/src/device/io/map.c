@@ -35,9 +35,8 @@ uint8_t *new_space(int size) {
 static void check_bound(IOMap *map, paddr_t addr) {
   if (map == NULL) {
     Assert(map != NULL,
-           "address (" FMT_PADDR
-           ") is out of bound at pc = " FMT_WORD,
-           addr, cpu.pc);
+           "address (" FMT_PADDR ") is out of bound at pc = " FMT_WORD, addr,
+           cpu.pc);
   } else {
     Assert(addr <= map->high && addr >= map->low,
            "address (" FMT_PADDR ") is out of bound {%s} [" FMT_PADDR
@@ -65,16 +64,16 @@ word_t map_read(paddr_t addr, int len, IOMap *map) {
   check_bound(map, addr);
   paddr_t offset = addr - map->low;
   invoke_callback(map->callback, offset, len,
-                  false); // prepare data to read
+                  false);  // prepare data to read
   word_t ret = host_read(map->space + offset, len);
   if (device_buffer_cnt == 20) {
     for (int i = 1; i < 20; i++) {
       strcpy(device_buffer[i], device_buffer[i + 1]);
     }
-    sprintf(device_buffer[20], "device %s reads", map->name);
+    sprintf(device_buffer[20], "device %s reads %u", map->name, ret);
   } else {
-    sprintf(device_buffer[++device_buffer_cnt], "device %s reads",
-            map->name);
+    sprintf(device_buffer[++device_buffer_cnt], "device %s reads %u", map->name,
+            ret);
   }
   return ret;
 }
@@ -92,7 +91,6 @@ void map_write(paddr_t addr, int len, word_t data, IOMap *map) {
     }
     sprintf(device_buffer[20], "device %s writes", map->name);
   } else {
-    sprintf(device_buffer[++device_buffer_cnt], "device %s writes",
-            map->name);
+    sprintf(device_buffer[++device_buffer_cnt], "device %s writes", map->name);
   }
 }

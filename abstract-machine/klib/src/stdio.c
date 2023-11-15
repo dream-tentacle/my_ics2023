@@ -13,9 +13,8 @@
 // See
 // https://stackoverflow.com/questions/26099745/test-if-preprocessor-symbol-is-defined-inside-macro
 #define CHOOSE2nd(a, b, ...) b
-#define MUX_WITH_COMMA(contain_comma, a, b)                          \
-  CHOOSE2nd(contain_comma a, b)
-#define MUX_MACRO_PROPERTY(p, macro, a, b)                           \
+#define MUX_WITH_COMMA(contain_comma, a, b) CHOOSE2nd(contain_comma a, b)
+#define MUX_MACRO_PROPERTY(p, macro, a, b) \
   MUX_WITH_COMMA(concat(p, macro), a, b)
 // define placeholders for some property
 #define __P_DEF_0 X,
@@ -59,8 +58,8 @@ int printf(const char *fmt, ...) {
       }
       cnt += 2;
     }
-    if (fmt[cnt] == '%' && fmt[cnt + 1] == '0' &&
-        fmt[cnt + 2] == '2' && fmt[cnt + 3] == 'd') {
+    if (fmt[cnt] == '%' && fmt[cnt + 1] == '0' && fmt[cnt + 2] == '2' &&
+        fmt[cnt + 3] == 'd') {
       int tmp = va_arg(ap, int);
       int int_len = 0;
       char int_string[30];
@@ -81,8 +80,7 @@ int printf(const char *fmt, ...) {
         tmp /= 10;
       }
       for (int i = 2; i > int_len; i--) {
-        if (i == 2 && neg_flag)
-          continue;
+        if (i == 2 && neg_flag) continue;
         DO_NEXT('0');
       }
       for (int i = int_len - 1; i >= 0; i--) {
@@ -139,8 +137,26 @@ int sprintf(char *out, const char *fmt, ...) {
       }
       cnt += 2;
     }
-    if (fmt[cnt] == '%' && fmt[cnt + 1] == '0' &&
-        fmt[cnt + 2] == '2' && fmt[cnt + 3] == 'd') {
+    if (fmt[cnt] == '%' && fmt[cnt + 1] == 'u') {
+      unsigned tmp = va_arg(ap, unsigned int);
+      int offset = 0;
+      if (tmp == 0) {
+        DO_NEXT('0');
+        cnt += 2;
+        continue;
+      }
+      while (tmp != 0) {
+        c[offset] = (char)(tmp % 10 + '0');
+        tmp /= 10;
+        offset++;
+      }
+      for (int i = offset - 1; i >= 0; i--) {
+        DO_NEXT(c[i]);
+      }
+      cnt += 2;
+    }
+    if (fmt[cnt] == '%' && fmt[cnt + 1] == '0' && fmt[cnt + 2] == '2' &&
+        fmt[cnt + 3] == 'd') {
       int tmp = va_arg(ap, int);
       int int_len = 0;
       char int_string[30];
@@ -161,8 +177,7 @@ int sprintf(char *out, const char *fmt, ...) {
         tmp /= 10;
       }
       for (int i = 2; i > int_len; i--) {
-        if (i == 2 && neg_flag)
-          continue;
+        if (i == 2 && neg_flag) continue;
         DO_NEXT('0');
       }
       for (int i = int_len - 1; i >= 0; i--) {
