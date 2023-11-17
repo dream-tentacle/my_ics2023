@@ -14,15 +14,9 @@
  ***************************************************************************************/
 
 #include <cpu/difftest.h>
-// #include <cpu/ifetch.h>
+#include <cpu/ifetch.h>
 #include <isa.h>
-#include <memory/vaddr.h>
 #include <utils.h>
-
-inline uint32_t inst_fetch(vaddr_t *pc, int len) {
-  uint32_t inst = vaddr_ifetch(*pc, len);
-  return inst;
-}
 
 void set_nemu_state(int state, vaddr_t pc, int halt_ret) {
   difftest_skip_ref();
