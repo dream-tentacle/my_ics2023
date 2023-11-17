@@ -37,6 +37,7 @@ void *malloc(size_t size) {
     addr = (unsigned char *)heap.start;
   }
   *addr += size;
+  if (addr > (unsigned char *)heap.end) panic("Not enough segment area!\n");
   return (void *)addr;
 #endif
   return NULL;
