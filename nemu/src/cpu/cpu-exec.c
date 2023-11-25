@@ -232,4 +232,5 @@ void cpu_exec(uint64_t n) {
     case NEMU_QUIT:
       statistic();
   }
+  print_jmp_log();
 }
