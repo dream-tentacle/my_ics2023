@@ -221,6 +221,10 @@ void cpu_exec(uint64_t n) {
 
     case NEMU_END:
     case NEMU_ABORT:
+
+#ifdef FTRACE
+      print_jmp_log();
+#endif
       Log("nemu: %s at pc = " FMT_WORD,
           (nemu_state.state == NEMU_ABORT
                ? ANSI_FMT("ABORT", ANSI_FG_RED)
@@ -232,7 +236,4 @@ void cpu_exec(uint64_t n) {
     case NEMU_QUIT:
       statistic();
   }
-#ifdef FTRACE
-  print_jmp_log();
-#endif
 }
