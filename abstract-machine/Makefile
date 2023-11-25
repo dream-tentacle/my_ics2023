@@ -95,6 +95,7 @@ CFLAGS   += -O2 -MMD -Wall -Werror $(INCFLAGS) \
 ifeq ($(FTRACE), y)
 	CFLAGS += -DFTRACE
 endif
+$(info # CFLAGS: $(CFLAGS))
 CXXFLAGS +=  $(CFLAGS) -ffreestanding -fno-rtti -fno-exceptions
 ASFLAGS  += -MMD $(INCFLAGS)
 LDFLAGS  += -z noexecstack
