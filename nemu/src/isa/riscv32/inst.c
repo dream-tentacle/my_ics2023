@@ -218,8 +218,11 @@ static int decode_exec(Decode* s) {
 
   R(0) = 0;  // reset $zero to 0
 
+#ifdef FTRACE
   if (s->snpc != s->dnpc) {
+    call_funct(s->dnpc);
   }
+#endif
 
   return 0;
 }
@@ -229,8 +232,5 @@ int isa_exec_once(Decode* s) {
   last_decode = s;
 #endif
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
-#ifdef FTRACE
-  call_funct(s->dnpc);
-#endif
   return decode_exec(s);
 }
