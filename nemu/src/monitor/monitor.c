@@ -50,7 +50,7 @@ static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static int difftest_port = 1234;
 #ifdef FTRACE
-static char elf_file[100] = {0};
+// static char elf_file[100] = {0};
 #endif
 static long load_img() {
   if (img_file == NULL) {
@@ -101,20 +101,20 @@ static int parse_args(int argc, char *argv[]) {
       case 1:
         img_file = optarg;
 #ifdef FTRACE
-        if (strlen(optarg) > 99) {
-          printf("file name too long\n");
-          printf("please check the file monitor.c\n");
-          assert(0);
-        }
-        strcpy(elf_file, optarg);
-        if (elf_file != NULL) {
-          elf_file[strlen(elf_file) - 1] = 'f';
-          elf_file[strlen(elf_file) - 2] = 'l';
-          elf_file[strlen(elf_file) - 3] = 'e';
-          printf("elf_file: %s\n", elf_file);
-          // check if the file exists
-          elf_process(elf_file);
-        }
+        // if (strlen(optarg) > 99) {
+        //   printf("file name too long\n");
+        //   printf("please check the file monitor.c\n");
+        //   assert(0);
+        // }
+        // strcpy(elf_file, optarg);
+        // if (elf_file != NULL) {
+        //   elf_file[strlen(elf_file) - 1] = 'f';
+        //   elf_file[strlen(elf_file) - 2] = 'l';
+        //   elf_file[strlen(elf_file) - 3] = 'e';
+        //   printf("elf_file: %s\n", elf_file);
+        //   // check if the file exists
+        //   elf_process(elf_file);
+        // }
 #endif
         return 0;
       default:

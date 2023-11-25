@@ -230,7 +230,7 @@ int isa_exec_once(Decode* s) {
 #endif
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
 #ifdef FTRACE
-
+  call_funct(s->dnpc);
 #endif
   return decode_exec(s);
 }

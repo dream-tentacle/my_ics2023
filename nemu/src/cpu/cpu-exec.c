@@ -21,6 +21,9 @@
 #ifdef CONFIG_DEVICE
 #include <device/map.h>
 #endif
+#ifdef FTRACE
+#include <cpu/ftrace.h>
+#endif
 /* The assembly code of instructions executed is only output to the
  * screen when the number of instructions executed is less than this
  * value. This is useful when you use the `si' command. You can modify
@@ -183,6 +186,9 @@ void assert_fail_msg() {
 #endif
 #ifdef CONFIG_DEVICE
   print_device_buffer();
+#endif
+#ifdef FTRACE
+  print_jmp_log();
 #endif
 }
 
