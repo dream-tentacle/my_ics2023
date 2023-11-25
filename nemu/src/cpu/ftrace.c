@@ -21,7 +21,7 @@ static int funct_layer = 0;  // 记录函数嵌套层数
 void call_funct(unsigned int addr) {
   for (int i = 0; i < 10; i++) {
     funct_info *now = &funct_table[i];
-    if (now->addr <= addr && now->addr + now->size >= addr) {
+    if (now->addr == addr) {
       funct_layer++;
       if (jmp_last == NULL) {
         jmp_last = malloc(sizeof(jmp_log));
