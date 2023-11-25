@@ -45,6 +45,7 @@ void sdb_set_batch_mode();
 static char *log_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
+static char elf_file[128] = {0};
 static int difftest_port = 1234;
 
 static long load_img() {
@@ -95,7 +96,13 @@ static int parse_args(int argc, char *argv[]) {
         break;
       case 1:
         img_file = optarg;
-        printf("optarg:%s\n", optarg);
+        strcpy(elf_file, optarg);
+        if (elf_file != NULL) {
+          // elf_file[strlen(elf_file) - 2] = 'f';
+          // elf_file[strlen(elf_file) - 3] = 'l';
+          // elf_file[strlen(elf_file) - 4] = 'e';
+          printf("elf_file: %s\n", elf_file);
+        }
         return 0;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
