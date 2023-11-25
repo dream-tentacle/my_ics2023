@@ -91,7 +91,7 @@ CFLAGS   += -O2 -MMD -Wall -Werror $(INCFLAGS) \
             -DARCH_H=\"$(ARCH_H)\" \
             -fno-asynchronous-unwind-tables -fno-builtin -fno-stack-protector \
             -Wno-main -U_FORTIFY_SOURCE
-# 如果定义了FTRACE，那么就加上-DFTRACE
+# 如果定义了FTRACE，那么就加上宏定义
 ifeq ($(FTRACE), y)
 	CFLAGS += -DFTRACE
 endif
