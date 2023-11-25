@@ -37,7 +37,7 @@ static jmp_log *jmp_head, *jmp_last;
 static int funct_layer = 0;  // 记录函数嵌套层数
 static uint32_t last_pc[1000];
 static int last_pc_cnt = 0;
-static char *return_name = "return";
+static char *return_name = "";
 void call_funct(unsigned int addr, unsigned int pc) {
   if (last_pc_cnt > 0 && last_pc[last_pc_cnt - 1] == addr - 4) {
     last_pc_cnt--;
@@ -96,7 +96,7 @@ void print_jmp_log() {
     if (now->name == return_name) {
       printf("└── ");
     } else
-      printf("├── ");
+      printf("└── ");
     printf("%s %d\n", now->name, now->layer);
     now = now->next;
   }
