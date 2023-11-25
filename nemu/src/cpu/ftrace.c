@@ -61,7 +61,9 @@ void call_funct(unsigned int addr, unsigned int pc) {
   for (int i = 0; i < 10; i++) {
     if (funct_table[i].addr == 0) break;
     funct_info *now = &funct_table[i];
-    if (now->addr == addr) {
+    if (now->addr == addr ||
+        (now->addr <= addr && now->addr + now->size > addr &&
+         (pc < now->addr || pc > now->addr + now->size))) {
       funct_layer++;
       last_pc[last_pc_cnt++] = pc;
       if (jmp_last == NULL) {
