@@ -93,7 +93,7 @@ void print_jmp_log() {
   while (now != NULL) {
     printf("%x ", now->now_pc);
     for (int i = 1; i < now->layer; i++) {
-      printf("|   ");
+      // printf("|   ");
     }
     printf("%s %d\n", now->name, now->layer);
     now = now->next;
