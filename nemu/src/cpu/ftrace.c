@@ -28,14 +28,14 @@ void call_funct(unsigned int addr, unsigned int pc) {
       jmp_last = malloc(sizeof(jmp_log));
       jmp_head = jmp_last;
       jmp_head->name = return_name;
-      jmp_head->layer = funct_layer;
+      jmp_head->layer = funct_layer + 1;
       jmp_head->now_pc = pc;
       jmp_head->next = NULL;
     } else {
       jmp_last->next = malloc(sizeof(jmp_log));
       jmp_last = jmp_last->next;
       jmp_last->name = return_name;
-      jmp_last->layer = funct_layer;
+      jmp_last->layer = funct_layer + 1;
       jmp_last->next = NULL;
     }
     return;
