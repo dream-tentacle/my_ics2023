@@ -4,39 +4,37 @@
 #include <stdlib.h>
 
 /*
-  21: 80000254    32 FUNC    GLOBAL DEFAULT    1 _trm_init
-    22: 80009000     0 NOTYPE  GLOBAL DEFAULT    5 _stack_pointer
-    23: 80000274     0 NOTYPE  GLOBAL DEFAULT    1 _etext
-    24: 80000000     0 NOTYPE  GLOBAL DEFAULT  ABS _pmem_start
-    25: 80000294     0 NOTYPE  GLOBAL DEFAULT    5 _bss_start
-    26: 80000275     0 NOTYPE  GLOBAL DEFAULT    2 edata
-    27: 80000294     4 OBJECT  GLOBAL DEFAULT    5 lvl
-    28: 80009000     0 NOTYPE  GLOBAL DEFAULT    5 _heap_start
-    29: 80001000     0 NOTYPE  GLOBAL DEFAULT    5 _stack_top
-    30: 80000108   168 FUNC    GLOBAL DEFAULT    1 f3
-    31: 80009000     0 NOTYPE  GLOBAL DEFAULT    5 end
-    32: 800001b0    24 FUNC    GLOBAL DEFAULT    1 check
-    33: 80000274     0 NOTYPE  GLOBAL DEFAULT    1 etext
-    34: 800000a4   100 FUNC    GLOBAL DEFAULT    1 f2
-    35: 80000000     0 FUNC    GLOBAL DEFAULT    1 _start
-    36: 00000000     0 NOTYPE  GLOBAL DEFAULT  ABS _entry_offset
-    37: 800001c8   128 FUNC    GLOBAL DEFAULT    1 main
-    38: 80000010    76 FUNC    GLOBAL DEFAULT    1 f0
-    39: 80000275     0 NOTYPE  GLOBAL DEFAULT    2 _data
-    40: 80000278    12 OBJECT  GLOBAL DEFAULT    3 ans
-    41: 80000284    16 OBJECT  GLOBAL DEFAULT    4 func
-    42: 8000005c    72 FUNC    GLOBAL DEFAULT    1 f1
-    43: 80009000     0 NOTYPE  GLOBAL DEFAULT    5 _end
-    44: 80000248    12 FUNC    GLOBAL DEFAULT    1 halt
-    45: 80000298     4 OBJECT  GLOBAL DEFAULT    5 rec
+   10: 80000028     0 NOTYPE  LOCAL  DEFAULT    1 $x
+    11: 80000078     0 NOTYPE  LOCAL  DEFAULT    1 $x
+    12: 00000000     0 FILE    LOCAL  DEFAULT  ABS trm.c
+    13: 8000011c     0 NOTYPE  LOCAL  DEFAULT    1 $x
+    14: 80000128     0 NOTYPE  LOCAL  DEFAULT    1 $x
+    15: 80000148     1 OBJECT  LOCAL  DEFAULT    2 mainargs
+    16: 80000128    32 FUNC    GLOBAL DEFAULT    1 _trm_init
+    17: 80009000     0 NOTYPE  GLOBAL DEFAULT    3 _stack_pointer
+    18: 80000148     0 NOTYPE  GLOBAL DEFAULT    1 _etext
+    19: 80000000     0 NOTYPE  GLOBAL DEFAULT  ABS _pmem_start
+    20: 8000019c     0 NOTYPE  GLOBAL DEFAULT    3 _bss_start
+    21: 80000149     0 NOTYPE  GLOBAL DEFAULT    2 edata
+    22: 80009000     0 NOTYPE  GLOBAL DEFAULT    3 _heap_start
+    23: 80001000     0 NOTYPE  GLOBAL DEFAULT    3 _stack_top
+    24: 80009000     0 NOTYPE  GLOBAL DEFAULT    3 end
+    25: 80000010    24 FUNC    GLOBAL DEFAULT    1 check
+    26: 80000148     0 NOTYPE  GLOBAL DEFAULT    1 etext
+    27: 80000000     0 FUNC    GLOBAL DEFAULT    1 _start
+    28: 00000000     0 NOTYPE  GLOBAL DEFAULT  ABS _entry_offset
+    29: 80000078   164 FUNC    GLOBAL DEFAULT    1 main
+    30: 80000149     0 NOTYPE  GLOBAL DEFAULT    2 _data
+    31: 80009000     0 NOTYPE  GLOBAL DEFAULT    3 _end
+    32: 8000011c    12 FUNC    GLOBAL DEFAULT    1 halt
+    33: 80000028    80 FUNC    GLOBAL DEFAULT    1 bubble_sort
     */
 // 只需要FUNC类型的
+// name, addr, size
 static funct_info funct_table[10] = {
-    {"f0", 0x80000010, 76},    {"f1", 0x8000005c, 72},
-    {"f2", 0x800000a4, 100},   {"f3", 0x80000108, 168},
-    {"check", 0x800001b0, 24}, {"main", 0x800001c8, 128},
-    {"halt", 0x80000248, 12},  {"_trm_init", 0x80000254, 32},
-    {"_start", 0x80000000, 0}};
+    {"_trm_init", 0x80000128, 32}, {"check", 0x80000010, 24},
+    {"_start", 0x80000000, 0},     {"main", 0x80000078, 164},
+    {"halt", 0x8000011c, 12},      {"bubble_sort", 0x80000028, 80}};
 
 static jmp_log *jmp_head, *jmp_last;
 static int funct_layer = 0;  // 记录函数嵌套层数
@@ -64,6 +62,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
     return;
   }
   for (int i = 0; i < 10; i++) {
+    if (funct_table[i].addr == 0) break;
     funct_info *now = &funct_table[i];
     if (now->addr == addr) {
       funct_layer++;
@@ -93,7 +92,7 @@ void print_jmp_log() {
   while (now != NULL) {
     printf("%x ", now->now_pc);
     for (int i = 1; i < now->layer; i++) {
-      // printf("|   ");
+      printf("|   ");
     }
     printf("%s %d\n", now->name, now->layer);
     now = now->next;
