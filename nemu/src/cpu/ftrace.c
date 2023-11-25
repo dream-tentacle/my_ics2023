@@ -66,7 +66,7 @@ void print_jmp_log() {
   jmp_log *now = jmp_head;
   while (now != NULL) {
     for (int i = 1; i < now->layer; i++) {
-      printf(" |");
+      printf(" %c", i == now->layer - 1 ? ' ' : '|');
     }
     printf("%s %d\n", now->name, now->layer);
     now = now->next;
