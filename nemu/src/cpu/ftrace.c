@@ -21,7 +21,7 @@ static uint32_t last_pc[1000];
 static int last_pc_cnt = 0;
 static char *return_name = "return";
 void call_funct(unsigned int addr, unsigned int pc) {
-  if (last_pc_cnt > 0 && last_pc[last_pc_cnt - 1] == pc) {
+  if (last_pc_cnt > 0 && last_pc[last_pc_cnt - 1] == addr - 4) {
     last_pc_cnt--;
     funct_layer--;
     if (jmp_last == NULL) {
@@ -29,6 +29,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
       jmp_head = jmp_last;
       jmp_head->name = return_name;
       jmp_head->layer = funct_layer;
+      jmp_head->now_pc = pc;
       jmp_head->next = NULL;
     } else {
       jmp_last->next = malloc(sizeof(jmp_log));
@@ -49,12 +50,14 @@ void call_funct(unsigned int addr, unsigned int pc) {
         jmp_head = jmp_last;
         jmp_head->name = now->name;
         jmp_head->layer = funct_layer;
+        jmp_head->now_pc = pc;
         jmp_head->next = NULL;
       } else {
         jmp_last->next = malloc(sizeof(jmp_log));
         jmp_last = jmp_last->next;
         jmp_last->name = now->name;
         jmp_last->layer = funct_layer;
+        jmp_last->now_pc = pc;
         jmp_last->next = NULL;
       }
       return;
@@ -65,6 +68,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
 void print_jmp_log() {
   jmp_log *now = jmp_head;
   while (now != NULL) {
+    printf("%x ", now->now_pc);
     for (int i = 1; i < now->layer; i++) {
       printf("| ");
     }
