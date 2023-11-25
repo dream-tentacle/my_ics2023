@@ -94,10 +94,9 @@ void print_jmp_log() {
       printf("│   ");
     }
     if (now->name == return_name) {
-      printf("└── ");
+      printf("└── %s %d\n", now->name, now->layer);
     } else
-      printf("├── ");
-    printf("%s %d\n", now->name, now->layer);
+      printf("├── %d %s\n", now->layer, now->name);
     now = now->next;
   }
 }
