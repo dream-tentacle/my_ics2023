@@ -220,7 +220,7 @@ static int decode_exec(Decode* s) {
 
 #ifdef FTRACE
   if (s->snpc != s->dnpc) {
-    call_funct(s->dnpc);
+    call_funct(s->dnpc, s->snpc);
   }
 #endif
 

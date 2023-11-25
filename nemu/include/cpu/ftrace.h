@@ -11,5 +11,5 @@ typedef struct jmp_log {
   struct jmp_log *next;
 } jmp_log;
 
-void call_funct(unsigned int addr);
+void call_funct(unsigned int addr, unsigned int pc);
 void print_jmp_log();

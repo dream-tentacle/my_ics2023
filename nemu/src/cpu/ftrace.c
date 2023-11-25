@@ -17,12 +17,33 @@ static funct_info funct_table[10] = {{"_trm_init", 0x80000108, 32},
 
 static jmp_log *jmp_head, *jmp_last;
 static int funct_layer = 0;  // 记录函数嵌套层数
-
-void call_funct(unsigned int addr) {
+static uint32_t last_pc[1000];
+static int last_pc_cnt = 0;
+static char *return_name = "return";
+void call_funct(unsigned int addr, unsigned int pc) {
+  if (last_pc_cnt > 0 && last_pc[last_pc_cnt - 1] == pc) {
+    last_pc_cnt--;
+    funct_layer--;
+    if (jmp_last == NULL) {
+      jmp_last = malloc(sizeof(jmp_log));
+      jmp_head = jmp_last;
+      jmp_head->name = return_name;
+      jmp_head->layer = funct_layer;
+      jmp_head->next = NULL;
+    } else {
+      jmp_last->next = malloc(sizeof(jmp_log));
+      jmp_last = jmp_last->next;
+      jmp_last->name = return_name;
+      jmp_last->layer = funct_layer;
+      jmp_last->next = NULL;
+    }
+    return;
+  }
   for (int i = 0; i < 10; i++) {
     funct_info *now = &funct_table[i];
     if (now->addr == addr) {
       funct_layer++;
+      last_pc[last_pc_cnt++] = pc;
       if (jmp_last == NULL) {
         jmp_last = malloc(sizeof(jmp_log));
         jmp_head = jmp_last;
