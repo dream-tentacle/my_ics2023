@@ -105,7 +105,7 @@ static int parse_args(int argc, char *argv[]) {
         if (elf_file != NULL) {
           elf_file[strlen(elf_file) - 1] = 'f';
           elf_file[strlen(elf_file) - 2] = 'l';
-          elf_file[strlen(elf_file) - 3] = '3';
+          elf_file[strlen(elf_file) - 3] = 'e';
           printf("elf_file: %s\n", elf_file);
           // check if the file exists
           FILE *fp = fopen(elf_file, "rb");
