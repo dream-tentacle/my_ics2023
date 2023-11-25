@@ -27,7 +27,6 @@
  * this value as you want.
  */
 #define MAX_INST_TO_PRINT 10
-#define FTRACE
 void init_regex();
 void init_wp_pool();
 

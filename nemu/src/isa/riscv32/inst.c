@@ -18,6 +18,9 @@
 #include <cpu/ifetch.h>
 
 #include "local-include/reg.h"
+#ifdef FTRACE
+#include <cpu/ftrace.h>
+#endif
 
 #define R(i) gpr(i)
 #define Mr vaddr_read
@@ -215,6 +218,9 @@ static int decode_exec(Decode* s) {
 
   R(0) = 0;  // reset $zero to 0
 
+  if (s->snpc != s->dnpc) {
+  }
+
   return 0;
 }
 
@@ -223,5 +229,8 @@ int isa_exec_once(Decode* s) {
   last_decode = s;
 #endif
   s->isa.inst.val = inst_fetch(&s->snpc, 4);
+#ifdef FTRACE
+
+#endif
   return decode_exec(s);
 }
