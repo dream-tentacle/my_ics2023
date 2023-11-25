@@ -91,7 +91,7 @@ void print_jmp_log() {
   while (now != NULL) {
     printf("%x ", now->now_pc);
     for (int i = 1; i < now->layer; i++) {
-      printf("|   ");
+      printf("│   ");
     }
     if (now->name == return_name) {
       printf("└── ");
