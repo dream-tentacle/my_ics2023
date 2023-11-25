@@ -65,6 +65,9 @@ void call_funct(unsigned int addr, unsigned int pc) {
 void print_jmp_log() {
   jmp_log *now = jmp_head;
   while (now != NULL) {
+    for (int i = 1; i <= now->layer; i++) {
+      printf("  ");
+    }
     printf("%s %d\n", now->name, now->layer);
     now = now->next;
   }
