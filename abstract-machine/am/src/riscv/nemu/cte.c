@@ -30,7 +30,6 @@ bool cte_init(Context *(*handler)(Event, Context *)) {
 
   // register event handler
   user_handler = handler;
-  printf("__am_asm_trap = %x\n", &__am_asm_trap);
 
   return true;
 }
