@@ -250,8 +250,8 @@ static int decode_exec(Decode* s) {
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, Zicsr,
           R(rd) = csr_read(imm);
           csr_write(imm, src1));
-  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, N, printf("ecall ");
-          printf("%x", s->pc); isa_raise_intr(1, s->snpc));
+  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, N,
+          s->dnpc = isa_raise_intr(1, s->snpc));
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N,
           NEMUTRAP(s->pc, R(10)));  // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));
