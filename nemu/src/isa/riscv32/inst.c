@@ -263,7 +263,9 @@ static int decode_exec(Decode* s) {
     call_funct(s->dnpc, s->pc);
   }
 #endif
-
+  if (mtvep != 0) {
+    printf("--->mtvep = %x\n", mtvep);
+  }
   return 0;
 }
 
