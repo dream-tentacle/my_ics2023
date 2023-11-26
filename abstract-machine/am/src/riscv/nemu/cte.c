@@ -7,9 +7,6 @@ static Context *(*user_handler)(Event, Context *) = NULL;
 // 这是一个函数指针，指向一个函数，这个函数的返回值是Context*，参数是Event和Context*。
 
 Context *__am_irq_handle(Context *c) {
-  printf("mcause = %d\n", c->mcause);
-  printf("mepc = %d\n", c->mepc);
-  printf("mstatus = %d\n", c->mstatus);
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
