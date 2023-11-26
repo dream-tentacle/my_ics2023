@@ -56,5 +56,5 @@ __attribute__((noinline)) void invalid_inst(vaddr_t thispc) {
          isa_logo);
 
   set_nemu_state(NEMU_ABORT, thispc, -1);
-  Assert(0, "instruction not implemented");
+  Assert(0, "");
 }
