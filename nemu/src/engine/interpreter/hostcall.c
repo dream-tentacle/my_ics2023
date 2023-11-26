@@ -56,5 +56,6 @@ __attribute__((noinline)) void invalid_inst(vaddr_t thispc) {
          isa_logo);
 
   set_nemu_state(NEMU_ABORT, thispc, -1);
-  Assert(0, "invalid opcode(PC = " FMT_WORD "):\n", thispc);
+  extern void assert_fail_msg();
+  assert_fail_msg();
 }
