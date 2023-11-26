@@ -108,7 +108,7 @@ static void decode_operand(Decode* s, int* rd, word_t* src1, word_t* src2,
       break;
   }
 }
-word_t mtvep, mepc, mcause, mstatus;
+word_t mtvep, mepc, mcause, mstatus = 0x1800;
 word_t csr_read(word_t imm) {
   if (imm == 0x305) return mtvep;
   if (imm == 0x341) return mepc;
@@ -271,7 +271,7 @@ static int decode_exec(Decode* s) {
           R(rd) = csr_read(imm);
           if (src1 != 0) csr_mask(imm, src1));
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, N,
-          s->dnpc = isa_raise_intr(1, s->snpc));
+          s->dnpc = isa_raise_intr(R(7), s->snpc));
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N,
           NEMUTRAP(s->pc, R(10)));  // R(10) is $a0
   INSTPAT("0011000 00010 00000 000 00000 11100 11", mret, N,

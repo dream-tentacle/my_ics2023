@@ -15,9 +15,6 @@ Context *__am_irq_handle(Context *c) {
 
     c = user_handler(ev, c);
     assert(c != NULL);
-    printf("c->mepc = %x\n", c->mepc);
-    printf("c->mcause = %x\n", c->mcause);
-    printf("c->mstatus = %x\n", c->mstatus);
   }
 
   return c;
