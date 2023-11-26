@@ -33,6 +33,7 @@ enum {
   TYPE_J,
   TYPE_R,
   TYPE_B,
+  TYPE_Zicsr,
   TYPE_N,  // none
 };
 
@@ -66,7 +67,10 @@ enum {
     *imm = (SEXT(BITS(i, 31, 31), 1) << 12) | (BITS(i, 30, 25) << 5) | \
            (BITS(i, 11, 8) << 1) | (BITS(i, 7, 7) << 11);              \
   } while (0)
-
+#define immZicsr()          \
+  do {                      \
+    *imm = BITS(i, 31, 20); \
+  } while (0)
 static void decode_operand(Decode* s, int* rd, word_t* src1, word_t* src2,
                            word_t* imm, int type) {
   uint32_t i = s->isa.inst.val;
@@ -98,7 +102,39 @@ static void decode_operand(Decode* s, int* rd, word_t* src1, word_t* src2,
       src1R();
       src2R();
       break;
+    case TYPE_Zicsr:
+      immZicsr();
+      src1R();
+      break;
   }
+}
+word_t mtvep, mepc, mcause, mstatus;
+word_t csr_read(word_t imm) {
+  if (imm == 0x305) return mtvep;
+  if (imm == 0x341) return mepc;
+  if (imm == 0x342) return mcause;
+  if (imm == 0x300) return mstatus;
+  Assert(0, "csr_read: not implemented this csr");
+  return 0;
+}
+void csr_write(word_t imm, word_t val) {
+  if (imm == 0x305) {
+    mtvep = val;
+    return;
+  }
+  if (imm == 0x341) {
+    mepc = val;
+    return;
+  }
+  if (imm == 0x342) {
+    mcause = val;
+    return;
+  }
+  if (imm == 0x300) {
+    mstatus = val;
+    return;
+  }
+  Assert(0, "csr_write: not implemented this csr");
 }
 
 static int decode_exec(Decode* s) {
@@ -210,8 +246,10 @@ static int decode_exec(Decode* s) {
   INSTPAT("0000001 ????? ????? 111 ????? 01100 11", remu, R,
           Assert(src2 != 0, "div by zero in riscv32/inst.c");
           R(rd) = src1 % src2);
-
-  INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, N, assert(0));
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, Zicsr,
+          R(rd) = csr_read(imm);
+          csr_write(imm, src1));
+  // INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, N, assert(0));
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N,
           NEMUTRAP(s->pc, R(10)));  // R(10) is $a0
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));
