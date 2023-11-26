@@ -3,8 +3,7 @@
 #include <riscv/riscv.h>
 
 static Context *(*user_handler)(Event, Context *) = NULL;
-// 这是什么意思？
-// 这是一个函数指针，指向一个函数，这个函数的返回值是Context*，参数是Event和Context*。
+// 一个函数指针，指向一个函数，这个函数的返回值是Context*，参数是Event和Context*。
 
 Context *__am_irq_handle(Context *c) {
   printf("mcause: %x\n", c->mcause);
