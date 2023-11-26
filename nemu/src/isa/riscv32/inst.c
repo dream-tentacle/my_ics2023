@@ -117,10 +117,27 @@ word_t csr_read(word_t imm) {
   Assert(0, "csr_read: not implemented this csr");
   return 0;
 }
+void csr_mask(word_t imm, word_t val) {
+  if (imm == 0x305) {
+    mtvep |= val;
+    return;
+  }
+  if (imm == 0x341) {
+    mepc |= val;
+    return;
+  }
+  if (imm == 0x342) {
+    mcause |= val;
+    return;
+  }
+  if (imm == 0x300) {
+    mstatus |= val;
+    return;
+  }
+}
 void csr_write(word_t imm, word_t val) {
   if (imm == 0x305) {
     mtvep = val;
-    printf("mtvep = %x\n", mtvep);
     return;
   }
   if (imm == 0x341) {
@@ -250,6 +267,9 @@ static int decode_exec(Decode* s) {
   INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, Zicsr,
           R(rd) = csr_read(imm);
           csr_write(imm, src1));
+  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs, Zicsr,
+          R(rd) = csr_read(imm);
+          if (src1 != 0) csr_mask(imm, src1));
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, N,
           s->dnpc = isa_raise_intr(1, s->snpc));
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N,
