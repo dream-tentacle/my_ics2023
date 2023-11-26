@@ -1,14 +1,18 @@
 #include <am.h>
-#include <riscv/riscv.h>
 #include <klib.h>
+#include <riscv/riscv.h>
 
-static Context* (*user_handler)(Event, Context*) = NULL;
+static Context *(*user_handler)(Event, Context *) = NULL;
+// 这是什么意思？
+// 这是一个函数指针，指向一个函数，这个函数的返回值是Context*，参数是Event和Context*。
 
-Context* __am_irq_handle(Context *c) {
+Context *__am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
-      default: ev.event = EVENT_ERROR; break;
+      default:
+        ev.event = EVENT_ERROR;
+        break;
     }
 
     c = user_handler(ev, c);
@@ -20,7 +24,7 @@ Context* __am_irq_handle(Context *c) {
 
 extern void __am_asm_trap(void);
 
-bool cte_init(Context*(*handler)(Event, Context*)) {
+bool cte_init(Context *(*handler)(Event, Context *)) {
   // initialize exception entry
   asm volatile("csrw mtvec, %0" : : "r"(__am_asm_trap));
 
@@ -42,9 +46,6 @@ void yield() {
 #endif
 }
 
-bool ienabled() {
-  return false;
-}
+bool ienabled() { return false; }
 
-void iset(bool enable) {
-}
+void iset(bool enable) {}

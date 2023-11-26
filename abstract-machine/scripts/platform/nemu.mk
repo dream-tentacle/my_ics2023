@@ -13,7 +13,8 @@ LDFLAGS   += -T $(AM_HOME)/scripts/linker.ld \
 LDFLAGS   += --gc-sections -e _start
 # 默认情况下，batch参数为"-b"
 batch ?= -b
-NEMUFLAGS += $(batch) -l $(shell dirname $(IMAGE).elf)/nemu-log.txt
+NEMUFLAGS += $(batch)
+NEMUFLAGS += -l $(shell dirname $(IMAGE).elf)/nemu-log.txt
 
 CFLAGS += -DMAINARGS=\"$(mainargs)\"
 CFLAGS += -I$(AM_HOME)/am/src/platform/nemu/include
