@@ -120,6 +120,7 @@ word_t csr_read(word_t imm) {
 void csr_write(word_t imm, word_t val) {
   if (imm == 0x305) {
     mtvep = val;
+    printf("mtvep = %x\n", mtvep);
     return;
   }
   if (imm == 0x341) {
