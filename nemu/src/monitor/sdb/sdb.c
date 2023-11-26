@@ -14,6 +14,7 @@
  ***************************************************************************************/
 
 #include "sdb.h"
+
 #include <cpu/cpu.h>
 #include <isa.h>
 #include <memory/paddr.h>
@@ -58,7 +59,13 @@ static int cmd_q(char *args) {
 static int cmd_si(char *args) {
   if (args == NULL)
     cpu_exec(1);
-  else
+  else if (args[0] == 'p') {
+    args++;
+    int n = atoi(args);
+    for (int i = 0; i < n; i++) {
+      cpu_exec(1);
+    }
+  } else
     cpu_exec(atoi(args));
   return 0;
 }
@@ -90,8 +97,7 @@ static int cmd_x(char *args) {
   arg = strtok(NULL, " ");
   unsigned int start_pos = strtol(arg, NULL, 16);
   printf("start at: 0d%u(=0x%08x)\n", start_pos, start_pos);
-  for (unsigned int i = start_pos; i <= print_len * 4 + start_pos;
-       i += 4) {
+  for (unsigned int i = start_pos; i <= print_len * 4 + start_pos; i += 4) {
     printf("0x%08x\n", paddr_read(i, 4));
   }
   return 0;
@@ -127,8 +133,7 @@ static bool check(char *ex, unsigned int ans) {
 static int cmd_test_calcu(char *args) {
   char file_path[100];
   if (args == NULL)
-    strcpy(file_path,
-           "/home/dreamtouch/ics2023/nemu/tools/gen-expr/input");
+    strcpy(file_path, "/home/dreamtouch/ics2023/nemu/tools/gen-expr/input");
   else
     strcpy(file_path, args);
   FILE *fp = NULL;
@@ -137,14 +142,11 @@ static int cmd_test_calcu(char *args) {
   fp = fopen(file_path, "r");
   size_t len = 0;
   int cor = 0;
-  if (fscanf(fp, "%d", &ans) == EOF)
-    return 0;
+  if (fscanf(fp, "%d", &ans) == EOF) return 0;
   while (getline(&buf, &len, fp) != -1) {
     buf[strlen(buf) - 1] = '\0';
-    if (check(buf, ans))
-      cor++;
-    if (fscanf(fp, "%d", &ans) == EOF)
-      break;
+    if (check(buf, ans)) cor++;
+    if (fscanf(fp, "%d", &ans) == EOF) break;
   }
   fclose(fp);
   printf("%d\n", cor);
@@ -169,8 +171,7 @@ static struct {
   const char *description;
   int (*handler)(char *);
 } cmd_table[] = {
-    {"help", "Display information about all supported commands",
-     cmd_help},
+    {"help", "Display information about all supported commands", cmd_help},
     {"c", "Continue the execution of the program", cmd_c},
     {"q", "Exit NEMU", cmd_q},
     {"si",
@@ -178,13 +179,10 @@ static struct {
      "will be set "
      "to 1",
      cmd_si},
-    {"info", "Format: 'info N'. Print information. N must be r or w",
-     cmd_info},
-    {"x", "Format: 'x N EXPR'. Get N memories starting at EXPR",
-     cmd_x},
+    {"info", "Format: 'info N'. Print information. N must be r or w", cmd_info},
+    {"x", "Format: 'x N EXPR'. Get N memories starting at EXPR", cmd_x},
     {"p", "Format: 'p EXPR'. Calculate the expression", cmd_p},
-    {"test_calcu",
-     "Test the function of calcu. Can modify path if needed",
+    {"test_calcu", "Test the function of calcu. Can modify path if needed",
      cmd_test_calcu},
     {"w", "Format: 'w EXPR'. Create a watchpoint of EXPR", cmd_w},
     /* TODO: Add more commands */
@@ -201,14 +199,12 @@ static int cmd_help(char *args) {
   if (arg == NULL) {
     /* no argument given */
     for (i = 0; i < NR_CMD; i++) {
-      printf("%s - %s\n", cmd_table[i].name,
-             cmd_table[i].description);
+      printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
     }
   } else {
     for (i = 0; i < NR_CMD; i++) {
       if (strcmp(arg, cmd_table[i].name) == 0) {
-        printf("%s - %s\n", cmd_table[i].name,
-               cmd_table[i].description);
+        printf("%s - %s\n", cmd_table[i].name, cmd_table[i].description);
         return 0;
       }
     }
