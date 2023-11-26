@@ -263,9 +263,7 @@ static int decode_exec(Decode* s) {
     call_funct(s->dnpc, s->pc);
   }
 #endif
-  if (mepc != 0) {
-    printf("--->mepc = %x\n", mepc);
-  }
+
   return 0;
 }
 
