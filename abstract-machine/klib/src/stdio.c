@@ -83,7 +83,7 @@ int printf(const char *fmt, ...) {
         DO_NEXT(c[i]);
       }
       cnt += 2;
-    } else if (fmt[cnt] == '%' && fmt[cnt + 1] == 'u' && fmt[cnt + 2] == 'x') {
+    } else if (fmt[cnt] == '%' && fmt[cnt + 1] == 'p') {
       unsigned int tmp = va_arg(ap, int);
       int offset = 0;
       // DO_NEXT('0');
