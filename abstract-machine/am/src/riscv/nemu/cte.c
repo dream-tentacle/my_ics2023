@@ -21,6 +21,7 @@ Context *__am_irq_handle(Context *c) {
       } else if (c->GPR1 == 0) {
         ev.event = EVENT_SYSCALL;
       } else {
+        printf("Unhandled GPR1 = %d\n", c->GPR1);
         ev.event = EVENT_ERROR;
       }
       break;
