@@ -14,6 +14,7 @@ Context *__am_irq_handle(Context *c) {
   // }
   if (user_handler) {
     Event ev = {0};
+    printf("c->GPR1: %x\n", c->GPR1);
     switch (c->mcause) {
     default:
       if (c->GPR1 == 8) {
