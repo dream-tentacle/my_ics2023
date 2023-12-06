@@ -18,10 +18,11 @@ Context *__am_irq_handle(Context *c) {
     case 0xb:
       if (c->GPR1 == -1) {
         ev.event = EVENT_YIELD;
+        break;
       } else if (c->GPR1 == 1) {
         ev.event = EVENT_SYSCALL;
+        break;
       }
-      break;
     default:
       printf("Unhandled GPR1 = %d\n", c->GPR1);
       ev.event = EVENT_ERROR;
