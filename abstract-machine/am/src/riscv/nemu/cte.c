@@ -15,15 +15,17 @@ Context *__am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
-    default:
+    case 0xb:
       if (c->GPR1 == -1) {
         ev.event = EVENT_YIELD;
       } else if (c->GPR1 == 1) {
         ev.event = EVENT_SYSCALL;
-      } else {
-        printf("Unhandled GPR1 = %d\n", c->GPR1);
-        ev.event = EVENT_ERROR;
       }
+      break;
+    default:
+      printf("Unhandled GPR1 = %d\n", c->GPR1);
+      ev.event = EVENT_ERROR;
+
       break;
     }
 

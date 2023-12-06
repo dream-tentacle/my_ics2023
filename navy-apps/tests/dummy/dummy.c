@@ -8,6 +8,6 @@
 extern int _syscall_(int, uintptr_t, uintptr_t, uintptr_t);
 
 int main() {
-  int a = _syscall_(3, 0, 0, 0);
+  int a = _syscall_(SYS_yield, 0, 0, 0);
   return a;
 }
