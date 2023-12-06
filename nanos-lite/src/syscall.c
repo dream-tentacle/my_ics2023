@@ -12,6 +12,9 @@ void do_syscall(Context *c) {
     sys_yield();
     c->GPRx = 0;
     break;
+  case 3:
+    printf("3\n");
+    break;
   default:
     panic("Unhandled syscall ID = %d", a[0]);
   }
