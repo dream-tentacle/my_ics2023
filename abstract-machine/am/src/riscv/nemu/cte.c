@@ -18,6 +18,8 @@ Context *__am_irq_handle(Context *c) {
     default:
       if (c->GPR1 == -1) {
         ev.event = EVENT_YIELD;
+      } else if (c->GPR1 == 0) {
+        ev.event = EVENT_SYSCALL;
       } else {
         ev.event = EVENT_ERROR;
       }
