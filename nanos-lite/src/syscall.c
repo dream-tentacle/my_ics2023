@@ -10,7 +10,9 @@ void do_syscall(Context *c) {
   switch (a[0]) {
   case SYS_yield:
     sys_yield();
-    c->GPRx = 0;
+    for (int i = 0; i < 31; i++) {
+      c->gpr[i] = 66;
+    }
     break;
   case 3:
     printf("3\n");
