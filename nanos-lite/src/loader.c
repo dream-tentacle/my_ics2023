@@ -12,9 +12,9 @@
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   // assert(*(uint32_t *)elf->e_ident == 0x464c457f);
-  ramdisk_read((void *)0x83000000, 0, 0x04d4c);
-  ramdisk_read((void *)0x83005000, 0x005000, 0x00898);
-  memset((void *)(0x83005000 + 0x00898), 0, 0x008d4);
+  ramdisk_read((void *)0x83000000, 0, 0x0599f);
+  ramdisk_read((void *)0x83005000, 0x006000, 0x00898);
+  memset((void *)(0x83006000 + 0x00898), 0, 0x008d4);
   return 0x830000b4;
 }
 
