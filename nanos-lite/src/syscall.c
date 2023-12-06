@@ -1,7 +1,7 @@
 #include <common.h>
 #include "syscall.h"
 
-void _yield() { yield(); }
+void sys_yield() { yield(); }
 
 void do_syscall(Context *c) {
   uintptr_t a[4];
@@ -9,7 +9,7 @@ void do_syscall(Context *c) {
 
   switch (a[0]) {
   case SYS_yield:
-    _yield();
+    sys_yield();
     c->GPRx = 0;
     break;
   default:
