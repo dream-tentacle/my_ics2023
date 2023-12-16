@@ -6,13 +6,14 @@ void sys_yield() { yield(); }
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
-
   switch (a[0]) {
   case SYS_yield:
+    printf("sys_yield\n");
     sys_yield();
     c->GPRx = 0;
     break;
   case SYS_exit:
+    printf("sys_exit\n");
     halt(0);
     break;
   default:
