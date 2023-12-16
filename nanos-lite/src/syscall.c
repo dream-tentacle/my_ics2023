@@ -2,6 +2,15 @@
 #include "syscall.h"
 
 void sys_yield() { yield(); }
+void sys_exit(int code) { halt(code); }
+void sys_write(int fd, void *buf, size_t count) {
+  if (fd == 1 || fd == 2) {
+    char *str = (char *)buf;
+    for (int i = 0; i < count; i++) {
+      putch(str[i]);
+    }
+  }
+}
 
 void do_syscall(Context *c) {
   uintptr_t a[4];
@@ -14,7 +23,10 @@ void do_syscall(Context *c) {
     break;
   case SYS_exit:
     printf("sys_exit\n");
-    halt(0);
+    sys_exit(c->GPR2);
+    break;
+  case SYS_write:
+    sys_write(c->GPR2, (void *)c->GPR3, c->GPR4);
     break;
   default:
     panic("Unhandled syscall ID = %d", a[0]);
