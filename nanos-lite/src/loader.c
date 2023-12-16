@@ -11,11 +11,24 @@
 #endif
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
-  // assert(*(uint32_t *)elf->e_ident == 0x464c457f);
-  ramdisk_read((void *)0x83000000, 0, 0x04d4c);
-  ramdisk_read((void *)0x83005000, 0x005000, 0x00898);
-  memset((void *)(0x83005000 + 0x00898), 0, 0x008d4);
-  return 0x830000b4;
+  Elf_Ehdr elf_ehdr;
+  ramdisk_read(&elf_ehdr, 0, sizeof(Elf_Ehdr));
+  // 模数检查
+  assert((*(uint32_t *)elf_ehdr.e_ident == 0x464c457f));
+  Elf_Phdr elf_phdr;
+  for (int i = 0; i < elf_ehdr.e_phnum; i++) {
+    ramdisk_read(&elf_phdr, elf_ehdr.e_phoff + sizeof(Elf_Phdr) * i,
+                 sizeof(Elf_Phdr));
+    if (elf_phdr.p_type == 1) {
+      // 从ramdisk中读取数据
+      ramdisk_read((void *)elf_phdr.p_vaddr, elf_phdr.p_offset,
+                   elf_phdr.p_memsz);
+      // 将未初始化的数据置为0
+      memset((void *)(elf_phdr.p_vaddr + elf_phdr.p_filesz), 0,
+             elf_phdr.p_memsz - elf_phdr.p_filesz);
+    }
+  }
+  return elf_ehdr.e_entry;
 }
 
 void naive_uload(PCB *pcb, const char *filename) {
