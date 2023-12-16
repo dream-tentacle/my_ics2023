@@ -3,13 +3,15 @@
 
 void sys_yield() { yield(); }
 void sys_exit(int code) { halt(code); }
-void sys_write(int fd, void *buf, size_t count) {
+int sys_write(int fd, void *buf, size_t count) {
   if (fd == 1 || fd == 2) {
     char *str = (char *)buf;
     for (int i = 0; i < count; i++) {
       putch(str[i]);
     }
+    return count;
   }
+  return -1;
 }
 
 void do_syscall(Context *c) {
@@ -26,8 +28,7 @@ void do_syscall(Context *c) {
     sys_exit(c->GPR2);
     break;
   case SYS_write:
-    sys_write(c->GPR2, (void *)c->GPR3, c->GPR4);
-    c->GPRx = c->GPR4;
+    c->GPRx = sys_write(c->GPR2, (void *)c->GPR3, c->GPR4);
     printf("sys_write, return %d\n", c->GPRx);
     break;
   default:
