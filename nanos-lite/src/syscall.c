@@ -59,8 +59,8 @@ void do_syscall(Context *c) {
     strace("sys_lseek, lseek fd %d, return %d\n", c->GPR2, c->GPRx);
     break;
   case SYS_open:
-    c->GPRx = sys_open((const char *)c->GPR2, c->GPR3, c->GPR4);
     char *path = (char *)c->GPR2;
+    c->GPRx = sys_open((const char *)c->GPR2, c->GPR3, c->GPR4);
     strace("sys_open, open file %s, return %d\n", path, c->GPRx);
     break;
   default:
