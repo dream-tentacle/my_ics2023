@@ -60,7 +60,8 @@ void do_syscall(Context *c) {
     break;
   case SYS_open:
     c->GPRx = sys_open((const char *)c->GPR2, c->GPR3, c->GPR4);
-    strace("sys_open, return %d\n", c->GPRx);
+    strace("sys_open, open file %s, return %d\n", (const char *)(c->GPR2),
+           c->GPRx);
     break;
   default:
     panic("Unhandled syscall ID = %d", a[0]);
