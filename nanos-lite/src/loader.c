@@ -19,6 +19,8 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   assert((*(uint32_t *)elf_ehdr.e_ident == 0x464c457f));
   Elf_Phdr elf_phdr[elf_ehdr.e_phnum];
   printf("elf_ehdr.e_phnum = %d\n", elf_ehdr.e_phnum);
+  fs_lseek(fd, elf_ehdr.e_phoff, SEEK_SET);
+  fs_read(fd, elf_phdr, sizeof(Elf_Phdr) * elf_ehdr.e_phnum);
   for (int i = 0; i < elf_ehdr.e_phnum; i++) {
     printf("------------------\n");
     printf("Type = %d\n", elf_phdr[i].p_type);
