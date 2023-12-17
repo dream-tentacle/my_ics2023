@@ -66,8 +66,10 @@ int fs_read(int fd, void *buf, size_t count) {
   if (fd != 0) {
     if (file_table[fd].open_offset + count > file_table[fd].size)
       panic("fs_read: file_table[fd].open_offset + count = %d, "
-            "file_table[fd].size = %d\n",
-            file_table[fd].open_offset + count, file_table[fd].size);
+            "file_table[fd].size = %d, "
+            "fd = %d, count = %d\n",
+            file_table[fd].open_offset + count, file_table[fd].size,
+            file_table[fd].open_offset, count);
     ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset,
                  count);
     file_table[fd].open_offset += count;

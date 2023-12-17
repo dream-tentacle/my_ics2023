@@ -2,7 +2,6 @@
 #include "syscall.h"
 #include "fs.h"
 #include "ramdisk.h"
-
 void sys_yield() { yield(); }
 void sys_exit(int code) { halt(code); }
 int sys_open(const char *path, int flags, int mode) {
@@ -38,14 +37,12 @@ void do_syscall(Context *c) {
     sys_exit(c->GPR2);
     break;
   case SYS_write:
-    strace("sys_write, write to fd %d, offset %p, count %d, ", c->GPR2, c->GPR3,
-           c->GPR4);
+    strace("sys_write, write to fd %d, count %d, ", c->GPR2, c->GPR4);
     c->GPRx = sys_write(c->GPR2, (void *)c->GPR3, c->GPR4);
     strace("return %d\n", c->GPRx);
     break;
   case SYS_read:
-    strace("sys_read, read from fd %d, offset %p, count %d, ", c->GPR2, c->GPR3,
-           c->GPR4);
+    strace("sys_read, read from fd %d, count %d, ", c->GPR2, c->GPR4);
     c->GPRx = sys_read(c->GPR2, (void *)c->GPR3, c->GPR4);
     strace("return %d\n", c->GPRx);
     break;
