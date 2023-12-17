@@ -40,6 +40,7 @@ int fs_open(const char *path, int flags, int mode) {
   int len = sizeof(file_table) / sizeof(Finfo);
   for (int i = 3; i < len; i++) {
     if (strcmp(file_table[i].name, path) == 0) {
+      printf("fs_open: file name: \"%s\" found!\n", path);
       file_table[i].open_offset = 0;
       return i;
     }
