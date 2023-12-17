@@ -49,7 +49,7 @@ int fs_open(const char *path, int flags, int mode) {
 int fs_write(int fd, void *buf, size_t count) {
   if (fd == 1 || fd == 2) {
     char *str = (char *)buf;
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < 10; i++) {
       putch(str[i]);
     }
     return count;
