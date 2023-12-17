@@ -46,7 +46,7 @@ void do_syscall(Context *c) {
   case SYS_read:
     fd = c->GPR2;
     c->GPRx = sys_read(c->GPR2, (void *)c->GPR3, c->GPR4);
-    strace("sys_read, read from fd %d, offset %d, count %d, return %d\n", fd,
+    strace("sys_read, read from fd %d, offset %p, count %d, return %d\n", fd,
            c->GPR3, c->GPR4, c->GPRx);
     break;
   case SYS_brk:
