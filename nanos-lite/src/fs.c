@@ -73,6 +73,8 @@ int fs_read(int fd, void *buf, size_t count) {
   return -1;
 }
 int fs_lseek(int fd, size_t offset, int whence) {
+  if (fd <= 2)
+    panic("fd = %d in fs_lseek!\n", fd);
   if (whence == 0) {
     file_table[fd].open_offset = offset;
   } else if (whence == 1) {
