@@ -1,6 +1,7 @@
 #include <proc.h>
 #include <elf.h>
 #include <ramdisk.h>
+#include "fs.h"
 
 #ifdef __LP64__
 #define Elf_Ehdr Elf64_Ehdr
@@ -12,20 +13,19 @@
 
 static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr elf_ehdr;
-  ramdisk_read(&elf_ehdr, 0, sizeof(Elf_Ehdr));
+  int fd = fs_open(filename, 0, 0);
+  fs_read(fd, &elf_ehdr, sizeof(Elf_Ehdr));
   // 模数检查
   assert((*(uint32_t *)elf_ehdr.e_ident == 0x464c457f));
-  Elf_Phdr elf_phdr;
+  Elf_Phdr elf_phdr[elf_ehdr.e_phnum];
   for (int i = 0; i < elf_ehdr.e_phnum; i++) {
-    ramdisk_read(&elf_phdr, elf_ehdr.e_phoff + sizeof(Elf_Phdr) * i,
-                 sizeof(Elf_Phdr));
-    if (elf_phdr.p_type == 1) {
+    if (elf_phdr[i].p_type == 1) {
       // 从ramdisk中读取数据
-      ramdisk_read((void *)elf_phdr.p_vaddr, elf_phdr.p_offset,
-                   elf_phdr.p_memsz);
+      fs_lseek(fd, elf_phdr[i].p_offset, SEEK_SET);
+      fs_read(fd, (void *)elf_phdr[i].p_vaddr, elf_phdr[i].p_memsz);
       // 将未初始化的数据置为0
-      memset((void *)(elf_phdr.p_vaddr + elf_phdr.p_filesz), 0,
-             elf_phdr.p_memsz - elf_phdr.p_filesz);
+      memset((void *)(elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz), 0,
+             elf_phdr[i].p_memsz - elf_phdr[i].p_filesz);
     }
   }
   return elf_ehdr.e_entry;
