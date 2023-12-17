@@ -20,6 +20,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Phdr elf_phdr[elf_ehdr.e_phnum];
   printf("elf_ehdr.e_phnum = %d\n", elf_ehdr.e_phnum);
   for (int i = 0; i < elf_ehdr.e_phnum; i++) {
+    printf("------------------\n");
     printf("Type = %d\n", elf_phdr[i].p_type);
     printf("Offset = %d\n", elf_phdr[i].p_offset);
     printf("Vaddr = %d\n", elf_phdr[i].p_vaddr);
@@ -27,6 +28,7 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
     printf("Filesz = %d\n", elf_phdr[i].p_filesz);
     printf("Memsz = %d\n", elf_phdr[i].p_memsz);
     printf("Flags = %d\n", elf_phdr[i].p_flags);
+    printf("------------------\n");
     if (elf_phdr[i].p_type == 1) {
       // 从ramdisk中读取数据
       fs_lseek(fd, elf_phdr[i].p_offset, SEEK_SET);
