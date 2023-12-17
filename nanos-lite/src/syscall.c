@@ -18,7 +18,7 @@ int sys_lseek(int fd, size_t offset, int whence) {
   return fs_lseek(fd, offset, whence);
 }
 void sys_brk(int addr) {}
-#define STRACE
+// #define STRACE
 #ifdef STRACE
 #define strace printf
 #else
