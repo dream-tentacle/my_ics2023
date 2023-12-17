@@ -40,7 +40,6 @@ int fs_open(const char *path, int flags, int mode) {
   int len = sizeof(file_table) / sizeof(Finfo);
   for (int i = 3; i < len; i++) {
     if (strcmp(file_table[i].name, path) == 0) {
-      printf("fs_open: file name: \"%s\" found!\n", path);
       file_table[i].open_offset = 0;
       return i;
     }
@@ -74,8 +73,10 @@ int fs_read(int fd, void *buf, size_t count) {
   return -1;
 }
 int fs_lseek(int fd, size_t offset, int whence) {
-  if (fd <= 2)
-    panic("fd = %d in fs_lseek!\n", fd);
+  if (fd <= 2) {
+    printf("fd = %d in fs_lseek!\n", fd);
+    return 0;
+  }
   if (whence == 0) {
     file_table[fd].open_offset = offset;
   } else if (whence == 1) {
