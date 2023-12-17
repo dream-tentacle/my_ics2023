@@ -29,7 +29,7 @@ void do_syscall(Context *c) {
     break;
   case SYS_write:
     printf("sys_write, return %d\n", c->GPRx);
-    c->GPRx = sys_write(c->GPR2, (void *)c->GPR3, 60);
+    c->GPRx = sys_write(c->GPR2, (void *)c->GPR3, c->GPR4);
     while (1)
       ;
     break;
