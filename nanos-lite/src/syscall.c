@@ -28,8 +28,8 @@ void do_syscall(Context *c) {
     sys_exit(c->GPR2);
     break;
   case SYS_write:
-    c->GPRx = sys_write(c->GPR2, (void *)c->GPR3, 60);
     printf("sys_write, return %d\n", c->GPRx);
+    c->GPRx = sys_write(c->GPR2, (void *)c->GPR3, 60);
     while (1)
       ;
     break;
