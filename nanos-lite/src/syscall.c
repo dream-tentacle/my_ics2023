@@ -15,6 +15,7 @@ int sys_read(int fd, void *buf, size_t count) {
   return fs_read(fd, buf, count);
 }
 int sys_lseek(int fd, size_t offset, int whence) {
+  printf("fd = %d", fd);
   return fs_lseek(fd, offset, whence);
 }
 void sys_brk(int addr) {}
