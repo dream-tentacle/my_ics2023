@@ -49,7 +49,6 @@ int fs_open(const char *path, int flags, int mode) {
 int fs_write(int fd, void *buf, size_t count) {
   if (fd == 1 || fd == 2) {
     char *str = (char *)buf;
-    printf("%s\n", str);
     for (int i = 0; i < count; i++) {
       putch(str[i]);
     }

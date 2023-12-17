@@ -56,7 +56,8 @@ void do_syscall(Context *c) {
     break;
   case SYS_lseek:
     c->GPRx = sys_lseek(c->GPR2, c->GPR3, c->GPR4);
-    strace("sys_lseek, lseek fd %d, return %d\n", c->GPR2, c->GPRx);
+    strace("sys_lseek, lseek fd %d, offset %d, whence %d, return %d\n", c->GPR2,
+           c->GPR3, c->GPR4, c->GPRx);
     break;
   case SYS_open:
     char *path = (char *)c->GPR2;
