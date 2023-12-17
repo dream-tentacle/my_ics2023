@@ -13,7 +13,7 @@ int sys_write(int fd, void *buf, size_t count) {
   }
   return -1;
 }
-
+void sys_brk(int addr) {}
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
@@ -30,8 +30,11 @@ void do_syscall(Context *c) {
   case SYS_write:
     printf("sys_write, return %d\n", c->GPR4);
     c->GPRx = sys_write(c->GPR2, (void *)c->GPR3, c->GPR4);
-    while (1)
-      ;
+    break;
+  case SYS_brk:
+    printf("sys_brk, return 0\n");
+    sys_brk(c->GPR2);
+    c->GPRx = 0; // 以后PA4动态申请内存时还会调整
     break;
   default:
     panic("Unhandled syscall ID = %d", a[0]);
