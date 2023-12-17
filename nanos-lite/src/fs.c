@@ -64,7 +64,10 @@ int fs_write(int fd, void *buf, size_t count) {
 }
 int fs_read(int fd, void *buf, size_t count) {
   if (fd != 0) {
-    assert(file_table[fd].open_offset + count <= file_table[fd].size);
+    if (file_table[fd].open_offset + count <= file_table[fd].size)
+      panic("fs_read: file_table[fd].open_offset + count = %d, "
+            "file_table[fd].size = %d\n",
+            file_table[fd].open_offset + count, file_table[fd].size);
     ramdisk_read(buf, file_table[fd].disk_offset + file_table[fd].open_offset,
                  count);
     file_table[fd].open_offset += count;
