@@ -34,7 +34,7 @@ void do_syscall(Context *c) {
     strace("sys_yield, return 0\n");
     break;
   case SYS_exit:
-    strace("sys_exit\n");
+    strace("sys_exit, return %d\n", c->GPR2);
     sys_exit(c->GPR2);
     break;
   case SYS_write:
