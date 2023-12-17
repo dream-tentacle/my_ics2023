@@ -27,6 +27,7 @@ void sys_brk(int addr) {}
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
+  int fd;
   switch (a[0]) {
   case SYS_yield:
     sys_yield();
@@ -38,12 +39,14 @@ void do_syscall(Context *c) {
     sys_exit(c->GPR2);
     break;
   case SYS_write:
+    fd = c->GPR2;
     c->GPRx = sys_write(c->GPR2, (void *)c->GPR3, c->GPR4);
-    strace("sys_write, write to fd %d, return %d\n", c->GPR2, c->GPRx);
+    strace("sys_write, write to fd %d, return %d\n", fd, c->GPRx);
     break;
   case SYS_read:
+    fd = c->GPR2;
     c->GPRx = sys_read(c->GPR2, (void *)c->GPR3, c->GPR4);
-    strace("sys_read, read from fd %d, return %d\n", c->GPR2, c->GPRx);
+    strace("sys_read, read from fd %d, return %d\n", fd, c->GPRx);
     break;
   case SYS_brk:
     sys_brk(c->GPR2);
