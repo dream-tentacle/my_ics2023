@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <assert.h>
 
+extern int _lseek(int fd, int offset, int whence);
+
 int main() {
   FILE *fp = fopen("/share/files/num", "r+");
   assert(fp);
-  fseek(fp, 0, SEEK_END);
-  while (1)
-    ;
+  _lseek(20, 0, SEEK_END);
   long size = ftell(fp);
   assert(size == 5000);
 
