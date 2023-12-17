@@ -39,11 +39,11 @@ void do_syscall(Context *c) {
     break;
   case SYS_write:
     c->GPRx = sys_write(c->GPR2, (void *)c->GPR3, c->GPR4);
-    strace("sys_write, return %d\n", c->GPRx);
+    strace("sys_write, write to fd %d, return %d\n", c->GPR2, c->GPRx);
     break;
   case SYS_read:
     c->GPRx = sys_read(c->GPR2, (void *)c->GPR3, c->GPR4);
-    strace("sys_read, return %d\n", c->GPRx);
+    strace("sys_read, read from fd %d, return %d\n", c->GPR2, c->GPRx);
     break;
   case SYS_brk:
     sys_brk(c->GPR2);
@@ -52,15 +52,16 @@ void do_syscall(Context *c) {
     break;
   case SYS_close:
     c->GPRx = 0;
-    strace("sys_close, return 0\n");
+    strace("sys_close, close fd %d, return 0\n", c->GPR2);
     break;
   case SYS_lseek:
     c->GPRx = sys_lseek(c->GPR2, c->GPR3, c->GPR4);
-    strace("sys_lseek, return %d\n", c->GPRx);
+    strace("sys_lseek, lseek fd %d, return %d\n", c->GPR2, c->GPRx);
     break;
   case SYS_open:
     c->GPRx = sys_open((const char *)c->GPR2, c->GPR3, c->GPR4);
-    strace("sys_open, return %d\n", c->GPRx);
+    strace("sys_open, open file %s, return %d\n", (const char *)c->GPR2,
+           c->GPRx);
     break;
   default:
     panic("Unhandled syscall ID = %d", a[0]);
