@@ -18,7 +18,6 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   // 模数检查
   assert((*(uint32_t *)elf_ehdr.e_ident == 0x464c457f));
   Elf_Phdr elf_phdr[elf_ehdr.e_phnum];
-  printf("elf_ehdr.e_phnum = %d\n", elf_ehdr.e_phnum);
   for (int i = 0; i < elf_ehdr.e_phnum; i++) {
     if (elf_phdr[i].p_type == 1) {
       // 从ramdisk中读取数据
