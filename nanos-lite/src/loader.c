@@ -18,18 +18,18 @@ static uintptr_t loader(PCB *pcb, const char *filename) {
   // 模数检查
   assert((*(uint32_t *)elf_ehdr.e_ident == 0x464c457f));
   Elf_Phdr elf_phdr[elf_ehdr.e_phnum];
-  printf("elf_ehdr.e_phnum = %d\n", elf_ehdr.e_phnum);
+  printf("elf_ehdr.e_phnum = %x\n", elf_ehdr.e_phnum);
   fs_lseek(fd, elf_ehdr.e_phoff, SEEK_SET);
   fs_read(fd, elf_phdr, sizeof(Elf_Phdr) * elf_ehdr.e_phnum);
   for (int i = 0; i < elf_ehdr.e_phnum; i++) {
     printf("------------------\n");
-    printf("Type = %d\n", elf_phdr[i].p_type);
-    printf("Offset = %d\n", elf_phdr[i].p_offset);
-    printf("Vaddr = %d\n", elf_phdr[i].p_vaddr);
-    printf("Physaddr = %d\n", elf_phdr[i].p_paddr);
-    printf("Filesz = %d\n", elf_phdr[i].p_filesz);
-    printf("Memsz = %d\n", elf_phdr[i].p_memsz);
-    printf("Flags = %d\n", elf_phdr[i].p_flags);
+    printf("Type = %x\n", elf_phdr[i].p_type);
+    printf("Offset = %x\n", elf_phdr[i].p_offset);
+    printf("Vaddr = %x\n", elf_phdr[i].p_vaddr);
+    printf("Physaddr = %x\n", elf_phdr[i].p_paddr);
+    printf("Filesz = %x\n", elf_phdr[i].p_filesz);
+    printf("Memsz = %x\n", elf_phdr[i].p_memsz);
+    printf("Flags = %x\n", elf_phdr[i].p_flags);
     printf("------------------\n");
     if (elf_phdr[i].p_type == 1) {
       // 从ramdisk中读取数据
