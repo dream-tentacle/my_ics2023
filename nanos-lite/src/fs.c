@@ -78,7 +78,7 @@ int fs_lseek(int fd, size_t offset, int whence) {
   } else if (whence == 1) {
     file_table[fd].open_offset += offset;
   } else if (whence == 2) {
-    file_table[fd].open_offset = file_table[fd].size += offset;
+    file_table[fd].open_offset = file_table[fd].size + offset;
   } else {
     panic("wrong whence = %d in fs_lseek!\n", whence);
   }
