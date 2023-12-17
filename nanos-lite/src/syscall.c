@@ -9,6 +9,8 @@ int sys_write(int fd, void *buf, size_t count) {
     for (int i = 0; i < count; i++) {
       putch(str[i]);
     }
+    while (1)
+      ;
     return count;
   }
   return -1;
