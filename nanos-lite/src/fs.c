@@ -82,6 +82,7 @@ int fs_lseek(int fd, size_t offset, int whence) {
   } else {
     panic("wrong whence = %d in fs_lseek!\n", whence);
   }
-  printf("fs_lseek: fd = %d, offset = %d, whence = %d\n", fd, offset, whence);
+  printf("fs_lseek: fd = %d, offset = %d, whence = %d\n", fd,
+         file_table[fd].open_offset, whence);
   return file_table[fd].open_offset;
 }
