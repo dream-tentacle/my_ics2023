@@ -20,7 +20,7 @@ Context *__am_irq_handle(Context *c) {
         ev.event = EVENT_YIELD;
         break;
       } else if (c->GPR1 == 1 || c->GPR1 == 0 || c->GPR1 == 4 || c->GPR1 == 9 ||
-                 c->GPR1 == 3 || c->GPR1 == 7 || c->GPR1 == 2) {
+                 c->GPR1 == 3 || c->GPR1 == 7 || c->GPR1 == 2 || c->GPR1 == 8) {
         ev.event = EVENT_SYSCALL;
         break;
       }
