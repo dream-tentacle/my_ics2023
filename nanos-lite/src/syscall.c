@@ -23,6 +23,7 @@ void sys_brk(int addr) {}
 #else
 #define strace(...)
 #endif
+extern Finfo file_table[];
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
@@ -37,12 +38,14 @@ void do_syscall(Context *c) {
     sys_exit(c->GPR2);
     break;
   case SYS_write:
-    strace("sys_write, write to fd %d, count %d, ", c->GPR2, c->GPR4);
+    strace("sys_write, write %s, return %d\n", file_table[c->GPR2].name,
+           c->GPRx);
     c->GPRx = sys_write(c->GPR2, (void *)c->GPR3, c->GPR4);
     strace("return %d\n", c->GPRx);
     break;
   case SYS_read:
-    strace("sys_read, read from fd %d, count %d, ", c->GPR2, c->GPR4);
+    strace("sys_read, read from %s, return %d\n", file_table[c->GPR2].name,
+           c->GPRx);
     c->GPRx = sys_read(c->GPR2, (void *)c->GPR3, c->GPR4);
     strace("return %d\n", c->GPRx);
     break;
@@ -53,12 +56,13 @@ void do_syscall(Context *c) {
     break;
   case SYS_close:
     c->GPRx = 0;
-    strace("sys_close, close fd %d, return 0\n", c->GPR2);
+    strace("sys_close, close %s, return %d\n", file_table[c->GPR2].name,
+           c->GPRx);
     break;
   case SYS_lseek:
     c->GPRx = sys_lseek(c->GPR2, c->GPR3, c->GPR4);
-    strace("sys_lseek, lseek fd %d, offset %d, whence %d, return %d\n", c->GPR2,
-           c->GPR3, c->GPR4, c->GPRx);
+    strace("sys_lseek, lseek %s, offset set to %d, return %d\n",
+           file_table[c->GPR2].name, file_table[c->GPR2].open_offset, c->GPRx);
     break;
   case SYS_open:
     char *path = (char *)c->GPR2;
