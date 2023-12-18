@@ -81,8 +81,8 @@ void do_syscall(Context *c) {
     strace("sys_open, open file %s, return %d", path, c->GPRx);
     break;
   case SYS_gettimeofday:
-    c->GPRx = 0;
     sys_gettimeofday((int *)c->GPR2, (int *)c->GPR3);
+    c->GPRx = 0;
     break;
   default:
     panic("Unhandled syscall ID = %d", a[0]);
