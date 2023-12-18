@@ -14,7 +14,7 @@ int main() {
     int flag = 1;
     while (flag) {
       gettimeofday(&tv, &tz);
-      if (tv.tv_usec - last.tv_usec >= 500000) {
+      if (tv.tv_sec - last.tv_sec >= 1) {
         last.tv_sec = tv.tv_sec;
         last.tv_usec = tv.tv_usec;
         printf("%d\n", a);
