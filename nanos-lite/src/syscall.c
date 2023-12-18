@@ -82,7 +82,7 @@ void do_syscall(Context *c) {
   case SYS_gettimeofday:
     c->GPRx = 0;
     sys_gettimeofday((int *)c->GPR2, (int *)c->GPR3);
-    strace("sys_gettimeofday, return 0");
+    // strace("sys_gettimeofday, return 0");
     break;
   default:
     panic("Unhandled syscall ID = %d", a[0]);
