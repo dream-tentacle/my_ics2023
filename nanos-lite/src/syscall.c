@@ -82,6 +82,7 @@ void do_syscall(Context *c) {
     break;
   case SYS_gettimeofday:
     c->GPRx = 0;
+    printf("c->GPR2 = %d, c->GPR3 = %d\n", c->GPR2, c->GPR3);
     sys_gettimeofday((int *)c->GPR2, (int *)c->GPR3);
     break;
   default:
