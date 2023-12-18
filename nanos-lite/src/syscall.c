@@ -19,7 +19,7 @@ int sys_lseek(int fd, size_t offset, int whence) {
 void sys_brk(int addr) {}
 #define STRACE
 #ifdef STRACE
-#define strace(s, ...) printf("| " s " |\n", ##__VA_ARGS__)
+#define strace(s, ...) printf("[ " s " ]\n", ##__VA_ARGS__)
 #else
 #define strace(...)
 #endif
