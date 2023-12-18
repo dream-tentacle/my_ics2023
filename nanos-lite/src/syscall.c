@@ -27,6 +27,7 @@ extern Finfo file_table[];
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
+  int fd;
   switch (a[0]) {
   case SYS_yield:
     sys_yield();
@@ -55,14 +56,14 @@ void do_syscall(Context *c) {
     strace("sys_brk, return 0\n");
     break;
   case SYS_close:
+    strace("sys_close, close %s, return 0\n", file_table[c->GPR2].name);
     c->GPRx = 0;
-    strace("sys_close, close %s, return %d\n", file_table[c->GPR2].name,
-           c->GPRx);
     break;
   case SYS_lseek:
+    fd = c->GPR2;
     c->GPRx = sys_lseek(c->GPR2, c->GPR3, c->GPR4);
     strace("sys_lseek, lseek %s, offset set to %d, return %d\n",
-           file_table[c->GPR2].name, file_table[c->GPR2].open_offset, c->GPRx);
+           file_table[fd].name, file_table[fd].open_offset, c->GPRx);
     break;
   case SYS_open:
     char *path = (char *)c->GPR2;
