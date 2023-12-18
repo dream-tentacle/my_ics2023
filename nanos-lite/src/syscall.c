@@ -17,6 +17,13 @@ int sys_lseek(int fd, size_t offset, int whence) {
   return fs_lseek(fd, offset, whence);
 }
 void sys_brk(int addr) {}
+void sys_gettimeofday(int *tv, int *tz) {
+  tv[0] = io_read(AM_TIMER_UPTIME).us / 1000;
+  tv[1] = io_read(AM_TIMER_UPTIME).us;
+  tz[0] = 0;
+  tz[1] = 0;
+}
+
 #define STRACE
 #ifdef STRACE
 #define strace(s, ...) printf("> " s " <\n", ##__VA_ARGS__)
@@ -70,7 +77,7 @@ void do_syscall(Context *c) {
     break;
   case SYS_gettimeofday:
     c->GPRx = 0;
-    io_read(AM_TIMER_UPTIME);
+    sys_gettimeofday((int *)c->GPR2, (int *)c->GPR3);
     strace("sys_gettimeofday, return 0");
     break;
   default:
