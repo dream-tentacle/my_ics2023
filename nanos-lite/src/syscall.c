@@ -19,7 +19,7 @@ int sys_lseek(int fd, size_t offset, int whence) {
 void sys_brk(int addr) {}
 void sys_gettimeofday(int *tv, int *tz) {
   if (tv != NULL) {
-    tv[0] = io_read(AM_TIMER_UPTIME).us / 1000;
+    tv[0] = io_read(AM_TIMER_UPTIME).us / 1000000;
     tv[1] = io_read(AM_TIMER_UPTIME).us;
   }
   if (tz != NULL) {

@@ -13,10 +13,11 @@ int main() {
     a++;
     while (1) {
       gettimeofday(&tv, &tz);
-      if (tv.tv_usec - last.tv_usec >= 500) {
+      if (tv.tv_usec - last.tv_usec >= 100000) {
         last.tv_sec = tv.tv_sec;
         last.tv_usec = tv.tv_usec;
         printf("%d\n", a);
+        break;
       }
     }
   }
