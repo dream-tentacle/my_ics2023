@@ -21,6 +21,7 @@ void sys_gettimeofday(int *tv, int *tz) {
   if (tv) {
     tv[0] = io_read(AM_TIMER_UPTIME).us / 1000;
     tv[1] = io_read(AM_TIMER_UPTIME).us;
+    printf("tv[0] = %d, tv[1] = %d\n", tv[0], tv[1]);
   }
   if (tz) {
     tz[0] = 0;
@@ -83,7 +84,6 @@ void do_syscall(Context *c) {
     c->GPRx = 0;
     tmp = c->GPR2;
     sys_gettimeofday((int *)c->GPR2, (int *)c->GPR3);
-    strace("sys_gettimeofday, usec = %d, return 0", ((int *)tmp)[1]);
     break;
   default:
     panic("Unhandled syscall ID = %d", a[0]);
