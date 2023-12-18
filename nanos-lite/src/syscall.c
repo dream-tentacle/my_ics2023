@@ -39,15 +39,14 @@ void do_syscall(Context *c) {
     sys_exit(c->GPR2);
     break;
   case SYS_write:
-    strace("sys_write, write %s, return %d", file_table[c->GPR2].name, c->GPRx);
+    fd = c->GPR2;
     c->GPRx = sys_write(c->GPR2, (void *)c->GPR3, c->GPR4);
-    strace("return %d\n", c->GPRx);
+    strace("sys_write, write %s, return %d", file_table[fd].name, c->GPRx);
     break;
   case SYS_read:
-    strace("sys_read, read from %s, return %d", file_table[c->GPR2].name,
-           c->GPRx);
+    fd = c->GPR2;
     c->GPRx = sys_read(c->GPR2, (void *)c->GPR3, c->GPR4);
-    strace("return %d\n", c->GPRx);
+    strace("sys_read, read from %s, return %d", file_table[fd].name, c->GPRx);
     break;
   case SYS_brk:
     sys_brk(c->GPR2);
