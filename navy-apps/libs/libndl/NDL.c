@@ -48,9 +48,7 @@ void NDL_OpenCanvas(int *w, int *h) {
     char buf[64];
     int nread = read(fd, buf, sizeof(buf) - 1);
     buf[nread] = '\0';
-    for (int i = 0; i < 5; i++) {
-      putchar(buf[i]);
-    }
+    sscanf(buf, "WIDTH=%d,HEIGHT=%d", w, h);
     close(fd);
   }
 }
