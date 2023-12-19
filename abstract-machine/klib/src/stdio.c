@@ -26,7 +26,11 @@
 #define MUXDEF(macro, X, Y) MUX_MACRO_PROPERTY(__P_DEF_, macro, X, Y)
 #if !defined(__ISA_NATIVE__) || defined(__NATIVE_USE_KLIB__)
 
-#define DO_NEXT(x) MUXDEF(to_putch, out[re++] = (x), putch(x); re++)
+#define DO_NEXT(x)                                                             \
+  do {                                                                         \
+    putch(x);                                                                  \
+    re++;                                                                      \
+  } while (0)
 
 int printf(const char *fmt, ...) {
 #define to_putch
@@ -173,7 +177,12 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 }
 
 int sprintf(char *out, const char *fmt, ...) {
-#undef to_putch
+#undef DO_NEXT
+#define DO_NEXT(x)                                                             \
+  do {                                                                         \
+    out[re] = x;                                                               \
+    re++;                                                                      \
+  } while (0)
   int re = 0;
   char c[10000];
   int cnt = 0;
