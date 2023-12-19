@@ -50,7 +50,7 @@ void NDL_OpenCanvas(int *w, int *h) {
     int nread = read(fd, buf, sizeof(buf) - 1);
     buf[nread] = '\0';
     sscanf(buf, "WIDTH=%d,HEIGHT=%d", w, h);
-    printf("w=%d, h=%d\n", *w, *h);
+    printf("%s\n", buf);
     close(fd);
   }
 }
