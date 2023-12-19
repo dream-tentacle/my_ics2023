@@ -18,7 +18,7 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
   return len;
 }
 
-size_t events_read(void *buf, size_t offset, size_t len) {
+size_t events_read(char *buf, size_t offset, size_t len) {
   AM_INPUT_KEYBRD_T ev = io_read(AM_INPUT_KEYBRD);
   if (ev.keycode == AM_KEY_NONE) {
     return 0;
@@ -31,11 +31,9 @@ size_t events_read(void *buf, size_t offset, size_t len) {
 }
 
 size_t dispinfo_read(void *buf, size_t offset, size_t len) {
-  // AM_GPU_CONFIG_T gpu_config = io_read(AM_GPU_CONFIG);
-  ((char *)buf)[0] = 'W';
-  ((char *)buf)[1] = 'H';
-  ((char *)buf)[2] = '\0';
-  return 3;
+  AM_GPU_CONFIG_T gpu_config = io_read(AM_GPU_CONFIG);
+  return sprintf(buf, "WIDTH=%d\nHEIGHT=%d\n", gpu_config.width,
+                 gpu_config.height);
 }
 
 size_t fb_write(const void *buf, size_t offset, size_t len) { return 0; }
