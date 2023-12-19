@@ -28,7 +28,7 @@ void sys_gettimeofday(int *tv, int *tz) {
   }
 }
 
-#define STRACE
+// #define STRACE
 #ifdef STRACE
 #define strace(s, ...) printf("> " s " <\n", ##__VA_ARGS__)
 #else
