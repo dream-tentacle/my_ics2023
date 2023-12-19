@@ -13,8 +13,8 @@
 
 #define DO_NEXT2(x)                                                            \
   do {                                                                         \
-    re++;                                                                      \
     out[re] = x;                                                               \
+    re++;                                                                      \
   } while (0)
 
 int printf(const char *fmt, ...) {
@@ -252,7 +252,6 @@ int sprintf(char *out, const char *fmt, ...) {
     }
   }
   va_end(ap);
-  printf("out=%s\n", out);
   return re;
 }
 
