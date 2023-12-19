@@ -43,7 +43,10 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
   void *tmp = (void *)buf;
   io_write(AM_GPU_FBDRAW, w, h, tmp, len / sizeof(uint32_t), 1, false);
   count++;
-  printf("count=%d\n", count);
+  if (count == 75) {
+    while (1)
+      ;
+  }
   return len;
 }
 
