@@ -28,7 +28,7 @@ void sys_gettimeofday(int *tv, int *tz) {
   }
 }
 
-#define STRACE
+// #define STRACE
 #ifdef STRACE
 #define strace(s, ...) printf("> " s " <\n", ##__VA_ARGS__)
 #else
@@ -38,7 +38,7 @@ extern Finfo file_table[];
 void do_syscall(Context *c) {
   uintptr_t a[4];
   a[0] = c->GPR1;
-  int tmp;
+  int __attribute__((unused)) tmp;
   switch (a[0]) {
   case SYS_yield:
     sys_yield();
@@ -75,7 +75,7 @@ void do_syscall(Context *c) {
            file_table[tmp].name, file_table[tmp].open_offset, c->GPRx);
     break;
   case SYS_open:
-    char *path = (char *)c->GPR2;
+    char __attribute__((unused)) *path = (char *)c->GPR2;
     c->GPRx = sys_open((const char *)c->GPR2, c->GPR3, c->GPR4);
     strace("sys_open, open file %s, return %d", path, c->GPRx);
     break;
