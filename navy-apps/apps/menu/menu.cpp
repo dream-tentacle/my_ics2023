@@ -146,6 +146,7 @@ static void draw_ch(BDF_Font *font, int x, int y, char ch, uint32_t fg,
   printf("'%c' is drawn\n", ch);
   SDL_Surface *s = BDF_CreateSurface(font, ch, fg, bg);
   SDL_Rect dstrect = {.x = x, .y = y};
+  printf("x=%d,y=%d\n", x, y);
   SDL_BlitSurface(s, NULL, screen, &dstrect);
   SDL_FreeSurface(s);
 }
