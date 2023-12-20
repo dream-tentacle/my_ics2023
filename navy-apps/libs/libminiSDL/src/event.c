@@ -41,6 +41,7 @@ int SDL_WaitEvent(SDL_Event *event) {
     }
   }
   printf("event: %s\n", buf);
+  printf("key: %d\n", event->key.keysym.sym);
   return 1;
 }
 
