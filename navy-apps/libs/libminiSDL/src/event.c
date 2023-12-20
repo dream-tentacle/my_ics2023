@@ -16,7 +16,20 @@ int SDL_PollEvent(SDL_Event *ev) {
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
-  // printf("SDL_WaitEvent() is not implemented!\n");
+  int event_len;
+  char buf[64];
+  event_len = NDL_PollEvent(buf, sizeof(buf));
+  while (event_len == 0) {
+    event_len = NDL_PollEvent(buf, sizeof(buf));
+  }
+  if (buf[0] == 'k' && buf[1] == 'd') {
+    event->type = SDL_KEYDOWN;
+    sscanf(buf, "kd %hhd", &event->key.keysym.sym);
+  }
+  if (buf[0] == 'k' && buf[1] == 'u') {
+    event->type = SDL_KEYUP;
+    sscanf(buf, "ku %hhd", &event->key.keysym.sym);
+  }
   return 1;
 }
 
