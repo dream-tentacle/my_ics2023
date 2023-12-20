@@ -60,7 +60,6 @@ void NDL_OpenCanvas(int *w, int *h) {
     printf("----------\nNDL_OpenCanvas info:\n");
     printf("screen_w = %d, screen_h = %d\n", screen_w, screen_h);
     printf("draw_x = %d, draw_y = %d\n", draw_x, draw_y);
-    printf("buf = %s\n", buf);
     printf("----------\n");
     close(fd);
   }
