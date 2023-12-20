@@ -29,6 +29,8 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
   assert(dst->format->BytesPerPixel == 4);
+  if (!dstrect)
+    dstrect = &(SDL_Rect){0, 0, dst->w, dst->h};
   for (int i = dstrect->x; i < dstrect->x + dstrect->w; i++)
     for (int j = dstrect->y; j < dstrect->y + dstrect->h; j++) {
       dst->pixels[4 * (i + j * dst->w) + 0] = color & 0xff;
