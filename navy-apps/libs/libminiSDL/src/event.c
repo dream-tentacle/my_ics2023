@@ -28,8 +28,10 @@ int SDL_WaitEvent(SDL_Event *event) {
   if (buf[0] == 'k' && buf[1] == 'u') {
     event->type = SDL_KEYUP;
   }
+  printf("SDL_WaitEvent:\n");
   printf("event: %s\n", buf);
   printf("key: %d\n", event->key.keysym.sym);
+  printf("--------------------\n");
   return 1;
 }
 
