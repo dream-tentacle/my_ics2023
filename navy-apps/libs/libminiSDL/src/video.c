@@ -6,10 +6,10 @@
 
 void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
                      SDL_Rect *dstrect) {
+  printf("SDL_BlitSurface()");
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
   assert(dst->format->BytesPerPixel == 4);
-  printf("SDL_BlitSurface()");
   if (!srcrect)
     srcrect = &(SDL_Rect){0, 0, src->w, src->h};
   if (!dstrect)
