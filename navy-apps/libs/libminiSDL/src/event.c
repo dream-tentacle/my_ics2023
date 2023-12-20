@@ -25,8 +25,10 @@ int SDL_WaitEvent(SDL_Event *event) {
   }
   if (buf[0] == 'k' && buf[1] == 'd') {
     event->type = SDL_KEYDOWN;
+    char key[64];
+    sscanf(buf, "kd %s\n", key);
     for (int i = 0; i < 83; i++) {
-      if (strncmp(buf + 3, keyname[i], strlen(keyname[i])) == 0) {
+      if (strcmp(key, keyname[i]) == 0) {
         event->key.keysym.sym = i;
         break;
       }
