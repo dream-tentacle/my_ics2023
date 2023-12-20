@@ -9,22 +9,39 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
   assert(dst->format->BytesPerPixel == 4);
-  if (!srcrect)
-    srcrect = &(SDL_Rect){0, 0, src->w, src->h};
-  if (!dstrect)
-    dstrect = &(SDL_Rect){0, 0, dst->w, dst->h};
-  printf("%d %d %d %d\n", srcrect->x, srcrect->y, srcrect->w, srcrect->h);
-  printf("%d %d %d %d\n", dstrect->x, dstrect->y, dstrect->w, dstrect->h);
-  for (int i = 0; i < srcrect->w; i++) {
-    for (int j = 0; j < srcrect->h; j++) {
-      dst->pixels[4 * ((dstrect->x + i) + (dstrect->y + j) * dst->w) + 0] =
-          src->pixels[4 * ((srcrect->x + i) + (srcrect->y + j) * src->w) + 0];
-      dst->pixels[4 * ((dstrect->x + i) + (dstrect->y + j) * dst->w) + 1] =
-          src->pixels[4 * ((srcrect->x + i) + (srcrect->y + j) * src->w) + 1];
-      dst->pixels[4 * ((dstrect->x + i) + (dstrect->y + j) * dst->w) + 2] =
-          src->pixels[4 * ((srcrect->x + i) + (srcrect->y + j) * src->w) + 2];
-      dst->pixels[4 * ((dstrect->x + i) + (dstrect->y + j) * dst->w) + 3] =
-          src->pixels[4 * ((srcrect->x + i) + (srcrect->y + j) * src->w) + 3];
+  int sh, sw, dh, dw, sx, sy, dx, dy;
+  if (srcrect == NULL) {
+    sx = 0;
+    sy = 0;
+    sw = src->w;
+    sh = src->h;
+  } else {
+    sx = srcrect->x;
+    sy = srcrect->y;
+    sw = srcrect->w;
+    sh = srcrect->h;
+  }
+  if (dstrect == NULL) {
+    dx = 0;
+    dy = 0;
+    dw = dst->w;
+    dh = dst->h;
+  } else {
+    dx = dstrect->x;
+    dy = dstrect->y;
+    dw = dstrect->w;
+    dh = dstrect->h;
+  }
+  for (int i = 0; i < sw; i++) {
+    for (int j = 0; j < sh; j++) {
+      dst->pixels[4 * (dx + i + (dy + j) * dst->w) + 0] =
+          src->pixels[4 * (sx + i + (sy + j) * src->w) + 0];
+      dst->pixels[4 * (dx + i + (dy + j) * dst->w) + 1] =
+          src->pixels[4 * (sx + i + (sy + j) * src->w) + 1];
+      dst->pixels[4 * (dx + i + (dy + j) * dst->w) + 2] =
+          src->pixels[4 * (sx + i + (sy + j) * src->w) + 2];
+      dst->pixels[4 * (dx + i + (dy + j) * dst->w) + 3] =
+          src->pixels[4 * (sx + i + (sy + j) * src->w) + 3];
     }
   }
 }
