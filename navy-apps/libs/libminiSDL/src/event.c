@@ -11,9 +11,34 @@ int SDL_PushEvent(SDL_Event *ev) {
   return 0;
 }
 
-int SDL_PollEvent(SDL_Event *ev) {
-  printf("SDL_PollEvent() is not implemented!\n");
-  return 0;
+int SDL_PollEvent(SDL_Event *event) {
+  int event_len;
+  char buf[64];
+  event_len = NDL_PollEvent(buf, sizeof(buf));
+  if (buf[0] == 'k' && buf[1] == 'd') {
+    event->type = SDL_KEYDOWN;
+    char key[64];
+    sscanf(buf, "kd %s\n", key);
+    for (int i = 0; i < 83; i++) {
+      if (strcmp(key, keyname[i]) == 0) {
+        event->key.keysym.sym = i;
+        break;
+      }
+    }
+  } else if (buf[0] == 'k' && buf[1] == 'u') {
+    event->type = SDL_KEYUP;
+    char key[64];
+    sscanf(buf, "ku %s\n", key);
+    for (int i = 0; i < 83; i++) {
+      if (strcmp(key, keyname[i]) == 0) {
+        event->key.keysym.sym = i;
+        break;
+      }
+    }
+  } else {
+    printf("SDL_PollEvent read: %s\n", buf);
+  }
+  return 1;
 }
 
 int SDL_WaitEvent(SDL_Event *event) {
@@ -36,6 +61,14 @@ int SDL_WaitEvent(SDL_Event *event) {
   }
   if (buf[0] == 'k' && buf[1] == 'u') {
     event->type = SDL_KEYUP;
+    char key[64];
+    sscanf(buf, "ku %s\n", key);
+    for (int i = 0; i < 83; i++) {
+      if (strcmp(key, keyname[i]) == 0) {
+        event->key.keysym.sym = i;
+        break;
+      }
+    }
   }
   return 1;
 }

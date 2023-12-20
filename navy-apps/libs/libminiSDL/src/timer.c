@@ -13,9 +13,6 @@ int SDL_RemoveTimer(SDL_TimerID id) {
   return 1;
 }
 
-uint32_t SDL_GetTicks() {
-  printf("SDL_GetTicks() is not implemented!\n");
-  return 0;
-}
+uint32_t SDL_GetTicks() { return NDL_GetTicks(); }
 
 void SDL_Delay(uint32_t ms) { printf("SDL_Delay() is not implemented!\n"); }
