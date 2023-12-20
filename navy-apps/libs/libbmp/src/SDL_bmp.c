@@ -10,6 +10,5 @@ SDL_Surface *SDL_LoadBMP(const char *filename) {
       pixels, w, h, 32, w * sizeof(uint32_t), DEFAULT_RMASK, DEFAULT_GMASK,
       DEFAULT_BMASK, DEFAULT_AMASK);
   s->flags &= ~SDL_PREALLOC;
-  printf("w = %d, h = %d\n", s->w, s->h);
   return s;
 }
