@@ -24,11 +24,21 @@ int SDL_WaitEvent(SDL_Event *event) {
   }
   if (buf[0] == 'k' && buf[1] == 'd') {
     event->type = SDL_KEYDOWN;
-    sscanf(buf, "kd %hhd", &event->key.keysym.sym);
+    for (int i = 0; i < 256; i++) {
+      if (strcmp(keyname[i], buf + 3) == 0) {
+        event->key.keysym.sym = i;
+        break;
+      }
+    }
   }
   if (buf[0] == 'k' && buf[1] == 'u') {
     event->type = SDL_KEYUP;
-    sscanf(buf, "ku %hhd", &event->key.keysym.sym);
+    for (int i = 0; i < 256; i++) {
+      if (strcmp(keyname[i], buf + 3) == 0) {
+        event->key.keysym.sym = i;
+        break;
+      }
+    }
   }
   printf("event: %s\n", buf);
   return 1;
