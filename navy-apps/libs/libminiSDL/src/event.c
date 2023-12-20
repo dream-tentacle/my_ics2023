@@ -15,6 +15,9 @@ int SDL_PollEvent(SDL_Event *event) {
   int event_len;
   char buf[64];
   event_len = NDL_PollEvent(buf, sizeof(buf));
+  if (event_len == 0) {
+    return 0;
+  }
   if (buf[0] == 'k' && buf[1] == 'd') {
     event->type = SDL_KEYDOWN;
     char key[64];
