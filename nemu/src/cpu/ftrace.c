@@ -62,9 +62,10 @@ void call_funct(unsigned int addr, unsigned int pc) {
     funct_info *now = &funct_table[i];
     if (now->addr == 0)
       printf("%d\n", now->size);
-    if (now->addr == addr ||
-        (now->addr <= addr && now->addr + now->size > addr &&
-         (pc < now->addr || pc > now->addr + now->size))) {
+    // if (now->addr == addr ||
+    //     (now->addr <= addr && now->addr + now->size > addr &&
+    //      (pc < now->addr || pc > now->addr + now->size))) {
+    if (now->addr <= addr && now->addr + now->size > addr) {
       last_pc[last_pc_cnt++] = pc;
       jmp_head[funct_layer].name = now->name;
       jmp_head[funct_layer].layer = funct_layer;
