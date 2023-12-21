@@ -81,11 +81,8 @@ void call_funct(unsigned int addr, unsigned int pc) {
     printf("funct_cnt: %d\n", func_cnt);
   }
   for (int i = 0; i < func_cnt; i++) {
-    if (funct_table[i].addr == 0)
-      break;
     funct_info *now = &funct_table[i];
-    if (1)
-      printf("now->addr: %x, now->size: %x\n", now->addr, now->size);
+    printf("now->addr: %x, now->size: %x\n", now->addr, now->size);
     if (now->addr == addr ||
         (now->addr <= addr && now->addr + now->size > addr &&
          (pc < now->addr || pc > now->addr + now->size))) {
