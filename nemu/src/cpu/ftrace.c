@@ -3,30 +3,6 @@
 #include <elf.h>
 #include <stdlib.h>
 
-/*
-    format:
-    17: 800003b4    32 FUNC    GLOBAL DEFAULT    1 _trm_init
-    18: 80009000     0 NOTYPE  GLOBAL DEFAULT    3 _stack_pointer
-    19: 800003d4     0 NOTYPE  GLOBAL DEFAULT    1 _etext
-    20: 80000000     0 NOTYPE  GLOBAL DEFAULT  ABS _pmem_start
-    21: 80000428     0 NOTYPE  GLOBAL DEFAULT    3 _bss_start
-    22: 800003d5     0 NOTYPE  GLOBAL DEFAULT    2 edata
-    23: 80009000     0 NOTYPE  GLOBAL DEFAULT    3 _heap_start
-    24: 80001000     0 NOTYPE  GLOBAL DEFAULT    3 _stack_top
-    25: 80000028   200 FUNC    GLOBAL DEFAULT    1 partition
-    26: 80009000     0 NOTYPE  GLOBAL DEFAULT    3 end
-    27: 80000010    24 FUNC    GLOBAL DEFAULT    1 check
-    28: 800003d4     0 NOTYPE  GLOBAL DEFAULT    1 etext
-    29: 80000000     0 FUNC    GLOBAL DEFAULT    1 _start
-    30: 00000000     0 NOTYPE  GLOBAL DEFAULT  ABS _entry_offset
-    31: 800002e8   192 FUNC    GLOBAL DEFAULT    1 main
-    32: 800003d5     0 NOTYPE  GLOBAL DEFAULT    2 _data
-    33: 80009000     0 NOTYPE  GLOBAL DEFAULT    3 _end
-    34: 800003a8    12 FUNC    GLOBAL DEFAULT    1 halt
-    35: 800003d8    80 OBJECT  GLOBAL DEFAULT    3 a
-    36: 800000f0   504 FUNC    GLOBAL DEFAULT    1 quick_sort
-    */
-// 只需要FUNC类型的
 // name, addr, size
 static funct_info *funct_table = NULL;
 static int func_cnt = 0;
