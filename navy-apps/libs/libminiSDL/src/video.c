@@ -98,15 +98,23 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     }
 
   } else if (s->format->BytesPerPixel == 1) {
-    for (int i = 0; i <= s->h * s->w; i++) {
-      buf[i] = s->format->palette->colors[s->pixels[i]].r << 16 |
-               s->format->palette->colors[s->pixels[i]].g << 8 |
-               s->format->palette->colors[s->pixels[i]].b |
-               s->format->palette->colors[s->pixels[i]].a << 24;
-    }
     if ((x | y | w | h) == 0) {
+      for (int i = 0; i <= s->h * s->w; i++) {
+        buf[i] = s->format->palette->colors[s->pixels[i]].r << 16 |
+                 s->format->palette->colors[s->pixels[i]].g << 8 |
+                 s->format->palette->colors[s->pixels[i]].b |
+                 s->format->palette->colors[s->pixels[i]].a << 24;
+      }
       NDL_DrawRect(buf, 0, 0, s->w, s->h);
     } else {
+      for (int i = x; i <= x + w; i++) {
+        for (int j = y; j <= y + h; j++) {
+          buf[i + j * s->w] = s->format->palette->colors[s->pixels[i]].r << 16 |
+                              s->format->palette->colors[s->pixels[i]].g << 8 |
+                              s->format->palette->colors[s->pixels[i]].b |
+                              s->format->palette->colors[s->pixels[i]].a << 24;
+        }
+      }
       NDL_DrawRect(buf, x, y, w, h);
     }
   }
