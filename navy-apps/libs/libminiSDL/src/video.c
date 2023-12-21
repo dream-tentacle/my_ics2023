@@ -118,7 +118,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
         }
       }
       printf("%d,%d,%d,%d\n", x, y, w, h);
-      NDL_DrawRect(buf, x, y, w, h);
+      NDL_DrawRect(buf, 0, 0, s->w, s->h);
     }
   }
 }
