@@ -51,8 +51,8 @@ void call_funct(unsigned int addr, unsigned int pc) {
       assert(fread(&symtab, sizeof(Elf32_Sym), 1, fp));
       if ((symtab.st_info & 15) == STT_FUNC) {
         funct_table[func_cnt].name = "func";
-        funct_table[func_cnt].addr = funct_table[func_cnt].size =
-            symtab.st_size;
+        funct_table[func_cnt].addr = symtab.st_value;
+        funct_table[func_cnt].size = symtab.st_size;
         func_cnt++;
       }
     }
