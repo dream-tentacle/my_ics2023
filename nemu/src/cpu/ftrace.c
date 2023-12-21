@@ -107,7 +107,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
       return;
     }
   }
-  printf("pc: %x\n", pc);
+  // printf("pc: %x\n", pc);
 }
 
 void print_jmp_log() {
