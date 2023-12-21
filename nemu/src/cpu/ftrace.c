@@ -46,7 +46,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
     printf("ehdr.e_shoff: %x\n", ehdr.e_shoff);
     printf("ehdr.e_shnum: %d\n", ehdr.e_shnum);
     assert(-1 != fseek(fp, ehdr.e_shoff, SEEK_SET));
-    assert(fread(shtab, sizeof(Elf32_Sym), ehdr.e_shnum, fp));
+    assert(fread(shtab, sizeof(Elf32_Shdr), ehdr.e_shnum, fp));
     // 寻找.symtab
     int symtab_idx = -1;
     for (int i = 0; i < ehdr.e_shnum; i++) {
