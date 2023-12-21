@@ -8,7 +8,6 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
                      SDL_Rect *dstrect) {
   assert(dst && src);
   assert(dst->format->BitsPerPixel == src->format->BitsPerPixel);
-  assert(dst->format->BytesPerPixel == 4);
   int sh, sw, dh, dw, sx, sy, dx, dy;
   if (srcrect == NULL) {
     sx = 0;
@@ -32,22 +31,30 @@ void SDL_BlitSurface(SDL_Surface *src, SDL_Rect *srcrect, SDL_Surface *dst,
     dw = dstrect->w;
     dh = dstrect->h;
   }
-  for (int i = 0; i < sw; i++) {
-    for (int j = 0; j < sh; j++) {
-      dst->pixels[4 * (dx + i + (dy + j) * dst->w) + 0] =
-          src->pixels[4 * (sx + i + (sy + j) * src->w) + 0];
-      dst->pixels[4 * (dx + i + (dy + j) * dst->w) + 1] =
-          src->pixels[4 * (sx + i + (sy + j) * src->w) + 1];
-      dst->pixels[4 * (dx + i + (dy + j) * dst->w) + 2] =
-          src->pixels[4 * (sx + i + (sy + j) * src->w) + 2];
-      dst->pixels[4 * (dx + i + (dy + j) * dst->w) + 3] =
-          src->pixels[4 * (sx + i + (sy + j) * src->w) + 3];
+  if (dst->format->BytesPerPixel == 4) {
+    for (int i = 0; i < sw; i++) {
+      for (int j = 0; j < sh; j++) {
+        dst->pixels[4 * (dx + i + (dy + j) * dst->w) + 0] =
+            src->pixels[4 * (sx + i + (sy + j) * src->w) + 0];
+        dst->pixels[4 * (dx + i + (dy + j) * dst->w) + 1] =
+            src->pixels[4 * (sx + i + (sy + j) * src->w) + 1];
+        dst->pixels[4 * (dx + i + (dy + j) * dst->w) + 2] =
+            src->pixels[4 * (sx + i + (sy + j) * src->w) + 2];
+        dst->pixels[4 * (dx + i + (dy + j) * dst->w) + 3] =
+            src->pixels[4 * (sx + i + (sy + j) * src->w) + 3];
+      }
+    }
+  } else {
+    for (int i = 0; i < sw; i++) {
+      for (int j = 0; j < sh; j++) {
+        dst->pixels[dx + i + (dy + j) * dst->w] =
+            src->pixels[sx + i + (sy + j) * src->w];
+      }
     }
   }
 }
 
 void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
-  assert(dst->format->BytesPerPixel == 4);
   int dh, dw, dx, dy;
   if (!dstrect) {
     dx = 0;
@@ -60,21 +67,46 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
     dw = dstrect->w;
     dh = dstrect->h;
   }
-  for (int i = dx; i < dx + dw; i++)
-    for (int j = dy; j < dy + dh; j++) {
-      dst->pixels[4 * (i + j * dst->w) + 0] = color & 0xff;
-      dst->pixels[4 * (i + j * dst->w) + 1] = (color >> 8) & 0xff;
-      dst->pixels[4 * (i + j * dst->w) + 2] = (color >> 16) & 0xff;
-      dst->pixels[4 * (i + j * dst->w) + 3] = (color >> 24) & 0xff;
-    }
+  if (dst->format->BytesPerPixel == 4) {
+    for (int i = dx; i < dx + dw; i++)
+      for (int j = dy; j < dy + dh; j++) {
+        dst->pixels[4 * (i + j * dst->w) + 0] = color & 0xff;
+        dst->pixels[4 * (i + j * dst->w) + 1] = (color >> 8) & 0xff;
+        dst->pixels[4 * (i + j * dst->w) + 2] = (color >> 16) & 0xff;
+        dst->pixels[4 * (i + j * dst->w) + 3] = (color >> 24) & 0xff;
+      }
+  } else {
+    for (int i = dx; i < dx + dw; i++)
+      for (int j = dy; j < dy + dh; j++) {
+        dst->pixels[i + j * dst->w] = 0;
+        for (int i = 0; i < dst->format->palette->ncolors; i++) {
+          if (color == dst->format->palette->colors[i].val) {
+            dst->pixels[i + j * dst->w] = i;
+            break;
+          }
+        }
+      }
+  }
 }
 
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
-  assert(s->format->BytesPerPixel == 4);
-  if ((x | y | w | h) == 0) {
-    NDL_DrawRect((uint32_t *)s->pixels, 0, 0, s->w, s->h);
-  } else {
-    NDL_DrawRect((uint32_t *)s->pixels, x, y, w, h);
+  if (s->format->BytesPerPixel == 4) {
+    if ((x | y | w | h) == 0) {
+      NDL_DrawRect((uint32_t *)s->pixels, 0, 0, s->w, s->h);
+    } else {
+      NDL_DrawRect((uint32_t *)s->pixels, x, y, w, h);
+    }
+
+  } else if (s->format->BytesPerPixel == 1) {
+    uint32_t *buf = malloc(s->h * s->w * 4);
+    for (int i = 0; i <= s->h * s->w; i++) {
+      buf[i] = s->format->palette->colors[s->pixels[i]].val;
+    }
+    if ((x | y | w | h) == 0) {
+      NDL_DrawRect(buf, 0, 0, s->w, s->h);
+    } else {
+      NDL_DrawRect(buf, x, y, w, h);
+    }
   }
 }
 
