@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 // name, addr, size
-static funct_info funct_table[1272];
+static funct_info funct_table[1273];
 static int func_cnt = 0;
 static jmp_log *jmp_head, *jmp_last;
 static int funct_layer = 0; // 记录函数嵌套层数
@@ -75,7 +75,6 @@ void call_funct(unsigned int addr, unsigned int pc) {
       }
     }
     for (int i = 0; i < symtab_len; i++) {
-      printf("%d\n", i);
       assert(-1 != fseek(fp,
                          shtab[symtab_idx].sh_offset + i * sizeof(Elf32_Sym),
                          SEEK_SET));
