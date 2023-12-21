@@ -54,7 +54,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
         int offset = shtab[strtab_idx].sh_offset + symtab.st_name;
         char *name = (char *)malloc(100);
         assert(-1 != fseek(fp, offset, SEEK_SET));
-        assert(fscanf(fp, "%s", name));
+        assert(fread(name, 100, 1, fp));
         funct_table[func_cnt].name = name;
         funct_table[func_cnt].addr = symtab.st_value;
         funct_table[func_cnt].size = symtab.st_size;
