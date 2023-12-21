@@ -70,6 +70,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
       jmp_head[funct_layer].layer = funct_layer;
       jmp_head[funct_layer].now_pc = pc;
       funct_layer++;
+      printf("%s %d\n", now->name, funct_layer);
       return;
     }
   }

@@ -194,6 +194,7 @@ void assert_fail_msg() {
   print_device_buffer();
 #endif
 #ifdef FTRACE
+  printf("ftrace:\n");
   print_jmp_log();
 #endif
 }
