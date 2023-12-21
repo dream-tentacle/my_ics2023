@@ -88,7 +88,7 @@ void SDL_FillRect(SDL_Surface *dst, SDL_Rect *dstrect, uint32_t color) {
       }
   }
 }
-
+uint32_t buf[400 * 300 * 4];
 void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
   if (s->format->BytesPerPixel == 4) {
     if ((x | y | w | h) == 0) {
@@ -98,7 +98,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     }
 
   } else if (s->format->BytesPerPixel == 1) {
-    uint32_t *buf = malloc(s->h * s->w * 4);
     for (int i = 0; i <= s->h * s->w; i++) {
       buf[i] = s->format->palette->colors[s->pixels[i]].val;
     }
@@ -107,7 +106,6 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     } else {
       NDL_DrawRect(buf, x, y, w, h);
     }
-    free(buf);
   }
 }
 
