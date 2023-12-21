@@ -109,10 +109,11 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
     } else {
       for (int i = x; i <= x + w; i++) {
         for (int j = y; j <= y + h; j++) {
-          buf[i + j * s->w] = s->format->palette->colors[s->pixels[i]].r << 16 |
-                              s->format->palette->colors[s->pixels[i]].g << 8 |
-                              s->format->palette->colors[s->pixels[i]].b |
-                              s->format->palette->colors[s->pixels[i]].a << 24;
+          buf[i + j * s->w] =
+              s->format->palette->colors[s->pixels[i + j * s->w]].r << 16 |
+              s->format->palette->colors[s->pixels[i + j * s->w]].g << 8 |
+              s->format->palette->colors[s->pixels[i + j * s->w]].b |
+              s->format->palette->colors[s->pixels[i + j * s->w]].a << 24;
         }
       }
       NDL_DrawRect(buf, x, y, w, h);
