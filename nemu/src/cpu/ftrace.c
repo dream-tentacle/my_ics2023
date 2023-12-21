@@ -89,6 +89,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
          (pc < now->addr || pc > now->addr + now->size))) {
       funct_layer++;
       last_pc[last_pc_cnt++] = pc;
+      printf("1\n");
       if (jmp_last == NULL) {
         jmp_last = malloc(sizeof(jmp_log));
         jmp_head = jmp_last;
