@@ -193,6 +193,7 @@ void assert_fail_msg() {
 #ifdef TRACE_DEVICE
   print_device_buffer();
 #endif
+#define FTRACE
 #ifdef FTRACE
   print_jmp_log();
 #endif
