@@ -72,12 +72,16 @@ void call_funct(unsigned int addr, unsigned int pc) {
       // printf("now->addr: %x, addr: %x\n", now->addr, addr);
       // if (now->addr <= addr && now->addr + now->size > addr) {
       last_pc[last_pc_cnt++] = pc;
-      if (last_pc_cnt >= 1000) {
-        for (int i = 0; i < 1000; i++) {
+      if (last_pc_cnt >= 999) {
+        for (int i = 0; i < 999; i++) {
           jmp_head[i].name = jmp_head[i + 1].name;
           jmp_head[i].layer = jmp_head[i + 1].layer;
           jmp_head[i].now_pc = jmp_head[i + 1].now_pc;
         }
+        last_pc_cnt--;
+        jmp_head[999].name = now->name;
+        jmp_head[999].layer = funct_layer;
+        jmp_head[999].now_pc = pc;
         return;
       }
       jmp_head[funct_layer].name = now->name;
