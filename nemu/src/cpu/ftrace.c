@@ -50,7 +50,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
     // 寻找.symtab
     int symtab_idx = -1;
     for (int i = 0; i < ehdr.e_shnum; i++) {
-      printf("Type: %x, Addr: %x, Offset: %x, Size: %x\n", shtab[i].sh_type,
+      printf("Type: %08x, Addr: %x, Offset: %x, Size: %x\n", shtab[i].sh_type,
              shtab[i].sh_addr, shtab[i].sh_offset, shtab[i].sh_size);
 
       if (shtab[i].sh_type == SHT_SYMTAB) {
