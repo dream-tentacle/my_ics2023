@@ -116,7 +116,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
               s->format->palette->colors[s->pixels[i + j * s->w]].b |
               s->format->palette->colors[s->pixels[i + j * s->w]].a << 24;
         }
-        NDL_DrawRect(buf, x, j, w, 1);
+        NDL_DrawRect(buf, x, j + 1, w, 1);
       }
     }
   }
