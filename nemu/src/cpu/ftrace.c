@@ -52,6 +52,8 @@ void call_funct(unsigned int addr, unsigned int pc) {
       assert(fread(&symtab, sizeof(Elf32_Sym), 1, fp));
       if ((symtab.st_info & 15) == STT_FUNC) {
         int offset = shtab[strtab_idx].sh_offset + symtab.st_name;
+        printf("offset: %x\n", offset);
+        assert(0);
         char *name = (char *)malloc(100);
         assert(-1 != fseek(fp, offset, SEEK_SET));
         assert(fread(name, 100, 1, fp));
