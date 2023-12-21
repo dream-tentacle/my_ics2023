@@ -80,7 +80,6 @@ void call_funct(unsigned int addr, unsigned int pc) {
     }
     printf("funct_cnt: %d\n", func_cnt);
   }
-  printf("pc: %x\n", pc);
   for (int i = 0; i < func_cnt; i++) {
     if (funct_table[i].addr == 0)
       break;
