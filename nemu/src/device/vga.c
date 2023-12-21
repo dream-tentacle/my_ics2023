@@ -46,7 +46,7 @@ static void init_screen() {
   char title[128];
   sprintf(title, "%s-NEMU", str(__GUEST_ISA__));
   SDL_Init(SDL_INIT_VIDEO);
-  SDL_CreateWindowAndRenderer(800, 600, 0, &window, &renderer);
+  SDL_CreateWindowAndRenderer(1600, 1200, 0, &window, &renderer);
   SDL_SetWindowTitle(window, title);
   texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
                               SDL_TEXTUREACCESS_STATIC, SCREEN_W, SCREEN_H);
