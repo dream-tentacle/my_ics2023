@@ -45,7 +45,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
     Elf32_Shdr shtab[ehdr.e_shnum];
     printf("ehdr.e_shoff: %x\n", ehdr.e_shoff);
     printf("ehdr.e_shnum: %d\n", ehdr.e_shnum);
-    assert(fseek(fp, ehdr.e_shoff, SEEK_SET));
+    assert(-1 != fseek(fp, ehdr.e_shoff, SEEK_SET));
     assert(fread(shtab, sizeof(Elf32_Sym), ehdr.e_shnum, fp));
     // 寻找.symtab
     int symtab_idx = -1;
@@ -61,8 +61,9 @@ void call_funct(unsigned int addr, unsigned int pc) {
     assert(sizeof(Elf32_Sym) == shtab[symtab_idx].sh_entsize);
     Elf32_Sym symtab[symtab_len];
     for (int i = 0; i < symtab_len; i++) {
-      assert(fseek(fp, shtab[symtab_idx].sh_offset + i * sizeof(Elf32_Sym),
-                   SEEK_SET));
+      assert(-1 != fseek(fp,
+                         shtab[symtab_idx].sh_offset + i * sizeof(Elf32_Sym),
+                         SEEK_SET));
       assert(fread(&symtab[i], sizeof(Elf32_Sym), 1, fp));
       if ((symtab[i].st_info & 15) == STT_FUNC) {
         func_cnt++;
