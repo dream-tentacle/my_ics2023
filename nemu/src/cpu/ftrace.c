@@ -56,6 +56,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
 
       if (shtab[i].sh_type == SHT_SYMTAB) {
         symtab_idx = i;
+        printf("symtab_idx: %d\n", symtab_idx);
         break;
       }
     }
