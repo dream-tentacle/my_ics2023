@@ -80,7 +80,7 @@ int SDL_PeepEvents(SDL_Event *ev, int numevents, int action, uint32_t mask) {
   printf("SDL_PeepEvents() is not implemented!\n");
   return 0;
 }
-
+uint8_t state[256];
 uint8_t *SDL_GetKeyState(int *numkeys) {
   printf("SDL_GetKeyState() is not implemented!\n");
   return NULL;

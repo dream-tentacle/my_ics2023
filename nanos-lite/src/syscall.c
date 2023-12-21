@@ -28,7 +28,7 @@ void sys_gettimeofday(int *tv, int *tz) {
   }
 }
 
-// #define STRACE
+#define STRACE
 #ifdef STRACE
 #define strace(s, ...) printf("> " s " <\n", ##__VA_ARGS__)
 #else
@@ -50,14 +50,12 @@ void do_syscall(Context *c) {
     sys_exit(c->GPR2);
     break;
   case SYS_write:
-    tmp = c->GPR2;
+    strace("sys_write, write %s", file_table[c->GPR2].name);
     c->GPRx = sys_write(c->GPR2, (void *)c->GPR3, c->GPR4);
-    strace("sys_write, write %s, return %d", file_table[tmp].name, c->GPRx);
     break;
   case SYS_read:
-    tmp = c->GPR2;
+    strace("sys_read, read from %s", file_table[c->GPR2].name);
     c->GPRx = sys_read(c->GPR2, (void *)c->GPR3, c->GPR4);
-    strace("sys_read, read from %s, return %d", file_table[tmp].name, c->GPRx);
     break;
   case SYS_brk:
     sys_brk(c->GPR2);
@@ -69,15 +67,13 @@ void do_syscall(Context *c) {
     c->GPRx = 0;
     break;
   case SYS_lseek:
-    tmp = c->GPR2;
+    strace("sys_lseek, lseek %s, offset set to %d", file_table[c->GPR2].name,
+           file_table[c->GPR2].open_offset);
     c->GPRx = sys_lseek(c->GPR2, c->GPR3, c->GPR4);
-    strace("sys_lseek, lseek %s, offset set to %d, return %d",
-           file_table[tmp].name, file_table[tmp].open_offset, c->GPRx);
     break;
   case SYS_open:
-    char __attribute__((unused)) *path = (char *)c->GPR2;
+    strace("sys_open, open file %s", (char *)c->GPR2);
     c->GPRx = sys_open((const char *)c->GPR2, c->GPR3, c->GPR4);
-    strace("sys_open, open file %s, return %d", path, c->GPRx);
     break;
   case SYS_gettimeofday:
     sys_gettimeofday((int *)c->GPR2, (int *)c->GPR3);
