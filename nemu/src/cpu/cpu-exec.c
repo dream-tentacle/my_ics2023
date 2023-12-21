@@ -21,7 +21,7 @@
 #ifdef CONFIG_DEVICE
 #include <device/map.h>
 #endif
-#define FTRACE
+
 #ifdef FTRACE
 #include <cpu/ftrace.h>
 #endif
