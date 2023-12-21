@@ -43,6 +43,8 @@ void call_funct(unsigned int addr, unsigned int pc) {
     assert((*(uint32_t *)ehdr.e_ident == 0x464c457f));
     // 读取section header table
     Elf64_Shdr shtab[ehdr.e_shnum];
+    printf("ehdr.e_shoff: %lx\n", ehdr.e_shoff);
+    printf("ehdr.e_shnum: %d\n", ehdr.e_shnum);
     assert(fseek(fp, ehdr.e_shoff, SEEK_SET));
     assert(fread(shtab, sizeof(Elf64_Sym), ehdr.e_shnum, fp));
     // 寻找.symtab
