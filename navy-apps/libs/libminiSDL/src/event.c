@@ -11,6 +11,7 @@ int SDL_PushEvent(SDL_Event *ev) {
   return 0;
 }
 
+uint8_t state[256];
 int SDL_PollEvent(SDL_Event *event) {
   int event_len;
   char buf[64];
@@ -28,6 +29,7 @@ int SDL_PollEvent(SDL_Event *event) {
         break;
       }
     }
+    state[event->key.keysym.sym] = 1;
   } else if (buf[0] == 'k' && buf[1] == 'u') {
     event->type = SDL_KEYUP;
     char key[64];
@@ -38,6 +40,7 @@ int SDL_PollEvent(SDL_Event *event) {
         break;
       }
     }
+    state[event->key.keysym.sym] = 0;
   } else {
     printf("SDL_PollEvent read: %s\n", buf);
   }
@@ -61,6 +64,7 @@ int SDL_WaitEvent(SDL_Event *event) {
         break;
       }
     }
+    state[event->key.keysym.sym] = 1;
   }
   if (buf[0] == 'k' && buf[1] == 'u') {
     event->type = SDL_KEYUP;
@@ -72,6 +76,7 @@ int SDL_WaitEvent(SDL_Event *event) {
         break;
       }
     }
+    state[event->key.keysym.sym] = 0;
   }
   return 1;
 }
@@ -80,8 +85,8 @@ int SDL_PeepEvents(SDL_Event *ev, int numevents, int action, uint32_t mask) {
   printf("SDL_PeepEvents() is not implemented!\n");
   return 0;
 }
-uint8_t state[256];
 uint8_t *SDL_GetKeyState(int *numkeys) {
-  printf("SDL_GetKeyState() is not implemented!\n");
-  return NULL;
+  if (numkeys)
+    *numkeys = 256;
+  return state;
 }
