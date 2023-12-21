@@ -110,7 +110,7 @@ void SDL_UpdateRect(SDL_Surface *s, int x, int y, int w, int h) {
       int cnt;
       for (int i = x; i <= x + w; i++) {
         for (int j = y; j <= y + h; j++) {
-          buf[cnt++] =
+          buf[(i - x) + (j - y) * w] =
               s->format->palette->colors[s->pixels[i + j * s->w]].r << 16 |
               s->format->palette->colors[s->pixels[i + j * s->w]].g << 8 |
               s->format->palette->colors[s->pixels[i + j * s->w]].b |
