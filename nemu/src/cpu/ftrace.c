@@ -82,7 +82,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
   }
   for (int i = 0; i < func_cnt; i++) {
     funct_info *now = &funct_table[i];
-    printf("now->addr: %x, now->size: %x\n", now->addr, now->size);
+    // printf("now->addr: %x, now->size: %x\n", now->addr, now->size);
     if (now->addr == addr ||
         (now->addr <= addr && now->addr + now->size > addr &&
          (pc < now->addr || pc > now->addr + now->size))) {
