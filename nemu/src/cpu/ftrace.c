@@ -75,6 +75,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
         funct_table[i].size = symtab[i].st_size;
       }
     }
+    printf("funct_cnt: %d\n", func_cnt);
   }
   for (int i = 0; i < func_cnt; i++) {
     if (funct_table[i].addr == 0)
