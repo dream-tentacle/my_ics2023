@@ -1,5 +1,5 @@
 #include <common.h>
-#include "syscall.h"
+extern void do_syscall(Context *c);
 
 static Context *do_event(Event e, Context *c) {
   switch (e.event) {
