@@ -33,7 +33,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
     assert(fread(shtab, sizeof(Elf32_Shdr), ehdr.e_shnum, fp));
     // 寻找.symtab和.strtab
     int symtab_idx = -1;
-    int strtab_idx = ehdr.e_shstrndx;
+    int strtab_idx = 11;
     for (int i = 0; i < ehdr.e_shnum; i++) {
       if (shtab[i].sh_type == SHT_SYMTAB) {
         symtab_idx = i;
