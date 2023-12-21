@@ -43,20 +43,13 @@ void call_funct(unsigned int addr, unsigned int pc) {
     assert((*(uint32_t *)ehdr.e_ident == 0x464c457f));
     // 读取section header table
     Elf32_Shdr shtab[ehdr.e_shnum];
-    printf("ehdr.e_shoff: %x\n", ehdr.e_shoff);
-    printf("ehdr.e_shnum: %d\n", ehdr.e_shnum);
     assert(-1 != fseek(fp, ehdr.e_shoff, SEEK_SET));
     assert(fread(shtab, sizeof(Elf32_Shdr), ehdr.e_shnum, fp));
     // 寻找.symtab
     int symtab_idx = -1;
     for (int i = 0; i < ehdr.e_shnum; i++) {
-      printf("Type: %08x, Addr: %08x, Offset: %08x, Size: %08x\n",
-             shtab[i].sh_type, shtab[i].sh_addr, shtab[i].sh_offset,
-             shtab[i].sh_size);
-
       if (shtab[i].sh_type == SHT_SYMTAB) {
         symtab_idx = i;
-        printf("symtab_idx: %d\n", symtab_idx);
         break;
       }
     }
@@ -87,6 +80,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
     }
     printf("funct_cnt: %d\n", func_cnt);
   }
+  printf("pc: %x\n", pc);
   for (int i = 0; i < func_cnt; i++) {
     if (funct_table[i].addr == 0)
       break;
