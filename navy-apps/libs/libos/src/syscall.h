@@ -1,6 +1,6 @@
 #ifndef __SYSCALL_H__
 #define __SYSCALL_H__
-
+void do_syscall(Context *c);
 enum {
   SYS_exit,
   SYS_yield,
