@@ -84,7 +84,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
     if (funct_table[i].addr == 0)
       break;
     funct_info *now = &funct_table[i];
-    if (now->addr <= 0x83033804 && now->addr + now->size >= 0x83033804)
+    if (1)
       printf("now->addr: %x, now->size: %x\n", now->addr, now->size);
     if (now->addr == addr ||
         (now->addr <= addr && now->addr + now->size > addr &&
