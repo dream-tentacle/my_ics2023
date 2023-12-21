@@ -66,6 +66,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
     assert(sizeof(Elf32_Sym) == shtab[symtab_idx].sh_entsize);
     Elf32_Sym symtab;
     for (int i = 0; i < symtab_len; i++) {
+      printf("%d\n", i);
       assert(-1 != fseek(fp,
                          shtab[symtab_idx].sh_offset + i * sizeof(Elf32_Sym),
                          SEEK_SET));
