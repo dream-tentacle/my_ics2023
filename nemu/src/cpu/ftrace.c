@@ -38,15 +38,15 @@ void call_funct(unsigned int addr, unsigned int pc) {
       printf("open file error\n");
       return;
     }
-    Elf64_Ehdr ehdr;
-    assert(fread(&ehdr, sizeof(Elf64_Ehdr), 1, fp));
+    Elf32_Ehdr ehdr;
+    assert(fread(&ehdr, sizeof(Elf32_Ehdr), 1, fp));
     assert((*(uint32_t *)ehdr.e_ident == 0x464c457f));
     // 读取section header table
-    Elf64_Shdr shtab[ehdr.e_shnum];
-    printf("ehdr.e_shoff: %lx\n", ehdr.e_shoff);
+    Elf32_Shdr shtab[ehdr.e_shnum];
+    printf("ehdr.e_shoff: %x\n", ehdr.e_shoff);
     printf("ehdr.e_shnum: %d\n", ehdr.e_shnum);
     assert(fseek(fp, ehdr.e_shoff, SEEK_SET));
-    assert(fread(shtab, sizeof(Elf64_Sym), ehdr.e_shnum, fp));
+    assert(fread(shtab, sizeof(Elf32_Sym), ehdr.e_shnum, fp));
     // 寻找.symtab
     int symtab_idx = -1;
     for (int i = 0; i < ehdr.e_shnum; i++) {
@@ -57,13 +57,13 @@ void call_funct(unsigned int addr, unsigned int pc) {
     }
     assert(symtab_idx != -1);
     // 读取.symtab
-    int symtab_len = shtab[symtab_idx].sh_size / sizeof(Elf64_Sym);
-    assert(sizeof(Elf64_Sym) == shtab[symtab_idx].sh_entsize);
-    Elf64_Sym symtab[symtab_len];
+    int symtab_len = shtab[symtab_idx].sh_size / sizeof(Elf32_Sym);
+    assert(sizeof(Elf32_Sym) == shtab[symtab_idx].sh_entsize);
+    Elf32_Sym symtab[symtab_len];
     for (int i = 0; i < symtab_len; i++) {
-      assert(fseek(fp, shtab[symtab_idx].sh_offset + i * sizeof(Elf64_Sym),
+      assert(fseek(fp, shtab[symtab_idx].sh_offset + i * sizeof(Elf32_Sym),
                    SEEK_SET));
-      assert(fread(&symtab[i], sizeof(Elf64_Sym), 1, fp));
+      assert(fread(&symtab[i], sizeof(Elf32_Sym), 1, fp));
       if ((symtab[i].st_info & 15) == STT_FUNC) {
         func_cnt++;
       }
@@ -71,8 +71,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
     funct_table = malloc(sizeof(funct_info) * func_cnt);
     for (int i = 0; i < symtab_len; i++) {
       if ((symtab[i].st_info & 15) == STT_FUNC) {
-        funct_table[i].name =
-            (char *)(symtab[i].st_name + shtab[symtab_idx].sh_offset);
+        // funct_table[i].name = (char *)(symtab[i].st_name);
         funct_table[i].addr = symtab[i].st_value;
         funct_table[i].size = symtab[i].st_size;
       }
