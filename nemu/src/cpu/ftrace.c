@@ -73,7 +73,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
                          SEEK_SET));
       assert(fread(&symtab, sizeof(Elf32_Sym), 1, fp));
       if ((symtab.st_info & 15) == STT_FUNC) {
-        // funct_table[i].name = (char *)(symtab[i].st_name);
+        funct_table[i].name = "func";
         funct_table[i].addr = symtab.st_value;
         funct_table[i].size = symtab.st_size;
       }
@@ -89,7 +89,6 @@ void call_funct(unsigned int addr, unsigned int pc) {
          (pc < now->addr || pc > now->addr + now->size))) {
       funct_layer++;
       last_pc[last_pc_cnt++] = pc;
-      printf("1\n");
       if (jmp_last == NULL) {
         jmp_last = malloc(sizeof(jmp_log));
         jmp_head = jmp_last;
@@ -108,6 +107,7 @@ void call_funct(unsigned int addr, unsigned int pc) {
       return;
     }
   }
+  printf("pc: %x\n", pc);
 }
 
 void print_jmp_log() {
