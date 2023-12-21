@@ -6,7 +6,7 @@
 // name, addr, size
 static funct_info funct_table[1273];
 static int func_cnt = 0;
-static jmp_log *jmp_head, *jmp_last;
+static jmp_log jmp_head[1000];
 static int funct_layer = 0; // 记录函数嵌套层数
 static uint32_t last_pc[1000];
 static int last_pc_cnt = 0;
@@ -15,20 +15,6 @@ void call_funct(unsigned int addr, unsigned int pc) {
   if (last_pc_cnt > 0 && last_pc[last_pc_cnt - 1] == addr - 4) {
     last_pc_cnt--;
     funct_layer--;
-    if (jmp_last == NULL) {
-      jmp_last = malloc(sizeof(jmp_log));
-      jmp_head = jmp_last;
-      jmp_head->name = return_name;
-      jmp_head->layer = funct_layer + 1;
-      jmp_head->now_pc = pc;
-      jmp_head->next = NULL;
-    } else {
-      jmp_last->next = malloc(sizeof(jmp_log));
-      jmp_last = jmp_last->next;
-      jmp_last->name = return_name;
-      jmp_last->layer = funct_layer + 1;
-      jmp_last->next = NULL;
-    }
     return;
   }
   if (!func_cnt) {
@@ -79,23 +65,11 @@ void call_funct(unsigned int addr, unsigned int pc) {
     if (now->addr == addr ||
         (now->addr <= addr && now->addr + now->size > addr &&
          (pc < now->addr || pc > now->addr + now->size))) {
-      funct_layer++;
       last_pc[last_pc_cnt++] = pc;
-      if (jmp_last == NULL) {
-        jmp_last = malloc(sizeof(jmp_log));
-        jmp_head = jmp_last;
-        jmp_head->name = now->name;
-        jmp_head->layer = funct_layer;
-        jmp_head->now_pc = pc;
-        jmp_head->next = NULL;
-      } else {
-        jmp_last->next = malloc(sizeof(jmp_log));
-        jmp_last = jmp_last->next;
-        jmp_last->name = now->name;
-        jmp_last->layer = funct_layer;
-        jmp_last->now_pc = pc;
-        jmp_last->next = NULL;
-      }
+      jmp_head[funct_layer].name = now->name;
+      jmp_head[funct_layer].layer = funct_layer;
+      jmp_head[funct_layer].now_pc = pc;
+      funct_layer++;
       return;
     }
   }
@@ -103,8 +77,8 @@ void call_funct(unsigned int addr, unsigned int pc) {
 }
 
 void print_jmp_log() {
-  jmp_log *now = jmp_head;
-  while (now != NULL) {
+  for (int i = 0; i < funct_layer; i++) {
+    jmp_log *now = &jmp_head[i];
     printf("%x ", now->now_pc);
     for (int i = 1; i < now->layer; i++) {
       printf("│   ");
@@ -113,6 +87,5 @@ void print_jmp_log() {
       printf("└── %d %s\n", now->layer, now->name);
     } else
       printf("├── %s %d\n", now->name, now->layer);
-    now = now->next;
   }
 }

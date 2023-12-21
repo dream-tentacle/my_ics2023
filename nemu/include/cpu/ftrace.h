@@ -9,7 +9,6 @@ typedef struct jmp_log {
   char *name;
   unsigned int layer;
   unsigned int now_pc;
-  struct jmp_log *next;
 } jmp_log;
 
 void call_funct(unsigned int addr, unsigned int pc);
