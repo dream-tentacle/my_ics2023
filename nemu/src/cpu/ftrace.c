@@ -64,22 +64,26 @@ void call_funct(unsigned int addr, unsigned int pc) {
     // 读取.symtab
     int symtab_len = shtab[symtab_idx].sh_size / sizeof(Elf32_Sym);
     assert(sizeof(Elf32_Sym) == shtab[symtab_idx].sh_entsize);
-    Elf32_Sym symtab[symtab_len];
+    Elf32_Sym symtab;
     for (int i = 0; i < symtab_len; i++) {
       assert(-1 != fseek(fp,
                          shtab[symtab_idx].sh_offset + i * sizeof(Elf32_Sym),
                          SEEK_SET));
-      assert(fread(&symtab[i], sizeof(Elf32_Sym), 1, fp));
-      if ((symtab[i].st_info & 15) == STT_FUNC) {
+      assert(fread(&symtab, sizeof(Elf32_Sym), 1, fp));
+      if ((symtab.st_info & 15) == STT_FUNC) {
         func_cnt++;
       }
     }
     funct_table = malloc(sizeof(funct_info) * func_cnt);
     for (int i = 0; i < symtab_len; i++) {
-      if ((symtab[i].st_info & 15) == STT_FUNC) {
+      assert(-1 != fseek(fp,
+                         shtab[symtab_idx].sh_offset + i * sizeof(Elf32_Sym),
+                         SEEK_SET));
+      assert(fread(&symtab, sizeof(Elf32_Sym), 1, fp));
+      if ((symtab.st_info & 15) == STT_FUNC) {
         // funct_table[i].name = (char *)(symtab[i].st_name);
-        funct_table[i].addr = symtab[i].st_value;
-        funct_table[i].size = symtab[i].st_size;
+        funct_table[i].addr = symtab.st_value;
+        funct_table[i].size = symtab.st_size;
       }
     }
     printf("funct_cnt: %d\n", func_cnt);
