@@ -64,18 +64,10 @@ void call_funct(unsigned int addr, unsigned int pc) {
                          SEEK_SET));
       assert(fread(&symtab, sizeof(Elf32_Sym), 1, fp));
       if ((symtab.st_info & 15) == STT_FUNC) {
+        funct_table[func_cnt].name = "func";
+        funct_table[func_cnt].addr = funct_table[func_cnt].size =
+            symtab.st_size;
         func_cnt++;
-      }
-    }
-    for (int i = 0; i < symtab_len; i++) {
-      assert(-1 != fseek(fp,
-                         shtab[symtab_idx].sh_offset + i * sizeof(Elf32_Sym),
-                         SEEK_SET));
-      assert(fread(&symtab, sizeof(Elf32_Sym), 1, fp));
-      if ((symtab.st_info & 15) == STT_FUNC) {
-        funct_table[i].name = "func";
-        funct_table[i].addr = symtab.st_value;
-        funct_table[i].size = symtab.st_size;
       }
     }
     printf("funct_cnt: %d\n", func_cnt);
