@@ -30,6 +30,7 @@ void sys_gettimeofday(int *tv, int *tz) {
   }
 }
 void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
+  ioe_init();
   naive_uload(NULL, fname);
 }
 // #define STRACE

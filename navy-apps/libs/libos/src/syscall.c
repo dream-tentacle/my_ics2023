@@ -63,7 +63,6 @@ int _execve(const char *fname, char *const argv[], char *const envp[]) {
 }
 
 void _exit(int status) {
-  init_device();
   _execve("/bin/nterm", NULL, NULL);
   while (1)
     ;
