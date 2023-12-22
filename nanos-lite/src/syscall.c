@@ -2,6 +2,8 @@
 #include "syscall.h"
 #include "fs.h"
 #include "ramdisk.h"
+#include "loader.h"
+
 void sys_yield() { yield(); }
 void sys_exit(int code) { halt(code); }
 int sys_open(const char *path, int flags, int mode) {
@@ -27,7 +29,9 @@ void sys_gettimeofday(int *tv, int *tz) {
     tz[1] = 0;
   }
 }
-
+void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
+  naive_uload(NULL, fname);
+}
 #define STRACE
 #ifdef STRACE
 #define strace(s, ...) printf("> " s " <\n", ##__VA_ARGS__)
@@ -78,6 +82,11 @@ void do_syscall(Context *c) {
   case SYS_gettimeofday:
     sys_gettimeofday((int *)c->GPR2, (int *)c->GPR3);
     c->GPRx = 0;
+    break;
+  case SYS_execve:
+    strace("sys_execve, execve %s", (char *)c->GPR2);
+    sys_execve((const char *)c->GPR2, (char *const *)c->GPR3,
+               (char *const *)c->GPR4);
     break;
   default:
     panic("Unhandled syscall ID = %d", a[0]);
