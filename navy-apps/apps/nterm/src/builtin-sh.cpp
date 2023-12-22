@@ -19,13 +19,13 @@ static void sh_banner() {
 }
 
 static void sh_prompt() { sh_printf("sh> "); }
-
+const char *PATH[10];
 static void sh_handle_cmd(const char *cmd) { execvp(cmd, NULL); }
 
 void builtin_sh_run() {
   sh_banner();
   sh_prompt();
-  setenv("/bin/", 0, 0);
+  setenv("PATH", "/bin", 0);
   while (1) {
     SDL_Event ev;
     if (SDL_PollEvent(&ev)) {
