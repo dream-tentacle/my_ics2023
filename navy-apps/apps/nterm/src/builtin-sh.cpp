@@ -18,12 +18,9 @@ static void sh_banner() {
   sh_printf("Built-in Shell in NTerm (NJU Terminal)\n\n");
 }
 
-static void sh_prompt() {
-  sh_printf("sh> ");
-}
+static void sh_prompt() { sh_printf("sh> "); }
 
-static void sh_handle_cmd(const char *cmd) {
-}
+static void sh_handle_cmd(const char *cmd) { execve(cmd, NULL, NULL); }
 
 void builtin_sh_run() {
   sh_banner();

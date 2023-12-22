@@ -32,7 +32,7 @@ void sys_gettimeofday(int *tv, int *tz) {
 void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   naive_uload(NULL, fname);
 }
-#define STRACE
+// #define STRACE
 #ifdef STRACE
 #define strace(s, ...) printf("> " s " <\n", ##__VA_ARGS__)
 #else
