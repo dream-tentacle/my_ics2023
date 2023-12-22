@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <time.h>
 #include "syscall.h"
+#include "device.h"
 
 // helper macros
 #define _concat(x, y) x##y
@@ -62,6 +63,7 @@ int _execve(const char *fname, char *const argv[], char *const envp[]) {
 }
 
 void _exit(int status) {
+  init_device();
   _execve("/bin/nterm", NULL, NULL);
   while (1)
     ;
