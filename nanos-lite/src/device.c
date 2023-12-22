@@ -43,7 +43,12 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
   io_write(AM_GPU_FBDRAW, w, h, tmp, len / sizeof(uint32_t), 1, true);
   return len;
 }
-
+void gpu_init() {
+  void *buf = malloc(4 * 400 * 300);
+  memset(buf, 0, 4 * 400 * 300);
+  io_write(AM_GPU_FBDRAW, 0, 0, buf, 400, 300, true);
+  free(buf);
+}
 void init_device() {
   Log("Initializing devices...");
   ioe_init();

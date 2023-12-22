@@ -29,9 +29,9 @@ void sys_gettimeofday(int *tv, int *tz) {
     tz[1] = 0;
   }
 }
-extern void init_device();
+extern void gpu_init();
 void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
-  init_device();
+  gpu_init();
   naive_uload(NULL, fname);
 }
 // #define STRACE
