@@ -187,6 +187,7 @@ void print_ring_buffer() {
 void assert_fail_msg() {
   isa_reg_display();
   statistic();
+  printf("123");
 #ifdef CONFIG_ITRACE
   print_ring_buffer();
 #endif
