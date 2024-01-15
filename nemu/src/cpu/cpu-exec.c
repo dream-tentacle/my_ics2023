@@ -122,36 +122,6 @@ static void exec_once(Decode *s, vaddr_t pc) {
 #endif
 }
 
-static void execute(uint64_t n) {
-  Decode s;
-  for (; n > 0; n--) {
-    exec_once(&s, cpu.pc);
-    g_nr_guest_inst++;
-    if (nemu_state.state != NEMU_RUNNING)
-      break;
-    IFDEF(CONFIG_DEVICE, device_update());
-    trace_and_difftest(&s, cpu.pc);
-#ifdef TRACE_DEVICE
-    if (nemu_state.state != NEMU_RUNNING) {
-      print_device_buffer();
-      break;
-    }
-#endif
-  }
-}
-
-static void statistic() {
-  IFNDEF(CONFIG_TARGET_AM, setlocale(LC_NUMERIC, ""));
-#define NUMBERIC_FMT MUXDEF(CONFIG_TARGET_AM, "%", "%'") PRIu64
-  Log("host time spent = " NUMBERIC_FMT " us", g_timer);
-  Log("total guest instructions = " NUMBERIC_FMT, g_nr_guest_inst);
-  if (g_timer > 0)
-    Log("simulation frequency = " NUMBERIC_FMT " inst/s",
-        g_nr_guest_inst * 1000000 / g_timer);
-  else
-    Log("Finish running in less than 1 us and can not calculate the "
-        "simulation frequency");
-}
 #ifdef CONFIG_ITRACE
 void print_ring_buffer() {
   for (int i = 1; i <= ring_cnt; i++) {
@@ -184,10 +154,41 @@ void print_ring_buffer() {
   printf(" --> %s\n", last_decode->logbuf);
 }
 #endif
+static void execute(uint64_t n) {
+  Decode s;
+  for (; n > 0; n--) {
+    exec_once(&s, cpu.pc);
+    g_nr_guest_inst++;
+    if (nemu_state.state != NEMU_RUNNING) {
+      print_ring_buffer();
+      break;
+    }
+    IFDEF(CONFIG_DEVICE, device_update());
+    trace_and_difftest(&s, cpu.pc);
+#ifdef TRACE_DEVICE
+    if (nemu_state.state != NEMU_RUNNING) {
+      print_device_buffer();
+      break;
+    }
+#endif
+  }
+}
+
+static void statistic() {
+  IFNDEF(CONFIG_TARGET_AM, setlocale(LC_NUMERIC, ""));
+#define NUMBERIC_FMT MUXDEF(CONFIG_TARGET_AM, "%", "%'") PRIu64
+  Log("host time spent = " NUMBERIC_FMT " us", g_timer);
+  Log("total guest instructions = " NUMBERIC_FMT, g_nr_guest_inst);
+  if (g_timer > 0)
+    Log("simulation frequency = " NUMBERIC_FMT " inst/s",
+        g_nr_guest_inst * 1000000 / g_timer);
+  else
+    Log("Finish running in less than 1 us and can not calculate the "
+        "simulation frequency");
+}
 void assert_fail_msg() {
   isa_reg_display();
   statistic();
-  printf("123");
 #ifdef CONFIG_ITRACE
   print_ring_buffer();
 #endif
