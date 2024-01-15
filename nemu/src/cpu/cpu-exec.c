@@ -160,7 +160,7 @@ static void execute(uint64_t n) {
     exec_once(&s, cpu.pc);
     g_nr_guest_inst++;
     if (nemu_state.state != NEMU_RUNNING) {
-      // print_ring_buffer();
+      print_ring_buffer();
       break;
     }
     IFDEF(CONFIG_DEVICE, device_update());

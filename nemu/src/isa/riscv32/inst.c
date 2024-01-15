@@ -142,18 +142,22 @@ void csr_mask(word_t imm, word_t val) {
 void csr_write(word_t imm, word_t val) {
   if (imm == 0x305) {
     mtvep = val;
+    printf("mtvep: %x\n", val);
     return;
   }
   if (imm == 0x341) {
     mepc = val;
+    printf("mepc: %x\n", val);
     return;
   }
   if (imm == 0x342) {
     mcause = val;
+    printf("mcause: %x\n", val);
     return;
   }
   if (imm == 0x300) {
     mstatus = val;
+    printf("mstatus: %x\n", val);
     return;
   }
   Assert(0, "csr_write: not implemented this csr");
