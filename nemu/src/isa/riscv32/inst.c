@@ -146,8 +146,8 @@ void csr_write(word_t imm, word_t val) {
     return;
   }
   if (imm == 0x341) {
+    printf("mepc from %x to %x\n", mepc, val);
     mepc = val;
-    printf("mepc: %x\n", val);
     return;
   }
   if (imm == 0x342) {
