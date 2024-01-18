@@ -21,6 +21,7 @@ void context_kload(PCB *pcb, void *entry, void *arg) {
   pcb->cp = kcontext((Area){pcb->stack, pcb + 1}, entry, arg);
 }
 void init_proc() {
+  naive_uload(NULL, "/bin/nterm");
   context_kload(&pcb[0], hello_fun, (void *)"a");
   context_kload(&pcb[1], hello_fun, (void *)"b");
   context_kload(&pcb[2], hello_fun, (void *)"c");
