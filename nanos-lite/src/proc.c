@@ -29,10 +29,11 @@ void context_uload(PCB *pcb, char *path) {
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"a");
   // context_kload(&pcb[1], hello_fun, (void *)"b");
-  // context_kload(&pcb[2], hello_fun, (void *)"c");
+  context_kload(&pcb[2], hello_fun, (void *)"c");
   context_kload(&pcb[3], hello_fun, (void *)"d");
   context_uload(&pcb[1], "/bin/pal");
-  context_uload(&pcb[2], "/bin/bird");
+  // context_uload(&pcb[2], "/bin/bird");   This will cause failure, why? The
+  // answer is in the next chapter
   switch_boot_pcb();
   // load program here
   // naive_uload(NULL, "/bin/pal");
