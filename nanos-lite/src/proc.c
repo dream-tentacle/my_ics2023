@@ -23,7 +23,9 @@ void context_kload(PCB *pcb, void *entry, void *arg) {
 }
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)'a');
-  context_kload(&pcb[1], hello_fun, (void *)'c');
+  context_kload(&pcb[1], hello_fun, (void *)'b');
+  context_kload(&pcb[2], hello_fun, (void *)'c');
+  context_kload(&pcb[3], hello_fun, (void *)'d');
   switch_boot_pcb();
   // load program here
 }
