@@ -58,8 +58,8 @@ int fs_write(int fd, void *buf, size_t count) {
 int fs_read(int fd, void *buf, size_t count) {
   if (file_table[fd].read == NULL) {
     if (file_table[fd].open_offset > file_table[fd].size)
-      panic("fs_read: file_table[%u].open_offset = %u, "
-            "file_table[fd].size = %u\n",
+      panic("fs_read: file_table[%d].open_offset = %d, "
+            "file_table[fd].size = %d\n",
             fd, file_table[fd].open_offset, file_table[fd].size);
     if (count + file_table[fd].open_offset > file_table[fd].size) {
       count = file_table[fd].size - file_table[fd].open_offset;
