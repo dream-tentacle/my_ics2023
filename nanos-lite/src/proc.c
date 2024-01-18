@@ -26,7 +26,6 @@ void init_proc() {
   context_kload(&pcb[1], hello_fun, (void *)'b');
   context_kload(&pcb[2], hello_fun, (void *)'c');
   context_kload(&pcb[3], hello_fun, (void *)'d');
-  printf("hello_fun: %p\n", hello_fun);
   switch_boot_pcb();
   // load program here
 }
@@ -34,12 +33,16 @@ void init_proc() {
 Context *schedule(Context *prev) {
   printf("prev: %p\n", prev->mepc);
   current->cp = prev;
+  int flag = 0;
   for (int i = 0; i < MAX_NR_PROC; i++) {
     if (current == &pcb[i]) {
       current = &pcb[(i + 1) % MAX_NR_PROC];
+      flag = 1;
       break;
     }
   }
+  if (flag == 0)
+    current = &pcb[0];
   printf("current: %p\n", current->cp->mepc);
   return current->cp;
 }
