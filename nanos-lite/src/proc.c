@@ -12,7 +12,7 @@ void switch_boot_pcb() { current = &pcb_boot; }
 void hello_fun(void *arg) {
   int j = 1;
   while (1) {
-    Log("Hello World from Nanos-lite with arg '%p' for the %dth time!",
+    Log("Hello World from Nanos-lite with arg '%c' for the %dth time!",
         (uintptr_t)arg, j);
     j++;
     yield();
