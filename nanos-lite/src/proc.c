@@ -20,12 +20,16 @@ void hello_fun(void *arg) {
 void context_kload(PCB *pcb, void *entry, void *arg) {
   pcb->cp = kcontext((Area){pcb->stack, pcb + 1}, entry, arg);
 }
+void context_uload(PCB *pcb, void *entry) {
+  pcb->cp = ucontext(NULL, (Area){pcb->stack, pcb + 1}, entry);
+  pcb->cp->GPRx = (int)heap.end;
+}
 void init_proc() {
-  naive_uload(NULL, "/bin/nslider");
   context_kload(&pcb[0], hello_fun, (void *)"a");
-  context_kload(&pcb[1], hello_fun, (void *)"b");
+  // context_kload(&pcb[1], hello_fun, (void *)"b");
   context_kload(&pcb[2], hello_fun, (void *)"c");
   context_kload(&pcb[3], hello_fun, (void *)"d");
+  context_uload(&pcb[1], "bin/pal");
   switch_boot_pcb();
   // load program here
 }
