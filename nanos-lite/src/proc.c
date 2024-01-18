@@ -20,8 +20,10 @@ void hello_fun(void *arg) {
 void context_kload(PCB *pcb, void *entry, void *arg) {
   pcb->cp = kcontext((Area){pcb->stack, pcb + 1}, entry, arg);
 }
-void context_uload(PCB *pcb, void *entry) {
-  pcb->cp = ucontext(NULL, (Area){pcb->stack, pcb + 1}, entry);
+void context_uload(PCB *pcb, char *path) {
+  uintptr_t entry = loader(pcb, (const char *)path);
+  Log("Jump to entry = %p", entry);
+  pcb->cp = ucontext(NULL, (Area){pcb->stack, pcb + 1}, (void *)entry);
   pcb->cp->GPRx = (int)heap.end;
 }
 void init_proc() {
@@ -32,7 +34,7 @@ void init_proc() {
   context_uload(&pcb[1], "bin/pal");
   switch_boot_pcb();
   // load program here
-  naive_uload(NULL, "/bin/pal");
+  // naive_uload(NULL, "/bin/pal");
 }
 
 Context *schedule(Context *prev) {
