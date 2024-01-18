@@ -31,7 +31,6 @@ void init_proc() {
 }
 
 Context *schedule(Context *prev) {
-  printf("prev: %p\n", prev->mepc);
   current->cp = prev;
   int flag = 0;
   for (int i = 0; i < MAX_NR_PROC; i++) {
@@ -43,6 +42,5 @@ Context *schedule(Context *prev) {
   }
   if (flag == 0)
     current = &pcb[0];
-  printf("current: %p\n", current->cp->mepc);
   return current->cp;
 }
