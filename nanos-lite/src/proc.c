@@ -29,6 +29,7 @@ void init_proc() {
 }
 
 Context *schedule(Context *prev) {
+  printf("schedule\n");
   current->cp = prev;
   for (int i = 0; i < MAX_NR_PROC; i++) {
     if (current == &pcb[i]) {
