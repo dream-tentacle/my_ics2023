@@ -64,7 +64,7 @@ void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"kernel");
   char *argv[] = {"--skip", NULL};
   char *envp[] = {NULL};
-  context_uload(add_pcb(), "/test/exec-test", argv, envp);
+  context_uload(add_pcb(), "/bin/exec-test", argv, envp);
   switch_boot_pcb();
   // load program here
   // naive_uload(NULL, "/bin/pal");
