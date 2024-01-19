@@ -5,8 +5,9 @@ static void *pf = NULL;
 void *new_page(size_t nr_page) {
   if (pf == NULL)
     pf = heap.end;
+  void *ret = pf;
   pf -= nr_page * PAGE_SIZE;
-  return pf + nr_page * PAGE_SIZE; // 返回的是页的最高地址
+  return ret; // 返回的是页的最高地址
 }
 
 #ifdef HAS_VME
