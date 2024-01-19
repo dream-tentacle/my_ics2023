@@ -29,9 +29,9 @@ static void sh_handle_cmd(const char *cmd) {
   char *filename = arg;
   int i;
   for (i = 0; arg != NULL; i++) {
-    printf("arg = %s\n", arg);
     args[i] = arg;
     arg = strtok(NULL, s);
+    printf("args[%d]=%s\n", i, args[i]);
   }
   args[i] = NULL;
   execvp(filename, args);
