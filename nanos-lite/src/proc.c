@@ -42,13 +42,13 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   for (int i = 0; i < argc; i++) {
     position -= strlen(argv[i]) + 1;
     *(char **)(sp + 4 * i) = position;
-    printf("*%p = %s\n", sp + 4 * i, position);
+    printf("*%p = %p\n", sp + 4 * i, position);
   }
   *(char *)(sp + 4 * argc) = 0;
   for (int i = 0; i < envc; i++) {
     position -= strlen(envp[i]) + 1;
     *(char **)(sp + 4 * (argc + 1 + i)) = position;
-    printf("*%p = %s\n", sp + 4 * (argc + 1 + i), position);
+    printf("*%p = %p\n", sp + 4 * (argc + 1 + i), position);
   }
   *(char *)(sp + 4 * (argc + 1 + envc)) = 0;
   sp -= 4;
