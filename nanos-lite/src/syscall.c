@@ -41,7 +41,6 @@ void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
     panic("No more PCB");
   }
   context_uload(new_pcb, fname, argv, envp);
-  printf("execve: new_pcb = %p\n", new_pcb);
   switch_boot_pcb();
   yield();
 }
