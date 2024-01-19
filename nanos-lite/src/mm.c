@@ -3,7 +3,9 @@
 static void *pf = NULL;
 #define PAGE_SIZE (4 << 10)
 void *new_page(size_t nr_page) {
+  printf("pf = %p\n", pf);
   pf += nr_page * PAGE_SIZE;
+  printf("pf = %p\n", pf);
   return pf; // 返回的是页的最高地址
 }
 
