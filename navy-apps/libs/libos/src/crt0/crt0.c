@@ -11,12 +11,7 @@ void call_main(uintptr_t *args) {
   char **envp = (char **)(args + argc + 2);
   environ = envp;
   printf("argv = %p\n", argv);
-  printf("argv = %p\n", argv);
-  printf("argv = %p\n", argv);
-  printf("argv = %p\n", argv);
-  printf("argv = %p\n", argv);
-  printf("argv = %p\n", argv);
-  printf("envp = %p\b", envp);
+  printf("envp = %p\n", envp);
   for (int i = 0; i < argc; i++) {
     printf("argv[%d] = %s\n", i, argv[i]);
   }
