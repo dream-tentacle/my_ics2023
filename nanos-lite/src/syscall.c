@@ -30,9 +30,16 @@ void sys_gettimeofday(int *tv, int *tz) {
   }
 }
 extern void gpu_init();
+void context_uload(PCB *pcb, const char *filename, char *const argv[],
+                   char *const envp[]);
+PCB *add_pcb();
 void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
+  PCB *new_pcb = add_pcb();
+  if (new_pcb == NULL) {
+    panic("No more PCB");
+  }
   gpu_init();
-  naive_uload(NULL, fname);
+  context_uload(new_pcb, fname, argv, envp);
 }
 // #define STRACE
 #ifdef STRACE
