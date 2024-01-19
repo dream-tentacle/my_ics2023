@@ -31,12 +31,16 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     sp -= strlen(argv[argc]) + 1;
     strcpy((char *)sp, argv[argc]);
     argc++;
+    printf("sp=%x\n", sp);
   }
+  printf("---\n");
   while (envp[envc] != NULL) {
     sp -= strlen(envp[envc]) + 1;
     strcpy((char *)sp, envp[envc]);
     envc++;
+    printf("sp=%x\n", sp);
   }
+  printf("---\n");
   for (int i = envc; i >= 0; i--) {
     sp -= 4;
     *(char *)sp = *envp[i];
