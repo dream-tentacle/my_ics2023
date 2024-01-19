@@ -37,18 +37,20 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     strcpy((char *)sp, envp[envc]);
     envc++;
   }
-  for (int i = envc; i >= 0; i--) {
-    sp -= 4;
-    *(char *)sp = (int)envp[i];
+  char *position = (char *)heap.end;
+  sp -= 4 * (argc + 1 + envc + 1);
+  for (int i = 0; i < envc; i++) {
+    position -= strlen(envp[i]) + 1;
+    *(char **)(sp + 4 * (argc + 1 + i)) = position;
   }
-  for (int i = argc; i >= 0; i--) {
-    sp -= 4;
-    *(char *)sp = (int)argv[i];
-    printf("sp = %p, argv[%d] = %p\n", sp, i, *(char *)sp);
+  *(char *)(sp + 4 * (argc + 1 + envc)) = 0;
+  for (int i = 0; i < argc; i++) {
+    position -= strlen(argv[i]) + 1;
+    *(char **)(sp + 4 * i) = position;
   }
+  *(char *)(sp + 4 * argc) = 0;
   sp -= 4;
   *(int *)sp = argc;
-  printf("sp = %p\n", sp);
   pcb->cp->GPRx = sp;
 }
 void init_proc() {
