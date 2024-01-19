@@ -72,15 +72,14 @@ void init_proc() {
 
 Context *schedule(Context *prev) {
   current->cp = prev;
-  int flag = 0;
+  int flag = -1;
   for (int i = 0; i < MAX_NR_PROC; i++) {
     if (current == &pcb[i]) {
       flag = i;
       break;
     }
   }
-  printf("flag: %d\n", flag);
-  if (flag == 0)
+  if (flag == -1)
     current = &pcb[0];
   else {
     for (int i = flag; i < 2 * MAX_NR_PROC; i++) {
