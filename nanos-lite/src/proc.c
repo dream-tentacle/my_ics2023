@@ -66,7 +66,6 @@ void init_proc() {
   char *envp[] = {"123111", NULL};
   context_uload(add_pcb(), "/bin/pal", argv, envp);
   switch_boot_pcb();
-  printf("end\n");
   // load program here
   // naive_uload(NULL, "/bin/pal");
 }
