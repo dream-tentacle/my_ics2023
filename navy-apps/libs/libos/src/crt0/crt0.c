@@ -10,6 +10,8 @@ void call_main(uintptr_t *args) {
   char **argv = (char **)(args + 1);
   char **envp = (char **)(args + argc + 2);
   environ = envp;
+  printf("argv = %p\n", argv);
+  printf("envp = %p\b", envp);
   for (int i = 0; i < argc; i++) {
     printf("argv[%d] = %s\n", i, argv[i]);
   }
