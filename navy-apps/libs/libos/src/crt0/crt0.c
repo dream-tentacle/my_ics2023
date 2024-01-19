@@ -13,10 +13,10 @@ void call_main(uintptr_t *args) {
   printf("argv = %p\n", argv);
   printf("envp = %p\n", envp);
   for (int i = 0; i < argc; i++) {
-    printf("argv[%d] = %s\n", i, argv[i]);
+    printf("argv[%d] = %p\n", i, argv[i]);
   }
   for (int i = 0; envp[i] != NULL; i++) {
-    printf("envp[%d] = %s\n", i, envp[i]);
+    printf("envp[%d] = %p\n", i, envp[i]);
   }
   exit(main(argc, argv, envp));
   assert(0);
