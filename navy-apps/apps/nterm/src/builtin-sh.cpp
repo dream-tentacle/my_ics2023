@@ -35,7 +35,7 @@ static void sh_handle_cmd(const char *cmd) {
   }
   args[i] = NULL;
   char *v[] = {"pal", "--skip", "123", NULL};
-  printf("v[1]=%p", v[1]);
+  printf("v[1]=%p\n", v[1]);
   execvp(filename, v);
 }
 
