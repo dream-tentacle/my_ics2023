@@ -30,8 +30,6 @@ _start:
 
 #elif defined(__riscv)
   mv s0, zero
-  mv x2, x11
-  mv x10, x11
   jal call_main
 
 #elif defined(__ISA_LOONGARCH32R__)
