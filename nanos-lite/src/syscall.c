@@ -34,6 +34,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]);
 PCB *add_pcb();
 void switch_boot_pcb();
+void init_device();
 void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   PCB *new_pcb = add_pcb();
   if (new_pcb == NULL) {
@@ -41,6 +42,7 @@ void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   }
   context_uload(new_pcb, fname, argv, envp);
   switch_boot_pcb();
+  init_device();
   yield();
 }
 // #define STRACE
