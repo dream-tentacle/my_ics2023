@@ -36,17 +36,17 @@ PCB *add_pcb();
 void switch_boot_pcb();
 void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   gpu_init();
-  PCB *new_pcb = add_pcb();
-  if (new_pcb == NULL) {
-    panic("No more PCB");
-  }
-  printf("new_pcb = %p,", new_pcb);
-  printf("fname = %s\n", fname);
+  // PCB *new_pcb = add_pcb();
+  // if (new_pcb == NULL) {
+  //   panic("No more PCB");
+  // }
+  // printf("new_pcb = %p,", new_pcb);
+  // printf("fname = %s\n", fname);
 
-  context_uload(new_pcb, fname, argv, envp);
-  switch_boot_pcb();
-  printf("before yield\n");
-  yield();
+  // context_uload(new_pcb, fname, argv, envp);
+  // switch_boot_pcb();
+  // printf("before yield\n");
+  // yield();
 }
 // #define STRACE
 #ifdef STRACE
