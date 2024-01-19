@@ -23,25 +23,20 @@ void context_kload(PCB *pcb, void *entry, void *arg) {
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
   uintptr_t entry = loader(pcb, filename);
-  Log("Jump to entry = %p", entry);
+  Log("User Context set entry = %p", entry);
   pcb->cp = ucontext(NULL, (Area){pcb->stack, pcb + 1}, (void *)entry);
   int sp = (int)heap.end;
   int argc = 0, envc = 0;
   while (argv[argc] != NULL) {
     sp -= strlen(argv[argc]) + 1;
-    printf("len=%d\n", strlen(argv[argc]));
-    printf("sp=%p\n", sp);
     strcpy((char *)sp, argv[argc]);
     argc++;
   }
-  printf("---\n");
   while (envp[envc] != NULL) {
     sp -= strlen(envp[envc]) + 1;
     strcpy((char *)sp, envp[envc]);
     envc++;
-    printf("sp=%p\n", sp);
   }
-  printf("---\n");
   for (int i = envc; i >= 0; i--) {
     sp -= 4;
     *(char *)sp = *envp[i];
