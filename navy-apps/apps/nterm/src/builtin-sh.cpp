@@ -20,7 +20,18 @@ static void sh_banner() {
 
 static void sh_prompt() { sh_printf("sh> "); }
 const char *PATH[10];
-static void sh_handle_cmd(const char *cmd) { execvp(cmd, NULL); }
+static void sh_handle_cmd(const char *cmd) {
+  char *argv = cmd;
+  while (*argv != ' ' && *argv != '\0')
+    argv++;
+  if (argv == '\0')
+    execvp(cmd, NULL);
+  else {
+    *argv = '\0';
+    argv++;
+    execvp(cmd, argv);
+  }
+}
 
 void builtin_sh_run() {
   sh_banner();
