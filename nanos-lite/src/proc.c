@@ -25,9 +25,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   Log("User Context set entry = %p", entry);
   pcb->cp = ucontext(NULL, (Area){pcb->stack, pcb + 1}, (void *)entry);
   void *newpg = new_page(8);
-  printf("create new page at %p\n", newpg);
-  printf("argv = %p\n", argv);
-  printf("envp = %p\n", envp);
   void *sp = newpg;
   int argc = 0, envc = 0;
   while (argv[argc] != NULL) {
@@ -55,6 +52,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   sp -= 4;
   *(int *)sp = argc;
   pcb->cp->GPRx = (int)sp;
+  printf("pcb->cp->GPRx = %p\n", pcb->cp->GPRx);
 }
 PCB *add_pcb() {
   return &pcb[1];
