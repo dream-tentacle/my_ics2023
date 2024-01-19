@@ -47,6 +47,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   for (int i = 0; i < argc; i++) {
     position -= strlen(argv[i]) + 1;
     *(char **)(sp + 4 * i) = position;
+    printf("argv[%d] = %p\n", i, position);
   }
   *(char *)(sp + 4 * argc) = 0;
   sp -= 4;
