@@ -3,10 +3,13 @@
 static void *pf = NULL;
 #define PAGE_SIZE (4 << 10)
 void *new_page(size_t nr_page) {
-  if (pf == NULL)
+  if (pf == NULL) {
     pf = heap.end;
+    printf("pf set to %p\n", pf);
+  }
   void *ret = pf;
   pf -= nr_page * PAGE_SIZE;
+  printf("pf minus to %p\n", pf);
   return ret; // 返回的是页的最高地址
 }
 
