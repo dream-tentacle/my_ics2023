@@ -53,12 +53,13 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   pcb->cp->GPRx = sp;
 }
 PCB *add_pcb() {
-  for (int i = 0; i < MAX_NR_PROC; i++) {
-    if (pcb[i].cp == NULL) {
-      return &pcb[i];
-    }
-  }
-  return NULL;
+  return &pcb[1];
+  // for (int i = 0; i < MAX_NR_PROC; i++) {
+  //   if (pcb[i].cp == NULL) {
+  //     return &pcb[i];
+  //   }
+  // }
+  // return NULL;
 }
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"kernel");
@@ -72,22 +73,23 @@ void init_proc() {
 
 Context *schedule(Context *prev) {
   current->cp = prev;
-  int flag = -1;
-  for (int i = 0; i < MAX_NR_PROC; i++) {
-    if (current == &pcb[i]) {
-      flag = i;
-      break;
-    }
-  }
-  if (flag == -1)
-    current = &pcb[0];
-  else {
-    for (int i = flag; i < 2 * MAX_NR_PROC; i++) {
-      if (pcb[(i + 1) % MAX_NR_PROC].cp != NULL) {
-        current = &pcb[(i + 1) % MAX_NR_PROC];
-        break;
-      }
-    }
-  }
+  // int flag = -1;
+  // for (int i = 0; i < MAX_NR_PROC; i++) {
+  //   if (current == &pcb[i]) {
+  //     flag = i;
+  //     break;
+  //   }
+  // }
+  // if (flag == -1)
+  //   current = &pcb[0];
+  // else {
+  //   for (int i = flag; i < 2 * MAX_NR_PROC; i++) {
+  //     if (pcb[(i + 1) % MAX_NR_PROC].cp != NULL) {
+  //       current = &pcb[(i + 1) % MAX_NR_PROC];
+  //       break;
+  //     }
+  //   }
+  // }
+  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   return current->cp;
 }
