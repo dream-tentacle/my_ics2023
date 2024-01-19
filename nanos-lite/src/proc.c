@@ -24,7 +24,8 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   uintptr_t entry = loader(pcb, filename);
   Log("User Context set entry = %p", entry);
   pcb->cp = ucontext(NULL, (Area){pcb->stack, pcb + 1}, (void *)entry);
-  void *sp = new_page(8);
+  void *newpg = new_page(8);
+  void *sp = newpg;
   int argc = 0, envc = 0;
   while (argv[argc] != NULL) {
     sp -= strlen(argv[argc]) + 1;
@@ -36,7 +37,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     strcpy((char *)sp, envp[envc]);
     envc++;
   }
-  char *position = (char *)heap.end;
+  char *position = (char *)newpg;
   sp -= 4 * (argc + 1 + envc + 1);
   for (int i = 0; i < argc; i++) {
     position -= strlen(argv[i]) + 1;
