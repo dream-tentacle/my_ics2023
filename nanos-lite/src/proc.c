@@ -71,6 +71,7 @@ void init_proc() {
 }
 
 Context *schedule(Context *prev) {
+  printf("123\n");
   current->cp = prev;
   int flag = -1;
   for (int i = 0; i < MAX_NR_PROC; i++) {
@@ -79,7 +80,6 @@ Context *schedule(Context *prev) {
       break;
     }
   }
-  printf("flag: %d\n", flag);
   if (flag == -1)
     current = &pcb[0];
   else {
