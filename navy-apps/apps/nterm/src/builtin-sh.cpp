@@ -20,6 +20,7 @@ static void sh_banner() {
 
 static void sh_prompt() { sh_printf("sh> "); }
 const char *PATH[10];
+char *const v[] = {"pal", "--skip", "1234", NULL};
 static void sh_handle_cmd(const char *cmd) {
   const char s[2] = " ";
   char **args = (char **)malloc(strlen(cmd) * sizeof(char *));
@@ -34,7 +35,6 @@ static void sh_handle_cmd(const char *cmd) {
     printf("args[%d]=%s\n", i, args[i]);
   }
   args[i] = NULL;
-  char *const v[] = {"pal", "--skip", "1234", NULL};
   printf("v[1]=%p\n", v[1]);
   execvp(filename, v);
 }
