@@ -35,7 +35,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
       sp -= strlen(argv[argc]) + 1;
       strcpy((char *)sp, argv[argc]);
       argc++;
-      printf("argv[%d]=%s\n", argc, argv[argc]);
+      printf("argv[%d]=%s\n", argc, argv[argc - 1]);
     }
   if (envp != NULL)
     while (envp[envc] != NULL) {
