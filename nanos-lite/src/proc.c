@@ -57,7 +57,7 @@ void init_proc() {
   context_kload(&pcb[3], hello_fun, (void *)"d");
   char *argv[] = {"--skip", "1234567890", NULL};
   char *envp[] = {"12345", NULL};
-  context_uload(&pcb[1], "/bin/bird", argv, envp);
+  context_uload(&pcb[1], "/bin/pal", argv, envp);
   // context_uload(&pcb[2], "/bin/bird");   This will cause failure, why? The
   // answer is in the next chapter
   switch_boot_pcb();
