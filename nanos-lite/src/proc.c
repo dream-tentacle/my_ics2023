@@ -33,11 +33,13 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     sp -= strlen(argv[argc]) + 1;
     strcpy((char *)sp, argv[argc]);
     argc++;
+    printf("argc = %d\n", argc);
   }
   while (envp[envc] != NULL) {
     sp -= strlen(envp[envc]) + 1;
     strcpy((char *)sp, envp[envc]);
     envc++;
+    printf("envc = %d\n", envc);
   }
   char *position = (char *)newpg;
   sp -= 4 * (argc + 1 + envc + 1);
@@ -54,7 +56,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   sp -= 4;
   *(int *)sp = argc;
   pcb->cp->GPRx = (int)sp;
-  printf("end\n");
 }
 PCB *add_pcb() {
   return &pcb[1];
