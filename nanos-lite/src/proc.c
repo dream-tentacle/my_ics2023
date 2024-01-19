@@ -25,6 +25,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   Log("User Context set entry = %p", entry);
   pcb->cp = ucontext(NULL, (Area){pcb->stack, pcb + 1}, (void *)entry);
   int sp = (int)new_page(8);
+  printf("sp = %p\n", sp);
   int argc = 0, envc = 0;
   while (argv[argc] != NULL) {
     sp -= strlen(argv[argc]) + 1;
