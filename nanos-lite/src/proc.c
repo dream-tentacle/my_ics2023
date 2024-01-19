@@ -44,7 +44,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   for (int i = argc; i >= 0; i--) {
     sp -= 4;
     *(char *)sp = (int)argv[i];
-    printf("sp = %p, argv[%d] = %p\n", sp, i, argv[i]);
+    printf("sp = %p, argv[%d] = %p\n", sp, i, *(char *)sp);
   }
   sp -= 4;
   *(int *)sp = argc;
