@@ -62,7 +62,7 @@ PCB *add_pcb() {
 }
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"kernel");
-  char *argv[] = {"--skip", NULL};
+  char *argv[] = {"--skip", "123", NULL};
   char *envp[] = {NULL};
   context_uload(add_pcb(), "/bin/pal", argv, envp);
   switch_boot_pcb();
