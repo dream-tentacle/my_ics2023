@@ -11,7 +11,9 @@ void *new_page(size_t nr_page);
 void hello_fun(void *arg) {
   int j = 1;
   while (1) {
-    Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
+    if (j % 100000 == 0)
+      Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg,
+          j);
     j++;
     yield();
   }
@@ -93,6 +95,5 @@ Context *schedule(Context *prev) {
   //   }
   // }
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  printf("schedule\n");
   return current->cp;
 }
