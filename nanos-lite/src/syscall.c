@@ -41,6 +41,7 @@ void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
     panic("No more PCB");
   }
   gpu_init();
+  current->cp = NULL;
   context_uload(new_pcb, fname, argv, envp);
   switch_boot_pcb();
 }
