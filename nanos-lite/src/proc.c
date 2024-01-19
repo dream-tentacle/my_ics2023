@@ -52,6 +52,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   sp -= 4;
   *(int *)sp = argc;
   pcb->cp->GPRx = (int)sp;
+  printf("sp = %p\n", sp);
 }
 PCB *add_pcb() {
   return &pcb[1];
