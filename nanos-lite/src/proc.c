@@ -20,18 +20,41 @@ void hello_fun(void *arg) {
 void context_kload(PCB *pcb, void *entry, void *arg) {
   pcb->cp = kcontext((Area){pcb->stack, pcb + 1}, entry, arg);
 }
-void context_uload(PCB *pcb, char *path) {
-  uintptr_t entry = loader(pcb, (const char *)path);
+void context_uload(PCB *pcb, const char *filename, char *const argv[],
+                   char *const envp[]) {
+  uintptr_t entry = loader(pcb, filename);
   Log("Jump to entry = %p", entry);
   pcb->cp = ucontext(NULL, (Area){pcb->stack, pcb + 1}, (void *)entry);
-  pcb->cp->GPRx = (int)heap.end;
+  int sp = (int)heap.end;
+  int argc = 0, envc = 0;
+  while (argv[argc] != NULL) {
+    sp -= strlen(argv[argc]) + 1;
+    strcpy((char *)sp, argv[argc]);
+  }
+  while (envp[envc] != NULL) {
+    sp -= strlen(envp[envc]) + 1;
+    strcpy((char *)sp, envp[envc]);
+  }
+  for (int i = envc; i >= 0; i--) {
+    sp -= 4;
+    *(char *)sp = *envp[i];
+  }
+  for (int i = argc; i >= 0; i--) {
+    sp -= 4;
+    *(char *)sp = *argv[i];
+  }
+  sp -= 4;
+  *(int *)sp = argc;
+  pcb->cp->GPRx = sp;
 }
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"a");
   // context_kload(&pcb[1], hello_fun, (void *)"b");
   context_kload(&pcb[2], hello_fun, (void *)"c");
   context_kload(&pcb[3], hello_fun, (void *)"d");
-  context_uload(&pcb[1], "/bin/pal");
+  char *argv[] = {"--skip", "123", NULL};
+  char *envp[] = {"123", NULL};
+  context_uload(&pcb[1], "/bin/pal", argv, envp);
   // context_uload(&pcb[2], "/bin/bird");   This will cause failure, why? The
   // answer is in the next chapter
   switch_boot_pcb();
