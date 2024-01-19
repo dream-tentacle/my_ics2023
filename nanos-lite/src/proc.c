@@ -24,7 +24,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   uintptr_t entry = loader(pcb, filename);
   Log("User Context set entry = %p", entry);
   pcb->cp = ucontext(NULL, (Area){pcb->stack, pcb + 1}, (void *)entry);
-  int sp = (int)new_page(8);
+  int sp = (int)heap.end;
   int argc = 0, envc = 0;
   while (argv[argc] != NULL) {
     sp -= strlen(argv[argc]) + 1;
@@ -64,7 +64,7 @@ void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"kernel");
   char *argv[] = {"--skip", "123", NULL};
   char *envp[] = {"123111", NULL};
-  context_uload(add_pcb(), "/bin/pal", argv, envp);
+  context_uload(&pcb[1], "/bin/pal", argv, envp);
   switch_boot_pcb();
   // load program here
   // naive_uload(NULL, "/bin/pal");
