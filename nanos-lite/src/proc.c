@@ -82,7 +82,7 @@ Context *schedule(Context *prev) {
   if (flag == 0)
     current = &pcb[0];
   else {
-    for (int i = flag + 1; i < 2 * MAX_NR_PROC; i++) {
+    for (int i = flag; i < 2 * MAX_NR_PROC; i++) {
       if (pcb[(i + 1) % MAX_NR_PROC].cp != NULL) {
         current = &pcb[(i + 1) % MAX_NR_PROC];
         break;
