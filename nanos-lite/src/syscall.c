@@ -43,6 +43,7 @@ void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   printf("fname = %s\n", fname);
 
   context_uload(new_pcb, fname, argv, envp);
+  printf("123\n");
   switch_boot_pcb();
   gpu_init();
   yield();
