@@ -34,14 +34,12 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
       sp -= strlen(argv[argc]) + 1;
       strcpy((char *)sp, argv[argc]);
       argc++;
-      printf("argv[%d] = %s\n", argc, argv[argc - 1]);
     }
   if (envp != NULL)
     while (envp[envc] != NULL) {
       sp -= strlen(envp[envc]) + 1;
       strcpy((char *)sp, envp[envc]);
       envc++;
-      printf("envp[%d] = %s\n", envc, envp[envc - 1]);
     }
   char *position = (char *)newpg;
   sp -= 4 * (argc + 1 + envc + 1);
