@@ -36,12 +36,12 @@ PCB *add_pcb();
 void switch_boot_pcb();
 void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   PCB *new_pcb = add_pcb();
+  printf("new_pcb = %p\n", new_pcb);
   if (new_pcb == NULL) {
     panic("No more PCB");
   }
   gpu_init();
   context_uload(new_pcb, fname, argv, envp);
-  printf("execve: %s\n", fname);
   switch_boot_pcb();
 }
 // #define STRACE
