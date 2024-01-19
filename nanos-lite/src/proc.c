@@ -66,12 +66,12 @@ void init_proc() {
   char *envp[] = {"123111", NULL};
   context_uload(add_pcb(), "/bin/pal", argv, envp);
   switch_boot_pcb();
+  printf("end\n");
   // load program here
   // naive_uload(NULL, "/bin/pal");
 }
 
 Context *schedule(Context *prev) {
-  printf("123\n");
   current->cp = prev;
   int flag = -1;
   for (int i = 0; i < MAX_NR_PROC; i++) {
