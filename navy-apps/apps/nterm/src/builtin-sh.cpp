@@ -29,7 +29,7 @@ static void sh_handle_cmd(const char *cmd) {
   else {
     *argv = '\0';
     argv++;
-    execvp(cmd, argv);
+    execvp(cmd, (const char *)argv);
   }
 }
 
