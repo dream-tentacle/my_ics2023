@@ -85,6 +85,7 @@ Context *schedule(Context *prev) {
     for (int i = flag; i < 2 * MAX_NR_PROC; i++) {
       if (pcb[(i + 1) % MAX_NR_PROC].cp != NULL) {
         current = &pcb[(i + 1) % MAX_NR_PROC];
+        printf("i: %d\n", i);
         break;
       }
     }
