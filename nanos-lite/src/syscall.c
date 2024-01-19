@@ -29,7 +29,7 @@ void sys_gettimeofday(int *tv, int *tz) {
     tz[1] = 0;
   }
 }
-extern void gpu_init();
+void gpu_init();
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]);
 PCB *add_pcb();
@@ -42,7 +42,7 @@ void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   }
   context_uload(new_pcb, fname, argv, envp);
   switch_boot_pcb();
-  init_device();
+  gpu_init();
   yield();
 }
 // #define STRACE
