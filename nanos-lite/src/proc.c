@@ -94,5 +94,6 @@ Context *schedule(Context *prev) {
   //   }
   // }
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  printf("switch\n");
   return current->cp;
 }
