@@ -18,7 +18,6 @@ void hello_fun(void *arg) {
 }
 void context_kload(PCB *pcb, void *entry, void *arg) {
   pcb->cp = kcontext((Area){pcb->stack, pcb + 1}, entry, arg);
-  printf("create between %p and %p\n", pcb->stack, pcb + 1);
 }
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
@@ -27,7 +26,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   pcb->cp = ucontext(NULL, (Area){pcb->stack, pcb + 1}, (void *)entry);
   void *sp = new_page(8);
   int argc = 0, envc = 0;
-  printf("create between %p and %p\n", pcb->stack, pcb + 1);
   while (argv[argc] != NULL) {
     sp -= strlen(argv[argc]) + 1;
     strcpy((char *)sp, argv[argc]);
