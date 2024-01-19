@@ -41,6 +41,7 @@ void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   }
   gpu_init();
   context_uload(new_pcb, fname, argv, envp);
+  printf("execve: %s\n", fname);
   switch_boot_pcb();
 }
 // #define STRACE
