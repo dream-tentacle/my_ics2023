@@ -44,7 +44,7 @@ void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
 
   context_uload(new_pcb, fname, argv, envp);
   switch_boot_pcb();
-  gpu_init();
+  // gpu_init();
   printf("before yield\n");
   yield();
 }
