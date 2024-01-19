@@ -50,7 +50,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   *(char **)(sp + 4 * (argc + 1 + envc)) = 0;
   sp -= 4;
   *(int *)sp = argc;
-  printf("sp: %x\n", sp);
+  printf("sp: %p\n", sp);
   pcb->cp->GPRx = sp;
 }
 PCB *add_pcb() {
