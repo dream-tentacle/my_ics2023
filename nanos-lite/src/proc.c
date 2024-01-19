@@ -29,6 +29,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   int argc = 0, envc = 0;
   while (argv[argc] != NULL) {
     sp -= strlen(argv[argc]) + 1;
+    printf("len=%d\n", strlen(argv[argc]));
     strcpy((char *)sp, argv[argc]);
     argc++;
     printf("sp=%p\n", sp);
