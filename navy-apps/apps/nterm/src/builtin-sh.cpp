@@ -21,16 +21,19 @@ static void sh_banner() {
 static void sh_prompt() { sh_printf("sh> "); }
 const char *PATH[10];
 static void sh_handle_cmd(const char *cmd) {
-  char *argv = cmd;
-  while (*argv != ' ' && *argv != '\0')
-    argv++;
-  if (argv == '\0')
-    execvp(cmd, NULL);
-  else {
-    *argv = '\0';
-    argv++;
-    execvp(cmd, (const char *)argv);
+  const char s[2] = " ";
+  char **args = (char **)malloc(strlen(cmd) * sizeof(char *));
+  char *copy = (char *)malloc(strlen(cmd) * sizeof(char));
+  strcpy(copy, cmd);
+  char *arg = strtok(copy, s);
+  char *filename = arg;
+  int i;
+  for (i = 0; arg != NULL; i++) {
+    args[i] = arg;
+    arg = strtok(NULL, s);
   }
+  args[i] = NULL;
+  execvp(filename, args);
 }
 
 void builtin_sh_run() {
