@@ -29,17 +29,18 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   void *newpg = new_page(8);
   void *sp = newpg;
   int argc = 0, envc = 0;
-  printf("argv: %p\n", argv[0]);
-  while (argv[argc] != NULL) {
-    sp -= strlen(argv[argc]) + 1;
-    strcpy((char *)sp, argv[argc]);
-    argc++;
-  }
-  while (envp[envc] != NULL) {
-    sp -= strlen(envp[envc]) + 1;
-    strcpy((char *)sp, envp[envc]);
-    envc++;
-  }
+  if (argv != NULL)
+    while (argv[argc] != NULL) {
+      sp -= strlen(argv[argc]) + 1;
+      strcpy((char *)sp, argv[argc]);
+      argc++;
+    }
+  if (envp != NULL)
+    while (envp[envc] != NULL) {
+      sp -= strlen(envp[envc]) + 1;
+      strcpy((char *)sp, envp[envc]);
+      envc++;
+    }
   char *position = (char *)newpg;
   sp -= 4 * (argc + 1 + envc + 1);
   for (int i = 0; i < argc; i++) {
