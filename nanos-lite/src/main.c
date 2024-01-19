@@ -24,10 +24,8 @@ int main() {
 #endif
 
   init_fs();
-  printf("123\n");
   init_proc();
 
-  printf("123\n");
   Log("Finish initialization");
 #ifdef HAS_CTE
   yield();
