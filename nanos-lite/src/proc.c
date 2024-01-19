@@ -62,8 +62,8 @@ PCB *add_pcb() {
 }
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"kernel");
-  char *argv[] = {"--skip", NULL};
-  char *envp[] = {"123111", NULL};
+  char *argv[] = {"/bin/exec-test", NULL};
+  char *envp[] = {NULL};
   context_uload(&pcb[1], "/bin/exec-test", argv, envp);
   switch_boot_pcb();
   // load program here
