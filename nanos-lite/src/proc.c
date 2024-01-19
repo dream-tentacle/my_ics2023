@@ -79,13 +79,13 @@ Context *schedule(Context *prev) {
       break;
     }
   }
+  printf("flag: %d\n", flag);
   if (flag == 0)
     current = &pcb[0];
   else {
     for (int i = flag; i < 2 * MAX_NR_PROC; i++) {
       if (pcb[(i + 1) % MAX_NR_PROC].cp != NULL) {
         current = &pcb[(i + 1) % MAX_NR_PROC];
-        printf("i: %d\n", i);
         break;
       }
     }
