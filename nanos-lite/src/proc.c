@@ -69,6 +69,7 @@ void init_proc() {
   char *envp[] = {NULL};
   context_uload(&pcb[1], "/bin/exec-test", argv, envp);
   switch_boot_pcb();
+  yield();
   // load program here
   // naive_uload(NULL, "/bin/pal");
 }
