@@ -42,7 +42,8 @@ int fs_open(const char *path, int flags, int mode) {
       return i;
     }
   }
-  panic("no file name: \"%s\" found!\n", path);
+  // panic("no file name: \"%s\" found!\n", path);
+  return -1;
 }
 int fs_write(int fd, void *buf, size_t count) {
   if (file_table[fd].write == NULL) {

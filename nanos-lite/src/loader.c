@@ -14,6 +14,8 @@
 uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr elf_ehdr;
   int fd = fs_open(filename, 0, 0);
+  if (fd != -1)
+    panic("Can not open file %s", filename);
   fs_read(fd, &elf_ehdr, sizeof(Elf_Ehdr));
   // 模数检查
   assert((*(uint32_t *)elf_ehdr.e_ident == 0x464c457f));

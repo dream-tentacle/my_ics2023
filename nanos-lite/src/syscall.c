@@ -35,14 +35,18 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 PCB *add_pcb();
 void switch_boot_pcb();
 void init_device();
-void sys_execve(const char *fname, char *const argv[], char *const envp[]) {
+int sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   PCB *new_pcb = add_pcb();
   if (new_pcb == NULL) {
     panic("No more PCB");
   }
+  if (fs_open(fname, 0, 0) == -1) {
+    return -2;
+  }
   context_uload(new_pcb, fname, argv, envp);
   switch_boot_pcb();
   yield();
+  return 0;
 }
 // #define STRACE
 #ifdef STRACE
@@ -97,8 +101,8 @@ void do_syscall(Context *c) {
     break;
   case SYS_execve:
     strace("sys_execve, execve %s", (char *)c->GPR2);
-    sys_execve((const char *)c->GPR2, (char *const *)c->GPR3,
-               (char *const *)c->GPR4);
+    c->GPRx = sys_execve((const char *)c->GPR2, (char *const *)c->GPR3,
+                         (char *const *)c->GPR4);
     break;
   default:
     panic("Unhandled syscall ID = %d", a[0]);
