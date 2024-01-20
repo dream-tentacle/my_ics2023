@@ -76,7 +76,7 @@ void init_proc() {
   context_kload(&pcb[1], hello_fun, (void *)"kernel");
   char *argv[] = {NULL};
   char *envp[] = {NULL};
-  protect(&pcb[1].as);
+  protect(&pcb[0].as);
   context_uload(&pcb[0], "/bin/dummy", argv, envp);
   switch_boot_pcb();
   yield();
