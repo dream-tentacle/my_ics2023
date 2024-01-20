@@ -40,10 +40,12 @@ int sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   if (new_pcb == NULL) {
     panic("No more PCB");
   }
-  printf("attempt to open %s\n", fname);
+  printf("attempt to open %s, ", fname);
   if (fs_open(fname, 0, 0) == -1) {
+    printf("fail.\n");
     return -2;
   }
+  printf("success.\n");
   context_uload(new_pcb, fname, argv, envp);
   switch_boot_pcb();
   yield();
