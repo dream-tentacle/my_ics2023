@@ -20,7 +20,6 @@ void free_page(void *p) { panic("not implement yet"); }
 extern PCB *current;
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
-  printf("previous brk = %p, new brk = %p\n", current->max_brk, brk);
   if (brk <= current->max_brk) {
     return 0;
   }
