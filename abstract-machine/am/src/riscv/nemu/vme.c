@@ -74,7 +74,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     printf("页表不存在，分配页表\n");
     // 页表不存在
     ptab = (uintptr_t)pgalloc_usr(PGSIZE) << 10 | 0x1;
-    printf("ptab = %x\n", ptab);
+    printf("ptab = %p\n", ptab);
     pdir[vpn0] = ptab;
     ptab >>= 10;
   } else {
@@ -85,6 +85,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // 填写新的页表项，页表基地址为ptab
   PTE *pt = (PTE *)ptab;
   pt[vpn1] = (uintptr_t)pa << 10 | 0x1;
+  printf("pt[vpn1] = %p\n", pt[vpn1]);
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
