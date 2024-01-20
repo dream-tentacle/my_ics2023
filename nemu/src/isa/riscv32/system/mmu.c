@@ -18,8 +18,10 @@
 #include <memory/paddr.h>
 extern word_t satp;
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
+  printf("vaddr = %x\n", vaddr);
   int pdir = ((satp & 0x3fffff) << 12); // 页目录基地址
   long long pde_p = pdir | (vaddr >> 22 << 2);
+  printf("pde_p: %llx\n", pde_p);
   uint32_t pde = paddr_read((paddr_t)pde_p, 4);
   printf("pde: %x\n", pde);
   assert((pde & 1));                       // 页目录项有效
