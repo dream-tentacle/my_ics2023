@@ -18,7 +18,8 @@ int sys_read(int fd, void *buf, size_t count) {
 int sys_lseek(int fd, size_t offset, int whence) {
   return fs_lseek(fd, offset, whence);
 }
-void sys_brk(int addr) {}
+extern int mm_brk(uintptr_t brk);
+int sys_brk(int addr) { return mm_brk(addr); }
 void sys_gettimeofday(int *tv, int *tz) {
   if (tv != NULL) {
     tv[0] = io_read(AM_TIMER_UPTIME).us / 1000000;
@@ -82,8 +83,7 @@ void do_syscall(Context *c) {
     c->GPRx = sys_read(c->GPR2, (void *)c->GPR3, c->GPR4);
     break;
   case SYS_brk:
-    sys_brk(c->GPR2);
-    c->GPRx = 0; // 以后PA4动态申请内存时还会调整
+    c->GPRx = sys_brk(c->GPR2);
     strace("sys_brk, return 0");
     break;
   case SYS_close:

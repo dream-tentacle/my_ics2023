@@ -46,7 +46,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
         map(&pcb->as, (void *)j, page, 0);
         memset(page, 0, PGSIZE);
       }
-      printf("last: %p\n", elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz);
     }
   }
   return elf_ehdr.e_entry;
