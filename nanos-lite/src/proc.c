@@ -76,7 +76,6 @@ void init_proc() {
   protect(&pcb[0].as);
   context_uload(&pcb[0], "/bin/dummy", argv, envp);
   switch_boot_pcb();
-  naive_uload(NULL, "/bin/dummy");
   yield();
   // load program here
   // naive_uload(NULL, "/bin/pal");

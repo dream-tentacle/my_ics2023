@@ -52,7 +52,7 @@ int sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   yield();
   return 0;
 }
-// #define STRACE
+#define STRACE
 #ifdef STRACE
 #define strace(s, ...) printf("> " s " <\n", ##__VA_ARGS__)
 #else
