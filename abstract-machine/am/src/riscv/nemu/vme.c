@@ -67,6 +67,7 @@ void __am_switch(Context *c) {
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   // 首先获取页目录项
   PTE *pdir = (PTE *)as->ptr; // 页目录基地址
+  printf("pdir = %p\n", pdir);
   uint32_t vpn0 = (uintptr_t)va >> 22;
   uint32_t vpn1 = ((uintptr_t)va >> 12) & 0x3ff;
   PTE pde = pdir[vpn0];
