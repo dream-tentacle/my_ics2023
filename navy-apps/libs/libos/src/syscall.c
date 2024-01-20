@@ -68,7 +68,7 @@ int _execve(const char *fname, char *const argv[], char *const envp[]) {
 }
 
 void _exit(int status) {
-  _execve("/bin/nterm", NULL, NULL);
+  _syscall_(SYS_exit, status, 0, 0);
   while (1)
     ;
 }

@@ -4,14 +4,10 @@
 
 static Context *(*user_handler)(Event, Context *) = NULL;
 // 一个函数指针，指向一个函数，这个函数的返回值是Context*，参数是Event和Context*。
-
+extern void __am_get_cur_as(Context *c);
+extern void __am_switch(Context *c);
 Context *__am_irq_handle(Context *c) {
-  // printf("mcause: %x\n", c->mcause);
-  // printf("mstatus: %x\n", c->mstatus);
-  // printf("mepc: %x\n", c->mepc);
-  // for (int i = 0; i < 32; i++) {
-  //   printf("gpr[%d]: %x\n", i, c->gpr[i]);
-  // }
+  __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
@@ -35,6 +31,7 @@ Context *__am_irq_handle(Context *c) {
     c = user_handler(ev, c);
     assert(c != NULL);
   }
+  __am_switch(c);
   return c;
 }
 
