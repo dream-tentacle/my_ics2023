@@ -67,8 +67,10 @@ void __am_switch(Context *c) {
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   // 首先获取页目录项
   PTE *pdir = (PTE *)as->ptr; // 页目录基地址
+  printf("页目录基地址: %x\n", pdir);
   uint32_t vpn0 = (uintptr_t)va >> 22;
   uint32_t vpn1 = ((uintptr_t)va >> 12) & 0x3ff;
+  printf("vpn0: %x, vpn1: %x\n", vpn0, vpn1);
   PTE ptab = pdir[vpn0];
   if ((ptab & 1) == 0) {
     // 页表不存在
