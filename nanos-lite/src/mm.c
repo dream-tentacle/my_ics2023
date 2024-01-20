@@ -26,6 +26,7 @@ int mm_brk(uintptr_t brk) {
   int start = ROUNDUP(current->max_brk, PGSIZE);
   int end = ROUNDUP(brk, PGSIZE);
   printf("brk %p\n", brk);
+  printf("end %p\n", end);
   for (int i = start; i < end; i += PGSIZE) {
     void *page = new_page(1);
     map(&current->as, (void *)i, page, 0);
