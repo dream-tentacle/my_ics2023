@@ -20,18 +20,14 @@ extern word_t satp;
 word_t vaddr_ifetch(vaddr_t addr, int len) {
   if (isa_mmu_check(addr, len, MMU_FETCH) == MMU_DIRECT)
     return paddr_read(addr, len);
-  printf("ifetch addr = %x\n", addr);
   addr = isa_mmu_translate(addr, len, 0);
-  printf("paddr = %x\n", addr);
   return paddr_read(addr, len);
 }
 
 word_t vaddr_read(vaddr_t addr, int len) {
   if (isa_mmu_check(addr, len, MMU_LOAD) == MMU_DIRECT)
     return paddr_read(addr, len);
-  printf("read addr = %x\n", addr);
   addr = isa_mmu_translate(addr, len, 0);
-  printf("paddr = %x\n", addr);
   return paddr_read(addr, len);
 }
 
