@@ -53,6 +53,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       // 未初始化的数据
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz; j += PGSIZE) {
         void *page = new_page(1);
+        printf("1");
         map(&pcb->as, (void *)j, page, 0);
         memset(page, 0, PGSIZE);
         printf("清零范围: %x - %x\n", j, j + PGSIZE - 1);
