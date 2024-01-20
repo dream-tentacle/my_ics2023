@@ -24,8 +24,8 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uint32_t pde = paddr_read((paddr_t)pde_p, 4);
   assert((pde & 1));                       // 页目录项有效
   uint32_t ptab = (pde << 2) & 0xfffff000; // 页表基地址
-  printf("ptab: %x\n", ptab);
   uint32_t pte = paddr_read(ptab | ((vaddr >> 12) & 0x3ff), 4);
+  printf("addr=%x\n", ptab | ((vaddr >> 12) & 0x3ff));
   printf("pte: %x\n", pte);
   assert((pte & 1)); // 页表项有效
   printf("%x\n", (pte >> 10 << 12) | (vaddr & 0xfff));
