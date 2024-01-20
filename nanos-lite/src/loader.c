@@ -57,6 +57,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
         memset(page, 0, PGSIZE);
         printf("清零范围: %x - %x\n", j, j + PGSIZE - 1);
       }
+      printf("完成数据加载\n");
     }
   }
   return elf_ehdr.e_entry;
