@@ -64,7 +64,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   pcb->cp->GPRx = (int)sp + pcb->as.area.end - newpg;
 }
 PCB *add_pcb() {
-  return &pcb[1];
+  return &pcb[0];
   // for (int i = 0; i < MAX_NR_PROC; i++) {
   //   if (pcb[i].cp == NULL) {
   //     return &pcb[i];
