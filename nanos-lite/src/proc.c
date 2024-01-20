@@ -29,6 +29,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
         0); // 用户栈虚拟地址
   }
   pcb->max_brk = (int)pcb->as.area.end;
+  printf("max_brk = %p\n", pcb->max_brk);
   Log("new page area: %p,%p", newpg - 32 * 1024, newpg);
   void *sp = newpg;
   int argc = 0, envc = 0;
