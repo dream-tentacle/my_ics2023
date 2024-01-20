@@ -21,31 +21,22 @@ static void sh_banner() {
 static void sh_prompt() { sh_printf("sh> "); }
 const char *PATH[10];
 static void sh_handle_cmd(const char *cmd) {
-  int len = strlen(cmd);
-  char *copy = (char *)malloc(sizeof(char) * (len + 1));
-  strcpy(copy, cmd);
-  copy[len] = '\0';
-  int count = 0;
-  for (int i = 0; i < len; i++) {
-    if (copy[i] == ' ') {
-      copy[i] = '\0';
-      count++;
-    }
+  // 在空格处分开，第一个是filepath，后面是argv，最终调用execvp
+  char *argv[10];
+  int argc = 0;
+  char *p = strtok((char *)cmd, " ");
+  while (p) {
+    argv[argc++] = p;
+    p = strtok(NULL, " ");
   }
-  char **argv = (char **)malloc(sizeof(char *) * (count + 1));
-  argv[count] = NULL;
-  count = 0;
-  for (int i = 0; i < len; i++) {
-    if (copy[i] == '\0') {
-      argv[count] = &copy[i + 1];
-      printf("argv[%d] = %p %s\n", count, argv[count], argv[count]);
-      count++;
-    }
+  argv[argc] = NULL;
+  if (argc == 0)
+    return;
+  // 打印各个参数
+  for (int i = 0; i < argc; i++) {
+    printf("argv[%d]=%p %s\n", i, argv[i], argv[i]);
   }
-  argv[count] = NULL;
-  printf("argv=%p\n", argv);
-  printf("argv[0] = %p\n", argv[0]);
-  execvp(copy, argv);
+  execvp(argv[0], argv);
 }
 
 void builtin_sh_run() {
