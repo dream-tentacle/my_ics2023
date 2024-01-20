@@ -7,6 +7,7 @@ static Context *(*user_handler)(Event, Context *) = NULL;
 extern void __am_get_cur_as(Context *c);
 extern void __am_switch(Context *c);
 Context *__am_irq_handle(Context *c) {
+  printf("begin handle, pdir = %p\n", c->pdir);
   __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
