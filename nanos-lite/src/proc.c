@@ -23,7 +23,8 @@ void context_kload(PCB *pcb, void *entry, void *arg) {
 }
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
-  printf("argv[1] = %d %d %d\n", argv[1][0], argv[1][1], argv[1][2]);
+  if (argv != 0)
+    printf("argv[1] = %d %d %d\n", argv[1][0], argv[1][1], argv[1][2]);
   uintptr_t entry = loader(pcb, filename);
   Log("User Context set entry = %p", entry);
   pcb->cp = ucontext(NULL, (Area){pcb->stack, pcb + 1}, (void *)entry);
