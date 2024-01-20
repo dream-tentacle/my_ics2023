@@ -67,8 +67,6 @@ void __am_switch(Context *c) {
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   // 首先获取页目录项
   PTE *pdir = (PTE *)as->ptr; // 页目录基地址
-  if ((int)va == 0x7ffff000)
-    printf("pdir = %p\n", pdir);
   uint32_t vpn0 = (uintptr_t)va >> 22;
   uint32_t vpn1 = ((uintptr_t)va >> 12) & 0x3ff;
   PTE pde = pdir[vpn0];
@@ -80,13 +78,6 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // 填写新的页表项，页表基地址为pde
   PTE *pt = (PTE *)((pde << 2) & ~0xfff);
   pt[vpn1] = (uintptr_t)pa >> 2 | 0x1;
-  if ((int)pde == 0x208a2001) {
-    printf("va = %p, pa = %p\n", va, pa);
-    printf("pde = %x, pt = %p\n", pde, pt);
-    printf("&pt[vpn1]=%p\n", &pt[vpn1]);
-    printf("pt[vpn1]=%p\n", pt[vpn1]);
-    printf("------\n");
-  }
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
