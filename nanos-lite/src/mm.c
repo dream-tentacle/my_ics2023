@@ -1,16 +1,15 @@
 #include <memory.h>
 
 static void *pf = NULL;
-#define PAGE_SIZE (4 << 10)
 void *new_page(size_t nr_page) {
-  pf += nr_page * PAGE_SIZE;
+  pf += nr_page * PGSIZE;
   return pf; // 返回的是页的最高地址
 }
 
 #ifdef HAS_VME
 static void *pg_alloc(int n) {
-  assert(n % PAGE_SIZE == 0);
-  void *ret = new_page(n / PAGE_SIZE) - n;
+  assert(n % PGSIZE == 0);
+  void *ret = new_page(n / PGSIZE) - n;
   memset(ret, 0, n);
   return ret;
 }
