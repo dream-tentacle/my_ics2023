@@ -145,7 +145,6 @@ void csr_mask(word_t imm, word_t val) {
   }
   if (imm == 0x180) {
     satp |= val;
-    printf("satp = %x\n", satp);
     return;
   }
 }
@@ -168,7 +167,6 @@ void csr_write(word_t imm, word_t val) {
   }
   if (imm == 0x180) {
     satp = val;
-    printf("satp = %x\n", satp);
     return;
   }
   Assert(0, "csr_write: not implemented this csr");
