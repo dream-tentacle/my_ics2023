@@ -28,6 +28,9 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       // 将未初始化的数据置为0
       memset((void *)(elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz), 0,
              elf_phdr[i].p_memsz - elf_phdr[i].p_filesz);
+      printf("memset from %p to %p\n",
+             (void *)(elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz),
+             (void *)(elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz));
     }
   }
   return elf_ehdr.e_entry;
