@@ -71,6 +71,7 @@ void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"kernel");
   char *argv[] = {NULL};
   char *envp[] = {NULL};
+  protect(&pcb[1].as);
   context_uload(&pcb[1], "/bin/nterm", argv, envp);
   switch_boot_pcb();
   yield();
