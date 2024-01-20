@@ -27,6 +27,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   map(&pcb->as, pcb->as.area.end - 32 * 1024, newpg - 32 * 1024,
       0); // 用户栈虚拟地址
   Log("new page area: %p,%p", newpg - 32 * 1024, newpg);
+  newpg = pcb->as.area.end;
   void *sp = newpg;
   int argc = 0, envc = 0;
   if (argv != NULL)
