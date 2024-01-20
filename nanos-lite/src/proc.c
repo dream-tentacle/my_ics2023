@@ -74,7 +74,7 @@ PCB *add_pcb() {
   // return NULL;
 }
 void init_proc() {
-  context_kload(&pcb[1], hello_fun, (void *)"kernel");
+  // context_kload(&pcb[1], hello_fun, (void *)"kernel");
   char *argv[] = {NULL};
   char *envp[] = {NULL};
   protect(&pcb[0].as);
@@ -106,5 +106,6 @@ Context *schedule(Context *prev) {
   // }
   // current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
   current = &pcb[0];
+  printf("schedule: current = %p\n", current);
   return current->cp;
 }
