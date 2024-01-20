@@ -25,6 +25,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   assert(pde & 1);                             // 页目录项有效
   uint32_t ptab = (uint32_t)(pde >> 10 << 12); // 页表基地址
   uint32_t pte = paddr_read(ptab, (vaddr >> 12) & 0x3ff);
+  printf("pte: %x\n", pte);
   assert((pte & 1)); // 页表项有效
   // 暂时设定页表项的物理地址等于虚拟地址
   assert(((pte >> 10 << 12) | (vaddr & 0xfff)) == vaddr);
