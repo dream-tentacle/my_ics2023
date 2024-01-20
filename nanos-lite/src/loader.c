@@ -29,7 +29,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       uint32_t start = ROUNDDOWN(elf_phdr[i].p_vaddr, PGSIZE);
       int j = start;
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz; j += PGSIZE) {
-        void *page = new_page(1);
+        void *page = new_page(1) - PGSIZE;
         map(&pcb->as, (void *)j, page, 0);
         if (j + PGSIZE >= elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz) {
           fs_read(fd, page, elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j);
@@ -42,7 +42,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       }
       // 未初始化的数据
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz; j += PGSIZE) {
-        void *page = new_page(1);
+        void *page = new_page(1) - PGSIZE;
         map(&pcb->as, (void *)j, page, 0);
         memset(page, 0, PGSIZE);
       }

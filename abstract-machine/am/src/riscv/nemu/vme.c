@@ -74,8 +74,6 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   PTE pde = pdir[vpn0];
   if ((pde & 1) == 0) {
     // 页表不存在
-    if ((int)va == 0x40000000)
-      printf("miss\n");
     pde = (uintptr_t)pgalloc_usr(PGSIZE) >> 2 | 0x1;
     pdir[vpn0] = pde;
   }
