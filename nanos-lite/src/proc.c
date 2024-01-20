@@ -24,8 +24,10 @@ void context_kload(PCB *pcb, void *entry, void *arg) {
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
   void *newpg = new_page(8) + 32 * 1024; // 用户栈物理地址
-  map(&pcb->as, pcb->as.area.end - 32 * 1024, newpg - 32 * 1024,
-      0); // 用户栈虚拟地址
+  for (int i = 1; i <= 8; i++) {
+    map(&pcb->as, pcb->as.area.end - i * 4 * 1024, newpg - i * 4 * 1024,
+        0); // 用户栈虚拟地址
+  }
   Log("new page area: %p,%p", newpg - 32 * 1024, newpg);
   void *sp = newpg;
   int argc = 0, envc = 0;
