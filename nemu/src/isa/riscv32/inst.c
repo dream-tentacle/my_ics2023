@@ -108,7 +108,10 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2,
     break;
   }
 }
-word_t mtvep, mepc, mcause, mstatus = 0x1800;
+word_t mtvep, mepc, mcause, mstatus = 0x1800, satp;
+// satp |MODE(1)|ASID(9)|PPN(22)|
+// MODE=0: Bare, 直接映射
+// MODE=1: Sv32, 页表映射
 word_t csr_read(word_t imm) {
   if (imm == 0x305)
     return mtvep;

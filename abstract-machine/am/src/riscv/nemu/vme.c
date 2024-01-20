@@ -64,7 +64,25 @@ void __am_switch(Context *c) {
   }
 }
 
-void map(AddrSpace *as, void *va, void *pa, int prot) {}
+void map(AddrSpace *as, void *va, void *pa, int prot) {
+  // 首先获取页目录项
+  PTE *pdir = (PTE *)as->ptr; // 页目录基地址
+  uint32_t vpn0 = (uintptr_t)va >> 22;
+  uint32_t vpn1 = ((uintptr_t)va >> 12) & 0x3ff;
+  PTE ptab = pdir[vpn0];
+  if ((ptab & 1) == 0) {
+    // 页表不存在
+    ptab = (uintptr_t)pgalloc_usr(PGSIZE) << 10 | 0x1;
+    pdir[vpn0] = ptab;
+    ptab >>= 10;
+  } else {
+    // 页表存在
+    ptab >>= 10;
+  }
+  // 填写新的页表项，页表基地址为ptab
+  PTE *pt = (PTE *)ptab;
+  pt[vpn1] = (uintptr_t)pa << 10 | 0x1;
+}
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
   Context *c = (Context *)(kstack.end - sizeof(Context));
