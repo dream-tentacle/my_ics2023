@@ -38,10 +38,12 @@ static void sh_handle_cmd(const char *cmd) {
   for (int i = 0; i < len; i++) {
     if (copy[i] == '\0') {
       argv[count] = &copy[i + 1];
-      printf("arg[%d] = %p %s\n", count, argv[count], argv[count]);
+      printf("argv[%d] = %p %s\n", count, argv[count], argv[count]);
       count++;
     }
   }
+  argv[count] = NULL;
+  printf("argv=%p\n", argv);
   execvp(copy, argv);
 }
 
