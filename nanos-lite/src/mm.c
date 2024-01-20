@@ -23,7 +23,6 @@ int mm_brk(uintptr_t brk) {
   if (brk <= current->max_brk) {
     return 0;
   }
-  printf("brk = %p\n", brk);
   int start = ROUNDUP(current->max_brk, PGSIZE);
   int end = ROUNDUP(brk, PGSIZE);
   for (int i = start; i < end; i += PGSIZE) {
