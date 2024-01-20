@@ -26,11 +26,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
     if (elf_phdr[i].p_type == 1) {
       // 从ramdisk中读取数据
       fs_lseek(fd, elf_phdr[i].p_offset, SEEK_SET);
-      printf("----------------------\n数据基址: %x\n", elf_phdr[i].p_vaddr);
-      printf("数据已初始化结尾： %x\n",
-             elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - 1);
-      printf("数据未初始化结尾： %x\n",
-             elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz - 1);
       uint32_t start = ROUNDDOWN(elf_phdr[i].p_vaddr, PGSIZE);
       int j = start;
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz; j += PGSIZE) {
@@ -39,27 +34,19 @@ uintptr_t loader(PCB *pcb, const char *filename) {
         map(&pcb->as, (void *)j, page, 0);
         if (j + PGSIZE >= elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz) {
           fs_read(fd, page, elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j);
-          printf("初始化范围： %x - %x\n", j,
-                 elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - 1);
           memset(
               (void *)(page + elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j),
               0, PGSIZE - (elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j));
-          printf("清零范围: %x - %x\n",
-                 elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz, j + PGSIZE - 1);
         } else {
           fs_read(fd, page, PGSIZE);
-          printf("初始化范围： %x - %x\n", j, j + PGSIZE - 1);
         }
       }
-      printf("未初始化数据基址: %x\n", j);
       // 未初始化的数据
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz; j += PGSIZE) {
         void *page = new_page(1);
         map(&pcb->as, (void *)j, page, 0);
         memset(page, 0, PGSIZE);
-        printf("清零范围: %x - %x\n", j, j + PGSIZE - 1);
       }
-      printf("完成数据加载\n");
     }
   }
   return elf_ehdr.e_entry;
