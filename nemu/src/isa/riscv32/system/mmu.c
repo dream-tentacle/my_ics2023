@@ -20,7 +20,7 @@ extern word_t satp;
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   int pdir = ((satp & 0x3fffff) << 12); // 页目录基地址
   long long x = pdir | (vaddr >> 22 << 2);
-  printf("pdir | (vaddr >> 22 << 2) = %x\n", pdir | (vaddr >> 22 << 2));
+  printf("pdir | (vaddr >> 22 << 2) = %llx\n", x);
   uint32_t pde = *(int *)x; // 页目录项
   assert(pde & 1);          // 页目录项有效
   printf("pde = %x\n", pde);
