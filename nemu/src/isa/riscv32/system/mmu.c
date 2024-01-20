@@ -20,10 +20,9 @@ extern word_t satp;
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uint32_t *pdir =
       (uint32_t *)(long long)((satp & 0x3fffff) << 12); // 页目录基地址
-  printf("vaddr = %x\n", vaddr);
+  printf("pdir[vaddr >> 22]=%x\n", pdir[vaddr >> 22]);
   uint32_t pde = pdir[vaddr >> 22]; // 页目录项
-  printf("pde = %x\n", pde);
-  assert(pde & 1); // 页目录项有效
+  assert(pde & 1);                  // 页目录项有效
   uint32_t *ptab = (uint32_t *)(long long)(pde >> 10 << 12); // 页表基地址
   uint32_t pte = ptab[(vaddr >> 12) & 0x3ff];                // 页表项
   assert((pte & 1));                                         // 页表项有效
