@@ -1,5 +1,5 @@
 #include <memory.h>
-
+#include <proc.h>
 static void *pf = NULL;
 void *new_page(size_t nr_page) {
   pf += nr_page * PGSIZE;
@@ -17,8 +17,21 @@ static void *pg_alloc(int n) {
 
 void free_page(void *p) { panic("not implement yet"); }
 
+extern PCB *current;
 /* The brk() system call handler. */
-int mm_brk(uintptr_t brk) { return 0; }
+int mm_brk(uintptr_t brk) {
+  if (brk <= current->max_brk) {
+    return 0;
+  }
+  int start = ROUNDUP(current->max_brk, PGSIZE);
+  int end = ROUNDUP(brk, PGSIZE);
+  for (int i = start; i < end; i += PGSIZE) {
+    void *page = new_page(1);
+    map(&current->as, (void *)i, page, 0);
+  }
+  current->max_brk = brk;
+  return 0;
+}
 
 void init_mm() {
   pf = (void *)ROUNDUP(heap.start, PGSIZE);
