@@ -24,9 +24,6 @@ void context_kload(PCB *pcb, void *entry, void *arg) {
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
   void *newpg = new_page(8); // 用户栈物理地址
-  printf("123\n");
-  printf("pcb->as.area.end - 32 * 1024 = %p\n", pcb->as.area.end - 32 * 1024);
-  printf("newpg - 32 * 1024 = %p\n", newpg - 32 * 1024);
   map(&pcb->as, pcb->as.area.end - 32 * 1024, newpg - 32 * 1024,
       0); // 用户栈虚拟地址
   Log("new page area: %p,%p", newpg - 32 * 1024, newpg);
@@ -104,5 +101,6 @@ Context *schedule(Context *prev) {
   //   }
   // }
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  printf("current: %p\n", current);
   return current->cp;
 }
