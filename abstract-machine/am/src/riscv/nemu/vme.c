@@ -76,11 +76,9 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     ptab = (uintptr_t)pgalloc_usr(PGSIZE) | 0x1;
     printf("ptab = %p\n", ptab);
     pdir[vpn0] = ptab;
-    ptab >>= 10;
   } else {
     printf("页表存在\n");
     // 页表存在
-    ptab >>= 10;
   }
   // 填写新的页表项，页表基地址为ptab
   PTE *pt = (PTE *)ptab;
