@@ -69,18 +69,18 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   PTE *pdir = (PTE *)as->ptr; // 页目录基地址
   uint32_t vpn0 = (uintptr_t)va >> 22;
   uint32_t vpn1 = ((uintptr_t)va >> 12) & 0x3ff;
-  PTE ptab = pdir[vpn0];
-  if ((ptab & 1) == 0) {
+  PTE pde = pdir[vpn0];
+  if ((pde & 1) == 0) {
     // 页表不存在
-    ptab = (uintptr_t)pgalloc_usr(PGSIZE) >> 2 | 0x1;
-    pdir[vpn0] = ptab;
+    pde = (uintptr_t)pgalloc_usr(PGSIZE) >> 2 | 0x1;
+    pdir[vpn0] = pde;
   }
-  // 填写新的页表项，页表基地址为ptab
-  PTE *pt = (PTE *)((ptab << 2) & ~0xfff);
+  // 填写新的页表项，页表基地址为pde
+  PTE *pt = (PTE *)((pde << 2) & ~0xfff);
   pt[vpn1] = (uintptr_t)pa >> 2 | 0x1;
   if ((int)va == 0x40000000) {
     printf("va = %p, pa = %p\n", va, pa);
-    printf("&pt[vpn1] = %p\n", &pt[vpn1]);
+    printf("pde = %x, pt = %x\n", pde, pt);
     printf("------\n");
   }
 }
