@@ -48,9 +48,9 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       }
     }
   }
-  Elf64_Shdr elf_shdr[elf_ehdr.e_shnum];
+  Elf32_Shdr elf_shdr[elf_ehdr.e_shnum];
   fs_lseek(fd, elf_ehdr.e_shoff, SEEK_SET);
-  fs_read(fd, elf_shdr, sizeof(Elf64_Shdr) * elf_ehdr.e_shnum);
+  fs_read(fd, elf_shdr, sizeof(Elf32_Shdr) * elf_ehdr.e_shnum);
   for (int i = 0; i < elf_ehdr.e_shnum; i++) {
     if (elf_shdr[i].sh_type == 2) {
       // 符号表
