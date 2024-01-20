@@ -30,7 +30,7 @@ typedef struct {
   } inst;
 } MUXDEF(CONFIG_RV64, riscv64_ISADecodeInfo, riscv32_ISADecodeInfo);
 
-#define SATP_MODE (satp >> 31)
+#define SATP_MODE ((satp >> 31) & 1)
 #define isa_mmu_check(vaddr, len, type) (SATP_MODE ? MMU_TRANSLATE : MMU_DIRECT)
 
 #endif
