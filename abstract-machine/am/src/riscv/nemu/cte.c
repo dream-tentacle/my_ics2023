@@ -3,11 +3,12 @@
 #include <riscv/riscv.h>
 
 static Context *(*user_handler)(Event, Context *) = NULL;
-// 一个函数指针，指向一个函数，这个函数的返回值是Context*，参数是Event和Context*。
 extern void __am_get_cur_as(Context *c);
 extern void __am_switch(Context *c);
+// 一个函数指针，指向一个函数，这个函数的返回值是Context*，参数是Event和Context*。
 Context *__am_irq_handle(Context *c) {
   printf("begin handle, pdir = %p\n", c->pdir);
+  printf("mcause = %d, GPR1 = %d\n", c->mcause, c->GPR1);
   __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
