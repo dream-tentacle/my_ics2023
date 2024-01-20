@@ -3,13 +3,13 @@
 static void *pf = NULL;
 void *new_page(size_t nr_page) {
   pf += nr_page * PGSIZE;
-  return pf; // 返回的是页的最高地址
+  return pf - nr_page * PGSIZE;
 }
 
 #ifdef HAS_VME
 static void *pg_alloc(int n) {
   assert(n % PGSIZE == 0);
-  void *ret = new_page(n / PGSIZE) - n;
+  void *ret = new_page(n / PGSIZE);
   memset(ret, 0, n);
   return ret;
 }
