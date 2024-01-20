@@ -76,6 +76,7 @@ void init_proc() {
   protect(&pcb[1].as);
   context_uload(&pcb[0], "/bin/dummy", argv, envp);
   switch_boot_pcb();
+  printf("123\n");
   yield();
   // load program here
   // naive_uload(NULL, "/bin/pal");
@@ -101,6 +102,5 @@ Context *schedule(Context *prev) {
   //   }
   // }
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  printf("schedule: current = %p\n", current);
   return current->cp;
 }
