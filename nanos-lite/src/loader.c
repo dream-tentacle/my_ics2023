@@ -38,6 +38,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
               0, PGSIZE - (elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j));
         } else {
           fs_read(fd, page, PGSIZE);
+          printf("j = %p\n", j);
         }
       }
       // 未初始化的数据
