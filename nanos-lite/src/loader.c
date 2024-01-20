@@ -45,6 +45,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
               0, PGSIZE - (elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j));
           printf("清零范围: %x - %x\n",
                  elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz, j + PGSIZE - 1);
+          printf("123\n");
         } else {
           fs_read(fd, page, PGSIZE);
           printf("初始化范围： %x - %x\n", j, j + PGSIZE - 1);
