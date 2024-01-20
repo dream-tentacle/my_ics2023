@@ -72,12 +72,12 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   PTE ptab = pdir[vpn0];
   if ((ptab & 1) == 0) {
     // 页表不存在
-    ptab = (uintptr_t)pgalloc_usr(PGSIZE) | 0x1;
+    ptab = (uintptr_t)pgalloc_usr(PGSIZE) >> 2 | 0x1;
     pdir[vpn0] = ptab;
   }
   // 填写新的页表项，页表基地址为ptab
   PTE *pt = (PTE *)ptab;
-  pt[vpn1] = (uintptr_t)pa | 0x1;
+  pt[vpn1] = (uintptr_t)pa >> 2 | 0x1;
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
