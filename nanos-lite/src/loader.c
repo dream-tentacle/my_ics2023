@@ -34,6 +34,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       uint32_t start = ROUNDDOWN(elf_phdr[i].p_vaddr, PGSIZE);
       int j = start;
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz; j += PGSIZE) {
+        printf("123\n");
         void *page = new_page(1);
         map(&pcb->as, (void *)j, page, 0);
         if (j + PGSIZE >= elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz) {
@@ -45,7 +46,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
               0, PGSIZE - (elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j));
           printf("清零范围: %x - %x\n",
                  elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz, j + PGSIZE - 1);
-          printf("123\n");
         } else {
           fs_read(fd, page, PGSIZE);
           printf("初始化范围： %x - %x\n", j, j + PGSIZE - 1);
