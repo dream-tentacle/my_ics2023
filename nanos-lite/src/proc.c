@@ -24,6 +24,7 @@ void context_kload(PCB *pcb, void *entry, void *arg) {
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
   void *newpg = new_page(8); // 用户栈物理地址
+  printf("123\n");
   map(&pcb->as, pcb->as.area.end - 32 * 1024, newpg - 32 * 1024,
       0); // 用户栈虚拟地址
   Log("new page area: %p,%p", newpg - 32 * 1024, newpg);
@@ -75,7 +76,6 @@ void init_proc() {
   char *envp[] = {NULL};
   protect(&pcb[1].as);
   context_uload(&pcb[0], "/bin/dummy", argv, envp);
-  printf("123\n");
   switch_boot_pcb();
   yield();
   // load program here
