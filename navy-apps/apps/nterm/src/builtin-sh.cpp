@@ -26,7 +26,9 @@ static void sh_handle_cmd(const char *cmd) {
   int argc = 0;
   char *p = strtok((char *)cmd, " ");
   while (p) {
-    argv[argc++] = p;
+    char *arg = new char[strlen(p) + 1];
+    strcpy(arg, p);
+    argv[argc++] = arg;
     p = strtok(NULL, " ");
   }
   argv[argc] = NULL;
