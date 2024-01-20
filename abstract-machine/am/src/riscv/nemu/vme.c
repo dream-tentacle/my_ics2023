@@ -81,7 +81,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   if ((int)pa == 0x80001000) {
     printf("va = %p, pa = %p\n", va, pa);
     printf("ptab = %p, pt = %p\n", ptab, pt);
-    printf("pdir = %p\n", pdir);
+    printf("pdir = %p\n----\n", pdir);
   }
 }
 
