@@ -76,7 +76,7 @@ void init_proc() {
   char *argv[] = {NULL};
   char *envp[] = {NULL};
   protect(&pcb[0].as);
-  context_uload(&pcb[0], "/bin/dummy", argv, envp);
+  context_uload(&pcb[0], "/bin/nterm", argv, envp);
   switch_boot_pcb();
   yield();
   // load program here
