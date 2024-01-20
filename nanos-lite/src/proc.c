@@ -11,7 +11,7 @@ void *new_page(size_t nr_page);
 void hello_fun(void *arg) {
   int j = 1;
   while (1) {
-    if (j % 10000 == 0)
+    if (j % 30000 == 0)
       Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg,
           j);
     j++;
@@ -32,9 +32,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
       sp -= strlen(argv[argc]) + 1;
       strcpy((char *)sp, argv[argc]);
       argc++;
-      printf("argv[%d]=%p %s\n", argc, argv[argc - 1], argv[argc - 1]);
-      printf("%d %d %d \n", argv[argc - 1][0], argv[argc - 1][1],
-             argv[argc - 1][2]);
     }
   if (envp != NULL)
     while (envp[envc] != NULL) {
