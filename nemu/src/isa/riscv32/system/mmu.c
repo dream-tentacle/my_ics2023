@@ -22,10 +22,10 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   long long pde_p = pdir | (vaddr >> 22 << 2);
   uint32_t pde = paddr_read((paddr_t)pde_p, 4);
   printf("pde: %x\n", pde);
-  assert(pde & 1); // 页目录项有效
-  uint32_t *ptab = (uint32_t *)(long long)(pde >> 10 << 12); // 页表基地址
-  uint32_t pte = ptab[(vaddr >> 12) & 0x3ff];                // 页表项
-  assert((pte & 1));                                         // 页表项有效
+  assert(pde & 1);                             // 页目录项有效
+  uint32_t ptab = (uint32_t)(pde >> 10 << 12); // 页表基地址
+  uint32_t pte = paddr_read(ptab, (vaddr >> 12) & 0x3ff);
+  assert((pte & 1)); // 页表项有效
   // 暂时设定页表项的物理地址等于虚拟地址
   assert(((pte >> 10 << 12) | (vaddr & 0xfff)) == vaddr);
   return (pte >> 10 << 12) | (vaddr & 0xfff); // 物理地址
