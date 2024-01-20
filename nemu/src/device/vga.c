@@ -46,7 +46,7 @@ static void init_screen() {
   char title[128];
   sprintf(title, "%s-NEMU", str(__GUEST_ISA__));
   SDL_Init(SDL_INIT_VIDEO);
-  int multiplier = 1;
+  int multiplier = 2;
   SDL_CreateWindowAndRenderer(
       multiplier * SCREEN_W * (MUXDEF(CONFIG_VGA_SIZE_400x300, 2, 1)),
       multiplier * SCREEN_H * (MUXDEF(CONFIG_VGA_SIZE_400x300, 2, 1)), 0,
