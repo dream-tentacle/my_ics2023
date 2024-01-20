@@ -121,6 +121,8 @@ word_t csr_read(word_t imm) {
     return mcause;
   if (imm == 0x300)
     return mstatus;
+  if (imm == 0x180)
+    return satp;
   Assert(0, "csr_read: not implemented this csr");
   return 0;
 }
@@ -141,6 +143,10 @@ void csr_mask(word_t imm, word_t val) {
     mstatus |= val;
     return;
   }
+  if (imm == 0x180) {
+    satp |= val;
+    return;
+  }
 }
 void csr_write(word_t imm, word_t val) {
   if (imm == 0x305) {
@@ -157,6 +163,10 @@ void csr_write(word_t imm, word_t val) {
   }
   if (imm == 0x300) {
     mstatus = val;
+    return;
+  }
+  if (imm == 0x180) {
+    satp = val;
     return;
   }
   Assert(0, "csr_write: not implemented this csr");
