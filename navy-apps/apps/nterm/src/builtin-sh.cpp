@@ -26,18 +26,12 @@ static void sh_handle_cmd(const char *cmd) {
   int argc = 0;
   char *p = strtok((char *)cmd, " ");
   while (p) {
-    char *arg = new char[strlen(p) + 1];
-    strcpy(arg, p);
-    argv[argc++] = arg;
+    argv[argc++] = p;
     p = strtok(NULL, " ");
   }
   argv[argc] = NULL;
   if (argc == 0)
     return;
-  // 打印各个参数
-  for (int i = 0; i < argc; i++) {
-    printf("argv[%d]=%p %s\n", i, argv[i], argv[i]);
-  }
   execvp(argv[0], argv);
 }
 

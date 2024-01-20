@@ -23,14 +23,10 @@ void context_kload(PCB *pcb, void *entry, void *arg) {
 }
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
-  if (argv != 0)
-    if (argv[1] != 0)
-      printf("argv[1] = %d %d %d\n", argv[1][0], argv[1][1], argv[1][2]);
   void *newpg = new_page(8);
-  printf("low=%p,high=%p\n", newpg - 32 * 1024, newpg);
+  Log("new page area: %p,%p\n", newpg - 32 * 1024, newpg);
   void *sp = newpg;
   int argc = 0, envc = 0;
-  printf("argv=%p,argv[0]=%p\n", argv, argv[0]);
   if (argv != NULL)
     while (argv[argc] != NULL) {
       sp -= strlen(argv[argc]) + 1;
