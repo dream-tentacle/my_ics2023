@@ -26,9 +26,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   if (argv != 0)
     if (argv[1] != 0)
       printf("argv[1] = %d %d %d\n", argv[1][0], argv[1][1], argv[1][2]);
-  uintptr_t entry = loader(pcb, filename);
-  Log("User Context set entry = %p", entry);
-  pcb->cp = ucontext(NULL, (Area){pcb->stack, pcb + 1}, (void *)entry);
   void *newpg = new_page(8);
   printf("low=%p,high=%p\n", newpg - 32 * 1024, newpg);
   void *sp = newpg;
@@ -63,6 +60,9 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   *(char **)(sp + 4 * (argc + 1 + envc)) = 0;
   sp -= 4;
   *(int *)sp = argc;
+  uintptr_t entry = loader(pcb, filename);
+  Log("User Context set entry = %p", entry);
+  pcb->cp = ucontext(NULL, (Area){pcb->stack, pcb + 1}, (void *)entry);
   pcb->cp->GPRx = (int)sp;
 }
 PCB *add_pcb() {
