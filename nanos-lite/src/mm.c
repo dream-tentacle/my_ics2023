@@ -30,8 +30,8 @@ int mm_brk(uintptr_t brk) {
     map(&current->as, (void *)i, page, 0);
     printf("brk %p -> %p\n", i, page);
   }
-  current->max_brk = brk;
   printf("brk %p\n", brk);
+  current->max_brk = brk;
   return 0;
 }
 
