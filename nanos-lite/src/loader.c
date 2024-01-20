@@ -50,14 +50,13 @@ uintptr_t loader(PCB *pcb, const char *filename) {
           printf("初始化范围： %x - %x\n", j, j + PGSIZE - 1);
         }
       }
+      printf("123\n");
       // 未初始化的数据
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz; j += PGSIZE) {
-        printf("1\n");
         void *page = new_page(1);
         map(&pcb->as, (void *)j, page, 0);
         memset(page, 0, PGSIZE);
         printf("清零范围: %x - %x\n", j, j + PGSIZE - 1);
-        printf("123\n");
       }
       printf("完成数据加载\n");
     }
