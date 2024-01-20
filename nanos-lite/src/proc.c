@@ -73,11 +73,11 @@ PCB *add_pcb() {
   // return NULL;
 }
 void init_proc() {
-  context_kload(&pcb[0], hello_fun, (void *)"kernel");
+  context_kload(&pcb[1], hello_fun, (void *)"kernel");
   char *argv[] = {NULL};
   char *envp[] = {NULL};
-  protect(&pcb[1].as);
-  context_uload(&pcb[1], "/bin/nterm", argv, envp);
+  protect(&pcb[0].as);
+  context_uload(&pcb[0], "/bin/nterm", argv, envp);
   switch_boot_pcb();
   yield();
   // load program here
@@ -103,6 +103,7 @@ Context *schedule(Context *prev) {
   //     }
   //   }
   // }
-  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  // current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  current = &pcb[0];
   return current->cp;
 }
