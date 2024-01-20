@@ -25,6 +25,8 @@ word_t vaddr_ifetch(vaddr_t addr, int len) {
 }
 
 word_t vaddr_read(vaddr_t addr, int len) {
+  if (isa_mmu_check(addr, len, MMU_LOAD) == MMU_DIRECT)
+    return paddr_read(addr, len);
   addr = isa_mmu_translate(addr, len, 0);
   return paddr_read(addr, len);
 }
