@@ -18,6 +18,7 @@
 #include <memory/paddr.h>
 extern word_t satp;
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
+  printf("satp: %x\n", satp);
   uint32_t *pdir =
       (uint32_t *)(long long)((satp & 0x3fffff) << 12); // 页目录基地址
   printf("pdir: %ls\n", pdir);
