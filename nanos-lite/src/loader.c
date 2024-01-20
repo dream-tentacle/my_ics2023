@@ -61,8 +61,8 @@ uintptr_t loader(PCB *pcb, const char *filename) {
         pcb->max_brk = pcb->max_brk > elf_sym[j].st_value ? pcb->max_brk
                                                           : elf_sym[j].st_value;
       }
+      printf("pcb->max_brk = %p\n", pcb->max_brk);
     }
-    printf("pcb->max_brk = %p\n", pcb->max_brk);
   }
   return elf_ehdr.e_entry;
 }
