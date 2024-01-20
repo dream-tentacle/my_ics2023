@@ -26,7 +26,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
     if (elf_phdr[i].p_type == 1) {
       // 从ramdisk中读取数据
       fs_lseek(fd, elf_phdr[i].p_offset, SEEK_SET);
-      printf("数据基址: %x\n", elf_phdr[i].p_vaddr);
+      printf("----------------------\n数据基址: %x\n", elf_phdr[i].p_vaddr);
       printf("数据已初始化结尾： %x\n",
              elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - 1);
       printf("数据未初始化结尾： %x\n",
