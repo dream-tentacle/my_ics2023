@@ -44,6 +44,7 @@ static void sh_handle_cmd(const char *cmd) {
   }
   argv[count] = NULL;
   printf("argv=%p\n", argv);
+  printf("argv[0] = %p\n", argv[0]);
   execvp(copy, argv);
 }
 
