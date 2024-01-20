@@ -80,6 +80,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   pt[vpn1] = (uintptr_t)pa >> 2 | 0x1;
   if ((int)va >> 16 == 0x7fff) {
     printf("va = %p, pa = %p\n", va, pa);
+    printf("pdir = %p, pde = %p, pt = %p\n", pdir, pde, pt);
   }
 }
 
