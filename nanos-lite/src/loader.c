@@ -33,7 +33,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
              elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz - 1);
       uint32_t start = ROUNDDOWN(elf_phdr[i].p_vaddr, PGSIZE);
       int j = start;
-      for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz; j += PGSIZE) {
+      for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz; j += PGSIZE) {
         void *page = new_page(1);
         printf("j: %p\n", j);
         map(&pcb->as, (void *)j, page, 0);
