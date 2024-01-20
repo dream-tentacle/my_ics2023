@@ -29,6 +29,7 @@ void sys_gettimeofday(int *tv, int *tz) {
     tz[0] = 0;
     tz[1] = 0;
   }
+  printf("get time\n");
 }
 void gpu_init();
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
