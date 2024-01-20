@@ -74,8 +74,8 @@ void init_proc() {
   char *argv[] = {NULL};
   char *envp[] = {NULL};
   protect(&pcb[1].as);
-  printf("123\n");
   context_uload(&pcb[0], "/bin/dummy", argv, envp);
+  printf("123\n");
   switch_boot_pcb();
   yield();
   // load program here
