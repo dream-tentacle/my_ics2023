@@ -21,20 +21,26 @@ static void sh_banner() {
 static void sh_prompt() { sh_printf("sh> "); }
 const char *PATH[10];
 static void sh_handle_cmd(const char *cmd) {
-  const char s[2] = " ";
-  char *args[] = {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
-  char *copy = (char *)malloc(strlen(cmd) * sizeof(char));
+  int len = strlen(cmd);
+  char *copy = (char *)malloc(sizeof(char) * (len + 1));
   strcpy(copy, cmd);
-  char *arg = strtok(copy, s);
-  char *filename = arg;
-  int i;
-  for (i = 0; arg != NULL; i++) {
-    strcpy(args[i], arg);
-    arg = strtok(NULL, s);
-    printf("args[%d]=%s\n", i, args[i]);
+  copy[len] = '\0';
+  int count = 0;
+  for (int i = 0; i < len; i++) {
+    if (copy[i] == ' ') {
+      copy[i] = '\0';
+      count++;
+    }
   }
-  args[i] = NULL;
-  execvp(filename, args);
+  char **argv = (char **)malloc(sizeof(char *) * (count + 1));
+  argv[count] = NULL;
+  count = 0;
+  for (int i = 0; i < len; i++) {
+    if (copy[i] == '\0') {
+      argv[count] = &copy[i + 1];
+    }
+  }
+  execvp(copy, argv);
 }
 
 void builtin_sh_run() {
