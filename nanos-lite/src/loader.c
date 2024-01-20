@@ -35,8 +35,8 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       int j = start;
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz; j += PGSIZE) {
         void *page = new_page(1);
-        map(&pcb->as, (void *)j, page, 0);
         printf("map\n");
+        map(&pcb->as, (void *)j, page, 0);
         if (j + PGSIZE >= elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz) {
           fs_read(fd, page, elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j);
           printf("初始化范围： %x - %x\n", j,
