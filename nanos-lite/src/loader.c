@@ -52,7 +52,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
   fs_lseek(fd, elf_ehdr.e_shoff, SEEK_SET);
   fs_read(fd, elf_shdr, sizeof(Elf64_Shdr) * elf_ehdr.e_shnum);
   for (int i = 0; i < elf_ehdr.e_shnum; i++) {
-    if (elf_shdr[i].sh_type == 3) {
+    if (elf_shdr[i].sh_type == 2) {
       // 符号表
       Elf32_Sym elf_sym[elf_shdr[i].sh_size / sizeof(Elf32_Sym)];
       fs_lseek(fd, elf_shdr[i].sh_offset, SEEK_SET);
