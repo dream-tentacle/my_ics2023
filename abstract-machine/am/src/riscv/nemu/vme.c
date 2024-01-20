@@ -76,7 +76,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     pdir[vpn0] = ptab;
   }
   // 填写新的页表项，页表基地址为ptab
-  PTE *pt = (PTE *)ptab;
+  PTE *pt = (PTE *)((ptab << 2) & ~0xfff);
   pt[vpn1] = (uintptr_t)pa >> 2 | 0x1;
 }
 
