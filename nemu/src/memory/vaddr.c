@@ -16,7 +16,10 @@
 #include <isa.h>
 #include <memory/paddr.h>
 extern paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type);
+extern word_t satp;
 word_t vaddr_ifetch(vaddr_t addr, int len) {
+  if (isa_mmu_check(addr, len, MMU_FETCH) == MMU_DIRECT)
+    return paddr_read(addr, len);
   addr = isa_mmu_translate(addr, len, 0);
   return paddr_read(addr, len);
 }
