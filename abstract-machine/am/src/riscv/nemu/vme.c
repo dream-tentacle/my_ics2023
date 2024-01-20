@@ -83,6 +83,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   if ((int)pde == 0x208a2001) {
     printf("va = %p, pa = %p\n", va, pa);
     printf("pde = %x, pt = %p\n", pde, pt);
+    printf("&pt[vpn1]=%p\n", &pt[vpn1]);
     printf("pt[vpn1]=%p\n", pt[vpn1]);
     printf("------\n");
   }

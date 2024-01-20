@@ -29,8 +29,10 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   uint32_t ptab = (pde << 2) & 0xfffff000; // 页表基地址
   long long pte_p = ptab + 4 * ((vaddr >> 12) & 0x3ff);
   uint32_t pte = paddr_read(pte_p, 4);
-  if (vaddr < 0x80000000)
+  if (vaddr < 0x80000000) {
+    printf("pte_p = %llx\n", pte_p);
     printf("pte = %x\n--\n", pte);
+  }
   assert((pte & 1));                          // 页表项有效
   return (pte >> 10 << 12) | (vaddr & 0xfff); // 物理地址
 }
