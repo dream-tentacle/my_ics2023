@@ -3,8 +3,8 @@
 static void *pf = NULL;
 #define PAGE_SIZE (4 << 10)
 void *new_page(size_t nr_page) {
-  pf -= nr_page * PAGE_SIZE;
-  return pf + nr_page * PAGE_SIZE; // 返回的是页的最高地址
+  pf += nr_page * PAGE_SIZE;
+  return pf; // 返回的是页的最高地址
 }
 
 #ifdef HAS_VME
@@ -17,7 +17,7 @@ void free_page(void *p) { panic("not implement yet"); }
 int mm_brk(uintptr_t brk) { return 0; }
 
 void init_mm() {
-  pf = (void *)ROUNDDOWN(heap.end, PGSIZE);
+  pf = (void *)ROUNDUP(heap.start, PGSIZE);
   printf("heap.start = %p\n", heap.start);
   printf("heap.end = %p\n", heap.end);
   Log("free physical pages starting from %p", pf);
