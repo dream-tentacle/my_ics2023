@@ -24,7 +24,7 @@ void context_kload(PCB *pcb, void *entry, void *arg) {
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
   void *newpg = new_page(8);
-  Log("new page area: %p,%p\n", newpg - 32 * 1024, newpg);
+  Log("new page area: %p,%p", newpg - 32 * 1024, newpg);
   void *sp = newpg;
   int argc = 0, envc = 0;
   if (argv != NULL)
