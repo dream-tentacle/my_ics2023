@@ -32,5 +32,10 @@ word_t vaddr_read(vaddr_t addr, int len) {
 }
 
 void vaddr_write(vaddr_t addr, int len, word_t data) {
-  paddr_write(addr, len, data);
+  if (isa_mmu_check(addr, len, MMU_STORE) == MMU_DIRECT)
+    paddr_write(addr, len, data);
+  else {
+    addr = isa_mmu_translate(addr, len, 1);
+    paddr_write(addr, len, data);
+  }
 }
