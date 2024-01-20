@@ -71,11 +71,14 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   uint32_t vpn1 = ((uintptr_t)va >> 12) & 0x3ff;
   PTE ptab = pdir[vpn0];
   if ((ptab & 1) == 0) {
+    printf("页表不存在，分配页表\n");
     // 页表不存在
     ptab = (uintptr_t)pgalloc_usr(PGSIZE) << 10 | 0x1;
+    printf("ptab = %x\n", ptab);
     pdir[vpn0] = ptab;
     ptab >>= 10;
   } else {
+    printf("页表存在\n");
     // 页表存在
     ptab >>= 10;
   }
