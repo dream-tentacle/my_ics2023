@@ -34,8 +34,8 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       uint32_t start = ROUNDDOWN(elf_phdr[i].p_vaddr, PGSIZE);
       int j = start;
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz; j += PGSIZE) {
-        printf("123\n");
         void *page = new_page(1);
+        printf("123\n");
         map(&pcb->as, (void *)j, page, 0);
         if (j + PGSIZE >= elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz) {
           fs_read(fd, page, elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j);
