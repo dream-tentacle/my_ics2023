@@ -78,6 +78,9 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // 填写新的页表项，页表基地址为pde
   PTE *pt = (PTE *)((pde << 2) & ~0xfff);
   pt[vpn1] = (uintptr_t)pa >> 2 | 0x1;
+  if ((int)va == 0x401e8000) {
+    printf("va=%x, pa=%x, pde=%x, pt=%x\n", va, pa, pde, pt);
+  }
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
