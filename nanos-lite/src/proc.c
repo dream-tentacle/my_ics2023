@@ -71,7 +71,7 @@ void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"kernel");
   char *argv[] = {NULL};
   char *envp[] = {NULL};
-  context_uload(&pcb[1], "/bin/nterm", argv, envp);
+  context_uload(&pcb[1], "/bin/busybox", argv, envp);
   switch_boot_pcb();
   yield();
   // load program here
