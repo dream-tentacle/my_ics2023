@@ -27,8 +27,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   for (int i = 1; i <= 8; i++) {
     map(&pcb->as, pcb->as.area.end - i * 4 * 1024, newpg - i * 4 * 1024,
         0); // 用户栈虚拟地址
-    printf("map %p to %p\n", pcb->as.area.end - i * 4 * 1024,
-           newpg - i * 4 * 1024);
   }
   Log("new page area: p %p,%p", newpg - 32 * 1024, newpg);
   Log("new page area: v %p,%p", pcb->as.area.end - 32 * 1024, pcb->as.area.end);
@@ -64,6 +62,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   Log("User Context set entry = %p", entry);
   pcb->cp = ucontext(&pcb->as, (Area){pcb->stack, pcb + 1}, (void *)entry);
   pcb->cp->GPRx = (int)sp + pcb->as.area.end - newpg;
+  printf("123\n");
 }
 PCB *add_pcb() {
   return &pcb[1];
