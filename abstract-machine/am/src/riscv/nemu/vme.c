@@ -79,9 +79,9 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   PTE *pt = (PTE *)((ptab << 2) & ~0xfff);
   pt[vpn1] = (uintptr_t)pa >> 2 | 0x1;
   if ((int)pa == 0x80001000) {
-    printf("va = %x, pa = %x\n", va, pa);
-    printf("ptab = %x, pt = %x\n", ptab, pt);
-    printf("pdir = %x\n", pdir);
+    printf("va = %p, pa = %p\n", va, pa);
+    printf("ptab = %p, pt = %p\n", ptab, pt);
+    printf("pdir = %p\n", pdir);
   }
 }
 
