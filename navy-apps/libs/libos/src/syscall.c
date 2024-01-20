@@ -60,11 +60,11 @@ extern int errno;
 int _execve(const char *fname, char *const argv[], char *const envp[]) {
   int ret =
       _syscall_(SYS_execve, (intptr_t)fname, (intptr_t)argv, (intptr_t)envp);
-  if (ret == -2) {
-    errno = -2;
+  if (ret < 0) {
+    errno = -ret;
     return -1;
   }
-  return ret;
+  return 0;
 }
 
 void _exit(int status) {
