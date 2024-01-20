@@ -48,6 +48,22 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       }
     }
   }
+  Elf64_Shdr elf_shdr[elf_ehdr.e_shnum];
+  fs_lseek(fd, elf_ehdr.e_shoff, SEEK_SET);
+  fs_read(fd, elf_shdr, sizeof(Elf64_Shdr) * elf_ehdr.e_shnum);
+  for (int i = 0; i < elf_ehdr.e_shnum; i++) {
+    if (elf_shdr[i].sh_type == 3) {
+      // 符号表
+      Elf32_Sym elf_sym[elf_shdr[i].sh_size / sizeof(Elf32_Sym)];
+      fs_lseek(fd, elf_shdr[i].sh_offset, SEEK_SET);
+      fs_read(fd, elf_sym, elf_shdr[i].sh_size);
+      for (int j = 0; j < elf_shdr[i].sh_size / sizeof(Elf32_Sym); j++) {
+        pcb->max_brk = pcb->max_brk > elf_sym[j].st_value ? pcb->max_brk
+                                                          : elf_sym[j].st_value;
+      }
+    }
+    printf("pcb->max_brk = %p\n", pcb->max_brk);
+  }
   return elf_ehdr.e_entry;
 }
 
