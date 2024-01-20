@@ -18,11 +18,10 @@
 #include <memory/paddr.h>
 extern word_t satp;
 paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
-  unsigned *pdir =
-      (unsigned *)(long long)((satp & 0x3fffff) << 12); // 页目录基地址
+  int pdir = ((satp & 0x3fffff) << 12); // 页目录基地址
   printf("&pdir[vaddr >> 22] = %x\n", vaddr >> 22);
-  unsigned pde = pdir[vaddr >> 22]; // 页目录项
-  assert(pde & 1);                  // 页目录项有效
+  int pde = *(int *)(long long)(pdir + (vaddr >> 22) * 4); // 页目录项
+  assert(pde & 1);                                         // 页目录项有效
   uint32_t *ptab = (uint32_t *)(long long)(pde >> 10 << 12); // 页表基地址
   uint32_t pte = ptab[(vaddr >> 12) & 0x3ff];                // 页表项
   assert((pte & 1));                                         // 页表项有效
