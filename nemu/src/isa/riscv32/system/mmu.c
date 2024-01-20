@@ -22,6 +22,7 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   long long x = pdir | (vaddr >> 22 << 2);
   printf("pdir | (vaddr >> 22 << 2) = %llx\n", x);
   uint32_t *pde_p = (uint32_t *)x; // 页目录项
+  printf("pde_p = %p\n", pde_p);
   uint32_t pde = *pde_p;
   printf("pde = %x\n", pde);
   assert(pde & 1); // 页目录项有效
