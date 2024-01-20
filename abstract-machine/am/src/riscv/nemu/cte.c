@@ -31,7 +31,9 @@ Context *__am_irq_handle(Context *c) {
     c = user_handler(ev, c);
     assert(c != NULL);
   }
+  printf("c->pdir = %p\n", c->pdir);
   __am_switch(c);
+  printf("c->pdir = %p\n", c->pdir);
   return c;
 }
 
