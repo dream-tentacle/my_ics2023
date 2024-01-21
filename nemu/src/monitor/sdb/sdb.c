@@ -142,11 +142,14 @@ static int cmd_test_calcu(char *args) {
   fp = fopen(file_path, "r");
   size_t len = 0;
   int cor = 0;
-  if (fscanf(fp, "%d", &ans) == EOF) return 0;
+  if (fscanf(fp, "%d", &ans) == EOF)
+    return 0;
   while (getline(&buf, &len, fp) != -1) {
     buf[strlen(buf) - 1] = '\0';
-    if (check(buf, ans)) cor++;
-    if (fscanf(fp, "%d", &ans) == EOF) break;
+    if (check(buf, ans))
+      cor++;
+    if (fscanf(fp, "%d", &ans) == EOF)
+      break;
   }
   fclose(fp);
   printf("%d\n", cor);
@@ -163,7 +166,13 @@ static int cmd_w(char *args) {
   printf("watchpoint: '%s', NO = %d\n", wp->expr, wp->NO);
   return 0;
 }
-
+#ifdef CONFIG_ITRACE
+extern void print_ring_buffer();
+static int cmd_ins(char *args) {
+  print_ring_buffer();
+  return 0;
+}
+#endif
 static int cmd_help(char *args);
 
 static struct {
@@ -185,6 +194,9 @@ static struct {
     {"test_calcu", "Test the function of calcu. Can modify path if needed",
      cmd_test_calcu},
     {"w", "Format: 'w EXPR'. Create a watchpoint of EXPR", cmd_w},
+#ifdef CONFIG_ITRACE
+    {"ins", "Print the assembly code", cmd_ins},
+#endif
     /* TODO: Add more commands */
 
 };
