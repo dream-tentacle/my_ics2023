@@ -20,10 +20,11 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    * Then return the address of the interrupt/exception vector.
    */
   if (NO == 0x80000007) {
-    printf("时钟中断\n");
     // 时钟中断
+    printf("mstatus = %x\n", mstatus);
     mstatus = mstatus | ((mstatus & 0x8) << 4); // 设置MPIE=MIE
     mstatus = mstatus & ~0x80;                  // 设置MIE=0
+    printf("mstatus = %x\n", mstatus);
   }
   mcause = NO;
   mepc = epc;
