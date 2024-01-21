@@ -63,19 +63,19 @@ void __am_switch(Context *c) {
     set_satp(c->pdir);
   }
 }
-int pa_p[1000000], cnt = 0;
+int pa_p[10000], cnt = 0;
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   if ((int)pa == 0x825b5000) {
     printf("va = %p, pa = %p\n", va, pa);
   }
-  // pa_p[cnt++] = (int)pa;
-  // for (int i = 0; i < cnt - 1; i++) {
-  //   if (pa_p[i] == (int)pa) {
-  //     printf("pa = %p, va = %p\n", pa, va);
-  //     printf("pdir = %p\n", as->ptr);
-  //     assert(0);
-  //   }
-  // }
+  pa_p[cnt++] = (int)pa;
+  for (int i = 0; i < cnt - 1; i++) {
+    if (pa_p[i] == (int)pa) {
+      printf("pa = %p, va = %p\n", pa, va);
+      printf("pdir = %p\n", as->ptr);
+      assert(0);
+    }
+  }
   // 首先获取页目录项
   PTE *pdir = (PTE *)as->ptr; // 页目录基地址
   uint32_t vpn0 = (uintptr_t)va >> 22;
