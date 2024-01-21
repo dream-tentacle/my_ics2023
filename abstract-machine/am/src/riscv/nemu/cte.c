@@ -21,6 +21,9 @@ Context *__am_irq_handle(Context *c) {
         ev.event = EVENT_SYSCALL;
         break;
       }
+    case 0x80000007:
+      ev.event = EVENT_IRQ_TIMER;
+      break;
     default:
       printf("Unhandled GPR1 = %d\n", c->GPR1);
       ev.event = EVENT_ERROR;
