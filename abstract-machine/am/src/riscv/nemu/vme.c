@@ -95,7 +95,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   PTE *page_table_entry_p = &page_table[VPN0(va)];
   // 检查是不是没有填入过，若填入过则报错
   if ((*page_table_entry_p & 1)) {
-    printf("va = %p, pa = %p\n", va, pa);
+    printf("va = %p, pa = %p, as->ptr = %p\n", va, pa, as->ptr);
     printf("page_table_entry_p = %p, *page_table_entry_p = %p\n",
            page_table_entry_p, *page_table_entry_p);
     printf("page_dir_entry_p = %p, *page_dir_entry_p = %p\n", page_dir_entry_p,
