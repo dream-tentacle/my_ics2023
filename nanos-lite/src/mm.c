@@ -20,16 +20,16 @@ void free_page(void *p) { panic("not implement yet"); }
 extern PCB *current;
 /* The brk() system call handler. */
 int mm_brk(uintptr_t brk) {
-  if (brk <= current->max_brk) {
-    return 0;
-  }
-  int start = ROUNDUP(current->max_brk, PGSIZE);
-  int end = ROUNDUP(brk, PGSIZE);
-  for (int i = start; i < end; i += PGSIZE) {
-    void *page = new_page(1);
-    map(&current->as, (void *)i, page, 0);
-  }
-  current->max_brk = brk;
+  // if (brk <= current->max_brk) {
+  //   return 0;
+  // }
+  // int start = ROUNDUP(current->max_brk, PGSIZE);
+  // int end = ROUNDUP(brk, PGSIZE);
+  // for (int i = start; i < end; i += PGSIZE) {
+  //   void *page = new_page(1);
+  //   map(&current->as, (void *)i, page, 0);
+  // }
+  // current->max_brk = brk;
   return 0;
 }
 
