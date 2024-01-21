@@ -85,28 +85,15 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // 首先获取页目录项
   PTE *page_dir = as->ptr;
   PTE *page_dir_entry_p = &page_dir[VPN1(va)];
-  if ((int)pa == 0x821e7000) {
-    printf("va = %p, pa = %p, as->ptr = %p\n", va, pa, as->ptr);
-    printf("page_dir_entry_p = %p, *page_dir_entry_p = %p\n", page_dir_entry_p,
-           *page_dir_entry_p);
-  }
   // 如果页目录项不存在，那么就分配一个页表
   if (!(*page_dir_entry_p & 1)) {
     PTE *page_table = (PTE *)(pgalloc_usr(PGSIZE));
     memset(page_table, 0, PGSIZE);
     *page_dir_entry_p = ((uintptr_t)page_table >> 2) | 0x1;
-    if ((int)page_table == 0x821c7000) {
-      printf("va = %p, pa = %p, as->ptr = %p\n", va, pa, as->ptr);
-      printf("VPN1(va) = %d, VPN0(va) = %d, OFFSET(va) = %d\n", VPN1(va),
-             VPN0(va), OFFSET(va));
-    }
   }
   // 获取页表项
   PTE *page_table = (PTE *)(PTE_PPN(*page_dir_entry_p) << 12);
   PTE *page_table_entry_p = &page_table[VPN0(va)];
-  if (as->ptr != kas.ptr)
-    printf("va = %p, pa = %p, as->ptr = %p\n", va, pa, as->ptr);
-
   // 检查是不是没有填入过，若填入过则报错
   if ((*page_table_entry_p & 1)) {
     printf("has mapped\n");
