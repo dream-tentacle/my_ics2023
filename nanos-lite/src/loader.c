@@ -41,14 +41,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       printf("start: %p, fileend: %p, memend: %p\n", elf_phdr[i].p_vaddr,
              elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz,
              elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz);
-      if (elf_phdr[i].p_vaddr == 0x4005dffc) {
-        // 读取位于40060a3c的一个int
-        int a;
-        fs_lseek(fd, elf_phdr[i].p_offset + 0x40060a3c - elf_phdr[i].p_vaddr,
-                 SEEK_SET);
-        fs_read(fd, &a, sizeof(int));
-        printf("a=%d\n", a);
-      }
+      // 40060a3c
       // 从ramdisk中读取数据
       fs_lseek(fd, elf_phdr[i].p_offset, SEEK_SET);
       uint32_t start = ROUNDDOWN(elf_phdr[i].p_vaddr, PGSIZE);
@@ -56,6 +49,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz; j += PGSIZE) {
         void *page = new_page(1);
         map(&pcb->as, (void *)j, page, 0);
+        printf("map %p to %p\n", j, page);
         if (j + PGSIZE >= elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz) {
           fs_read(fd, page, elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j);
           memset(
