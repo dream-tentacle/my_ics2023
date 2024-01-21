@@ -21,11 +21,9 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    */
   if (NO == 0x80000007) {
     // 时钟中断
-    printf("mstatus = %x\n", mstatus);
     mstatus = mstatus | ((mstatus & 0x8) << 4); // 设置MPIE=MIE
     mstatus = mstatus & ~0x80;                  // 设置MIE=0
-    printf("mstatus = %x\n", mstatus);
-    printf("epc = %x\n", epc);
+    printf("mtvep = %x\n", mtvep);
   }
   mcause = NO;
   mepc = epc;
