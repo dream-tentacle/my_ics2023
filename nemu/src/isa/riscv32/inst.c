@@ -302,9 +302,9 @@ static int decode_exec(Decode *s) {
     call_funct(s->dnpc, s->pc);
   }
 #endif
-  if (t1value != gpr(5)) {
+  if (t1value != gpr(6)) {
     printf("t1value=%d\n", t1value);
-    t1value = gpr(5);
+    t1value = gpr(6);
   }
   return 0;
 }
