@@ -98,6 +98,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
 
   // 检查是不是没有填入过，若填入过则报错
   if ((*page_table_entry_p & 1)) {
+    printf("has mapped\n");
     printf("va = %p, pa = %p, as->ptr = %p\n", va, pa, as->ptr);
     printf("page_table_entry_p = %p, *page_table_entry_p = %p\n",
            page_table_entry_p, *page_table_entry_p);
