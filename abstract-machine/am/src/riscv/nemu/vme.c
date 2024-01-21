@@ -28,6 +28,7 @@ bool vme_init(void *(*pgalloc_f)(int), void (*pgfree_f)(void *)) {
   pgfree_usr = pgfree_f;
 
   kas.ptr = pgalloc_f(PGSIZE);
+  printf("kernel page table base = %p\n", kas.ptr);
 
   int i;
   for (i = 0; i < LENGTH(segments); i++) {
