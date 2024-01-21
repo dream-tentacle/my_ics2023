@@ -20,6 +20,7 @@ extern word_t satp;
 word_t vaddr_ifetch(vaddr_t addr, int len) {
   if (isa_mmu_check(addr, len, MMU_FETCH) == MMU_DIRECT)
     return paddr_read(addr, len);
+
   addr = isa_mmu_translate(addr, len, MEM_TYPE_IFETCH);
   return paddr_read(addr, len);
 }
@@ -27,11 +28,13 @@ word_t vaddr_ifetch(vaddr_t addr, int len) {
 word_t vaddr_read(vaddr_t addr, int len) {
   if (isa_mmu_check(addr, len, MMU_LOAD) == MMU_DIRECT)
     return paddr_read(addr, len);
-  if ((satp << 12) == 0x821dc000)
-    printf("read vaddr %x, ", addr);
+  // if ((satp << 12) == 0x821dc000)
+  printf("read vaddr %x, ", addr);
+  if (addr == 0x8218fff4)
+    exit(0);
   addr = isa_mmu_translate(addr, len, MEM_TYPE_READ);
-  if ((satp << 12) == 0x821dc000)
-    printf("to %x\n", addr);
+  // if ((satp << 12) == 0x821dc000)
+  printf("to %x\n", addr);
   return paddr_read(addr, len);
 }
 
@@ -39,11 +42,11 @@ void vaddr_write(vaddr_t addr, int len, word_t data) {
   if (isa_mmu_check(addr, len, MMU_STORE) == MMU_DIRECT)
     paddr_write(addr, len, data);
   else {
-    if ((satp << 12) == 0x821dc000)
-      printf("write vaddr %x, ", addr);
+    // if ((satp << 12) == 0x821dc000)
+    printf("write vaddr %x, ", addr);
     addr = isa_mmu_translate(addr, len, MEM_TYPE_WRITE);
-    if ((satp << 12) == 0x821dc000)
-      printf("to %x\n", addr);
+    // if ((satp << 12) == 0x821dc000)
+    printf("to %x\n", addr);
     paddr_write(addr, len, data);
   }
 }
