@@ -93,6 +93,9 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // 获取页表项
   PTE *page_table = (PTE *)(PTE_PPN(*page_dir_entry_p) << 12);
   PTE *page_table_entry_p = &page_table[VPN0(va)];
+  if (as->ptr != kas.ptr)
+    printf("va = %p, pa = %p, as->ptr = %p\n", va, pa, as->ptr);
+
   // 检查是不是没有填入过，若填入过则报错
   if ((*page_table_entry_p & 1)) {
     printf("va = %p, pa = %p, as->ptr = %p\n", va, pa, as->ptr);
