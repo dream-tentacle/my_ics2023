@@ -24,13 +24,12 @@ void context_kload(PCB *pcb, void *entry, void *arg) {
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
   void *newpg = new_page(8) + 32 * 1024; // 用户栈物理地址
-  // for (int i = 1; i <= 8; i++) {
-  //   map(&pcb->as, pcb->as.area.end - i * 4 * 1024, newpg - i * 4 * 1024,
-  //       0); // 用户栈虚拟地址
-  // }
-  // Log("new page area: p %p,%p", newpg - 32 * 1024, newpg);
-  // Log("new page area: v %p,%p", pcb->as.area.end - 32 * 1024,
-  // pcb->as.area.end);
+  for (int i = 1; i <= 8; i++) {
+    map(&pcb->as, pcb->as.area.end - i * 4 * 1024, newpg - i * 4 * 1024,
+        0); // 用户栈虚拟地址
+  }
+  Log("new page area: p %p,%p", newpg - 32 * 1024, newpg);
+  Log("new page area: v %p,%p", pcb->as.area.end - 32 * 1024, pcb->as.area.end);
   void *sp = newpg;
   int argc = 0, envc = 0;
   if (argv != NULL)
@@ -63,8 +62,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   Log("User Context set entry = %p", entry);
   pcb->cp = ucontext(&pcb->as, (Area){pcb->stack, pcb + 1}, (void *)entry);
   printf("pdir = %p\n", pcb->as.ptr);
-  // pcb->cp->GPRx = (int)sp + pcb->as.area.end - newpg;
-  pcb->cp->GPRx = (int)sp;
+  pcb->cp->GPRx = (int)sp + pcb->as.area.end - newpg;
 }
 PCB *add_pcb() {
   return &pcb[0];
@@ -78,7 +76,7 @@ PCB *add_pcb() {
 void init_proc() {
   char *argv[] = {NULL};
   char *envp[] = {NULL};
-  // protect(&pcb[0].as);
+  protect(&pcb[0].as);
   context_uload(&pcb[0], "/bin/nterm", argv, envp);
   context_kload(&pcb[1], hello_fun, (void *)"kernel");
   switch_boot_pcb();
