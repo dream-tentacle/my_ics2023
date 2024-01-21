@@ -80,11 +80,12 @@ int _open(const char *path, int flags, mode_t mode) {
 int _write(int fd, void *buf, size_t count) {
   return _syscall_(SYS_write, fd, (intptr_t)buf, count);
 }
-extern char end;
-static void *program_brk = 0;
+extern int _end;
+static void *program_brk = (void *)&_end;
 void *_sbrk(intptr_t increment) {
   if (program_brk == 0)
-    program_brk = (void *)&end;
+    program_brk = (void *)&_end;
+  exit(0);
   void *re = program_brk;
   program_brk += increment;
   _syscall_(SYS_brk, (int)program_brk, 0, 0);
