@@ -80,7 +80,7 @@ void init_proc() {
   char *argv[] = {NULL};
   char *envp[] = {NULL};
   protect(&pcb[0].as);
-  context_uload(&pcb[0], "/bin/pal", argv, envp);
+  context_uload(&pcb[0], "/bin/nterm", argv, envp);
   context_kload(&pcb[1], hello_fun, (void *)"kernel");
   switch_boot_pcb();
   yield();
