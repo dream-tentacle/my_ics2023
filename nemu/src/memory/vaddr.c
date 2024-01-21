@@ -30,13 +30,16 @@ word_t vaddr_read(vaddr_t addr, int len) {
   if (isa_mmu_check(addr, len, MMU_LOAD) == MMU_DIRECT)
     return paddr_read(addr, len);
   if (addr >> 4 == 0x40060a3 || addr >> 4 == 0x82248a3) {
-    printf("addr=%x, data=%x\n", addr, paddr_read(addr, len));
+    printf("addr=%x,", addr);
   }
   // if ((satp << 12) == 0x821dd000)
   //   printf("read vaddr %x, ", addr);
   addr = isa_mmu_translate(addr, len, MEM_TYPE_READ);
   // if ((satp << 12) == 0x821dd000)
   //   printf("to %x\n", addr);
+  if (addr >> 4 == 0x40060a3 || addr >> 4 == 0x82248a3) {
+    printf("previous=%x\n", paddr_read(addr, len));
+  }
   return paddr_read(addr, len);
 }
 
