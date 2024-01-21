@@ -141,6 +141,7 @@ void csr_mask(word_t imm, word_t val) {
   }
   if (imm == 0x300) {
     mstatus |= val;
+    printf("mstatus = " FMT_WORD "\n", mstatus);
     return;
   }
   if (imm == 0x180) {
@@ -163,6 +164,7 @@ void csr_write(word_t imm, word_t val) {
   }
   if (imm == 0x300) {
     mstatus = val;
+    printf("mstatus = " FMT_WORD "\n", mstatus);
     return;
   }
   if (imm == 0x180) {
