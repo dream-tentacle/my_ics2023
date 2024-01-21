@@ -11,7 +11,7 @@ void *new_page(size_t nr_page);
 void hello_fun(void *arg) {
   int j = 1;
   while (1) {
-    if (j % 30000 == 0)
+    if (j % 10000 == 0)
       Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg,
           j);
     j++;
@@ -81,7 +81,7 @@ void init_proc() {
   char *argv[] = {NULL};
   char *envp[] = {NULL};
   protect(&pcb[0].as);
-  context_uload(&pcb[0], "/bin/pal", argv, envp);
+  context_uload(&pcb[0], "/bin/nterm", argv, envp);
   context_kload(&pcb[1], hello_fun, (void *)"kernel");
   switch_boot_pcb();
   yield();
