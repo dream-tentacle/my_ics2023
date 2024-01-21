@@ -102,7 +102,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     printf("va = %p, pa = %p, as->ptr = %p\n", va, pa, as->ptr);
     printf("VPN1(va) = %d, VPN0(va) = %d, OFFSET(va) = %d\n", VPN1(va),
            VPN0(va), OFFSET(va));
-    printf("page_dir + 4 * VPN1(va) = %p\n", page_dir + 4 * VPN1(va));
+    printf("page_dir + 4 * VPN1(va) = %p\n", (int)page_dir + 4 * VPN1(va));
     printf("page_table_entry_p = %p, *page_table_entry_p = %p\n",
            page_table_entry_p, *page_table_entry_p);
     printf("page_dir_entry_p = %p, *page_dir_entry_p = %p\n", page_dir_entry_p,
