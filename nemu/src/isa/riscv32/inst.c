@@ -171,7 +171,7 @@ void csr_write(word_t imm, word_t val) {
   }
   Assert(0, "csr_write: not implemented this csr");
 }
-int t1value = 0;
+uint32_t t1value = 0;
 static int decode_exec(Decode *s) {
   int rd = 0;
   word_t src1 = 0, src2 = 0, imm = 0;
