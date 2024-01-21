@@ -171,7 +171,6 @@ void csr_write(word_t imm, word_t val) {
   }
   Assert(0, "csr_write: not implemented this csr");
 }
-uint32_t t1value = 0;
 static int decode_exec(Decode *s) {
   int rd = 0;
   word_t src1 = 0, src2 = 0, imm = 0;
@@ -291,7 +290,9 @@ static int decode_exec(Decode *s) {
           s->dnpc = isa_raise_intr(11, s->snpc));
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N,
           NEMUTRAP(s->pc, R(10))); // R(10) is $a0
-  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret, N, s->dnpc = mepc);
+  INSTPAT("0011000 00010 00000 000 00000 11100 11", mret, N, s->dnpc = mepc;
+          mstatus = mstatus | ((mstatus & 0x80) >> 4);
+          mstatus = mstatus | 0x80);
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));
   INSTPAT_END();
 
@@ -302,10 +303,6 @@ static int decode_exec(Decode *s) {
     call_funct(s->dnpc, s->pc);
   }
 #endif
-  // if (t1value != gpr(6)) {
-  //   t1value = gpr(6);
-  //   printf("t1=%d=%x\n", t1value, t1value);
-  // }
   return 0;
 }
 int isa_exec_once(Decode *s) {

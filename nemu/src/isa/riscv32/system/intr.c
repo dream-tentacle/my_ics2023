@@ -19,9 +19,20 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * Then return the address of the interrupt/exception vector.
    */
-  mepc = epc;
+  if (NO == 0x80000007) {
+    // 时钟中断
+    mstatus = mstatus | ((mstatus & 0x8) << 4); // 设置MPIE=MIE
+    mstatus = mstatus & ~0x80;                  // 设置MIE=0
+  }
   mcause = NO;
+  mepc = epc;
   return mtvep;
 }
 
-word_t isa_query_intr() { return INTR_EMPTY; }
+word_t isa_query_intr() {
+  if (cpu.INTR == true) {
+    cpu.INTR = false;
+    return 0x80000007;
+  }
+  return INTR_EMPTY;
+}
