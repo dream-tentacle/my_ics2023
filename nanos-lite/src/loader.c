@@ -61,7 +61,9 @@ uintptr_t loader(PCB *pcb, const char *filename) {
           printf("map %p to %p\n", j, page);
           char *x = 0x40060a08 + page - j;
           for (; ((int)x) < (int)(0x40060af0 + page - j); x++) {
-            printf("%x,", (int)((char)*x) % 16);
+            printf("%x", (int)((char)*x) % 16);
+            if (((int)x) % 16 == 8)
+              printf("\n");
           }
         }
       }
