@@ -66,7 +66,7 @@ void __am_switch(Context *c) {
 int pa_p[1000000], cnt = 0;
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   pa_p[cnt++] = (int)pa;
-  for (int i = 0; i < cnt; i++) {
+  for (int i = 0; i < cnt - 1; i++) {
     if (pa_p[i] == (int)pa) {
       printf("pa = %p, va = %p\n", pa, va);
       printf("pdir = %p\n", as->ptr);
