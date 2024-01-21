@@ -80,12 +80,14 @@ void __am_switch(Context *c) {
 #define PTE_PPN1(pte) (((uintptr_t)(pte) >> 20) & 0x3ff)
 #define PTE_PPN0(pte) (((uintptr_t)(pte) >> 10) & 0x3ff)
 #define PTE_PPN(pte) (((uintptr_t)(pte) >> 10) & 0x3fffff)
+char flag = 0;
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   // 首先获取页目录项
   PTE *page_dir = as->ptr;
   PTE *page_dir_entry_p = &page_dir[VPN1(va)];
-  if (*(int *)0x821dd830 != 0) {
+  if (*(int *)0x821dd830 != 0 && !flag) {
     printf("=============\n");
+    flag = 1;
   }
   if ((int)pa == 0x821e7000) {
     printf("va = %p, pa = %p, as->ptr = %p\n", va, pa, as->ptr);
