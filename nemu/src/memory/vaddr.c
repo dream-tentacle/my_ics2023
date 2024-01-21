@@ -20,6 +20,8 @@ extern word_t satp;
 word_t vaddr_ifetch(vaddr_t addr, int len) {
   if (isa_mmu_check(addr, len, MMU_FETCH) == MMU_DIRECT)
     return paddr_read(addr, len);
+  if ((satp << 12) == 0x821dd000)
+    printf("ifetch vaddr %x, ", addr);
   addr = isa_mmu_translate(addr, len, MEM_TYPE_IFETCH);
   return paddr_read(addr, len);
 }

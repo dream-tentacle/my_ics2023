@@ -171,6 +171,7 @@ void csr_write(word_t imm, word_t val) {
   }
   Assert(0, "csr_write: not implemented this csr");
 }
+uint32_t t1value = 0;
 static int decode_exec(Decode *s) {
   int rd = 0;
   word_t src1 = 0, src2 = 0, imm = 0;
@@ -301,6 +302,10 @@ static int decode_exec(Decode *s) {
     call_funct(s->dnpc, s->pc);
   }
 #endif
+  if (t1value != gpr(6)) {
+    printf("t1=%d=%x\n", t1value, t1value);
+    t1value = gpr(6);
+  }
   return 0;
 }
 int isa_exec_once(Decode *s) {
