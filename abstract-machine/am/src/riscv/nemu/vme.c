@@ -94,7 +94,14 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   PTE *page_table = (PTE *)(PTE_PPN(*page_dir_entry_p) << 12);
   PTE *page_table_entry_p = &page_table[VPN0(va)];
   // 检查是不是没有填入过，若填入过则报错
-  assert(!(*page_table_entry_p & 1));
+  if ((*page_table_entry_p & 1)) {
+    printf("va = %p, pa = %p\n", va, pa);
+    printf("page_table_entry_p = %p, *page_table_entry_p = %p\n",
+           page_table_entry_p, *page_table_entry_p);
+    printf("page_dir_entry_p = %p, *page_dir_entry_p = %p\n", page_dir_entry_p,
+           *page_dir_entry_p);
+    assert(0);
+  }
   // 填入页表项
   *page_table_entry_p = ((uintptr_t)pa >> 2) | 0x1;
 }
