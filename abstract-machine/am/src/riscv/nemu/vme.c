@@ -84,6 +84,9 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // 首先获取页目录项
   PTE *page_dir = as->ptr;
   PTE *page_dir_entry_p = &page_dir[VPN1(va)];
+  if (*(int *)0x821dd830 != 0) {
+    printf("=============\n");
+  }
   if ((int)pa == 0x821e7000) {
     printf("va = %p, pa = %p, as->ptr = %p\n", va, pa, as->ptr);
     printf("page_dir_entry_p = %p, *page_dir_entry_p = %p\n", page_dir_entry_p,
