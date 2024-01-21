@@ -81,6 +81,9 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   if (as->ptr != kas.ptr) {
     printf("map %p to %p, pde = %p, pt = %p\n", va, pa, pde, pt);
   }
+  if ((int)&pde == 0x821dc820) {
+    printf("[[map %p to %p, pde = %p, pt = %p]]\n", va, pa, pde, pt);
+  }
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
