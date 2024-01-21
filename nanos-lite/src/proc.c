@@ -90,8 +90,8 @@ void init_proc() {
 }
 
 Context *schedule(Context *prev) {
-  printf("current = %p\n", current);
-  current->cp = prev;
+  if (current)
+    current->cp = prev;
   // int flag = -1;
   // for (int i = 0; i < MAX_NR_PROC; i++) {
   //   if (current == &pcb[i]) {
