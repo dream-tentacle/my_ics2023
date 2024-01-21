@@ -89,6 +89,11 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     PTE *page_table = (PTE *)(pgalloc_usr(PGSIZE));
     memset(page_table, 0, PGSIZE);
     *page_dir_entry_p = ((uintptr_t)page_table >> 2) | 0x1;
+    if ((int)page_table == 0x821c7000) {
+      printf("va = %p, pa = %p, as->ptr = %p\n", va, pa, as->ptr);
+      printf("VPN1(va) = %d, VPN0(va) = %d, OFFSET(va) = %d\n", VPN1(va),
+             VPN0(va), OFFSET(va));
+    }
   }
   // 获取页表项
   PTE *page_table = (PTE *)(PTE_PPN(*page_dir_entry_p) << 12);
@@ -103,10 +108,10 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     printf("VPN1(va) = %d, VPN0(va) = %d, OFFSET(va) = %d\n", VPN1(va),
            VPN0(va), OFFSET(va));
     printf("page_dir + 4 * VPN1(va) = %p\n", (int)page_dir + 4 * VPN1(va));
-    printf("page_table_entry_p = %p, *page_table_entry_p = %p\n",
-           page_table_entry_p, *page_table_entry_p);
     printf("page_dir_entry_p = %p, *page_dir_entry_p = %p\n", page_dir_entry_p,
            *page_dir_entry_p);
+    printf("page_table_entry_p = %p, *page_table_entry_p = %p\n",
+           page_table_entry_p, *page_table_entry_p);
     assert(0);
   }
   // 填入页表项
