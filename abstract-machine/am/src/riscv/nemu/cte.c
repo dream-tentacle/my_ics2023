@@ -7,7 +7,6 @@ extern void __am_get_cur_as(Context *c);
 extern void __am_switch(Context *c);
 // 一个函数指针，指向一个函数，这个函数的返回值是Context*，参数是Event和Context*。
 Context *__am_irq_handle(Context *c) {
-  __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
@@ -31,7 +30,6 @@ Context *__am_irq_handle(Context *c) {
     c = user_handler(ev, c);
     assert(c != NULL);
   }
-  __am_switch(c);
   return c;
 }
 
