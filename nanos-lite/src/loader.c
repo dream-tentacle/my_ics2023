@@ -48,6 +48,20 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       int j = start;
       fs_lseek(fd, elf_phdr[i].p_offset - (elf_phdr[i].p_vaddr - start),
                SEEK_SET);
+      void *page = new_page(1);
+      map(&pcb->as, (void *)j, page, 0);
+      if (j + PGSIZE >= elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz) {
+        fs_read(fd, page, PGSIZE);
+        memset((void *)(page + elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j),
+               0, PGSIZE - (elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j));
+      } else {
+        fs_read(fd, page, PGSIZE);
+      }
+      if (j > elf_phdr[i].p_vaddr) {
+        // 初始有一部分没对齐
+        memset(page, 0, j - elf_phdr[i].p_vaddr);
+      }
+      j += PGSIZE;
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz; j += PGSIZE) {
         void *page = new_page(1);
         map(&pcb->as, (void *)j, page, 0);
