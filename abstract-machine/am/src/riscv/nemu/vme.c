@@ -78,9 +78,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // 填写新的页表项，页表基地址为pde
   PTE *pt = (PTE *)((pde << 2) & ~0xfff);
   pt[vpn1] = (uintptr_t)pa >> 2 | 0x1;
-  if (as->ptr != kas.ptr && (int)va == 0x7ffff000) {
+  if (as->ptr != kas.ptr) {
     printf("map %p to %p, pde = %p, pt = %p\n", va, pa, pde, pt);
-    printf("&pt[vpn1] = %p, pt[vpn1] = %p\n", &pt[vpn1], pt[vpn1]);
   }
 }
 
