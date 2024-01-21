@@ -89,7 +89,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   if (!(*page_dir_entry_p & 1)) {
     PTE *page_table = (PTE *)(pgalloc_usr(PGSIZE));
     memset(page_table, 0, PGSIZE);
-    *page_dir_entry_p = ((uintptr_t)page_table << 10) | 0x1;
+    *page_dir_entry_p = ((uintptr_t)page_table >> 2) | 0x1;
   }
   printf("page_dir_entry_p = %p\n", *page_dir_entry_p);
   // 获取页表项
