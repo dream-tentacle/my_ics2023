@@ -35,6 +35,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Phdr elf_phdr[elf_ehdr.e_phnum];
   fs_lseek(fd, elf_ehdr.e_phoff, SEEK_SET);
   fs_read(fd, elf_phdr, sizeof(Elf_Phdr) * elf_ehdr.e_phnum);
+  printf("start\n");
   for (int i = 0; i < elf_ehdr.e_phnum; i++) {
     if (elf_phdr[i].p_type == 1) {
       // 从ramdisk中读取数据
