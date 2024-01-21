@@ -63,7 +63,7 @@ void __am_switch(Context *c) {
     set_satp(c->pdir);
   }
 }
-int pa_position[0x80000] = {};
+int pa_position[0x800000] = {};
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   if (pa_position[(uintptr_t)pa >> 12] == 1) {
     printf("pa = %p, va = %p\n", pa, va);
