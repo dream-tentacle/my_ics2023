@@ -79,7 +79,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   PTE *pt = (PTE *)((pde << 2) & ~0xfff);
   pt[vpn1] = (uintptr_t)pa >> 2 | 0x1;
   if (as->ptr != kas.ptr) {
-    printf("map %p to %p\n", va, pa);
+    printf("map %p to %p, pde = %p, pt = %p\n", va, pa, pde, pt);
+    printf("&pt[vpn1] = %p, pt[vpn1] = %p\n", &pt[vpn1], pt[vpn1]);
   }
 }
 
