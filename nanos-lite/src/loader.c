@@ -50,7 +50,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
         void *page = new_page(1);
         map(&pcb->as, (void *)j, page, 0);
         if (j + PGSIZE >= elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz) {
-          fs_read(fd, page, elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j);
+          fs_read(fd, page, PGSIZE);
           memset(
               (void *)(page + elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j),
               0, PGSIZE - (elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j));
