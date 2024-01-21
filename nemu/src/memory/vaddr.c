@@ -36,6 +36,9 @@ word_t vaddr_read(vaddr_t addr, int len) {
 }
 
 void vaddr_write(vaddr_t addr, int len, word_t data) {
+  if (addr >> 8 == 0x821e5f) {
+    printf("write %x to %x\n", data, addr);
+  }
   if (isa_mmu_check(addr, len, MMU_STORE) == MMU_DIRECT)
     paddr_write(addr, len, data);
   else {
