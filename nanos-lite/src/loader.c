@@ -37,8 +37,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
   fs_read(fd, elf_phdr, sizeof(Elf_Phdr) * elf_ehdr.e_phnum);
   for (int i = 0; i < elf_ehdr.e_phnum; i++) {
     if (elf_phdr[i].p_type == 1) {
-      printf("data from %p to %p\n", elf_phdr[i].p_vaddr,
-             elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz);
       // 从ramdisk中读取数据
       fs_lseek(fd, elf_phdr[i].p_offset, SEEK_SET);
       uint32_t start = ROUNDDOWN(elf_phdr[i].p_vaddr, PGSIZE);
