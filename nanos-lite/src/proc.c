@@ -30,6 +30,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
     // printf("map %p to %p\n", pcb->as.area.end - i * 4 * 1024,
     //        newpg - i * 4 * 1024);
   }
+  memset(pcb->as.area.end - 32 * 1024, 0, 32 * 1024);
   Log("new page area: p %p,%p", newpg - 32 * 1024, newpg);
   Log("new page area: v %p,%p", pcb->as.area.end - 32 * 1024, pcb->as.area.end);
   void *sp = newpg;
