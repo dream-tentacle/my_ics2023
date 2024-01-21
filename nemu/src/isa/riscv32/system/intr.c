@@ -23,15 +23,13 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
     // 时钟中断
     mstatus = mstatus | ((mstatus & 0x8) << 4); // 设置MPIE=MIE
     mstatus = mstatus & ~0x80;                  // 设置MIE=0
-    printf("mtvep = %x\n", mtvep);
   }
   mcause = NO;
   mepc = epc;
   return mtvep;
 }
-
 word_t isa_query_intr() {
-  if (cpu.INTR == true) {
+  if (cpu.INTR == true && mtvep != 0) {
     cpu.INTR = false;
     return 0x80000007;
   }
