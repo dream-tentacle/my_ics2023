@@ -62,7 +62,7 @@ uintptr_t loader(PCB *pcb, const char *filename) {
           int x = (int)(0x40060a08 + page - j);
           for (; x < (int)(0x40060af0 + page - j); x += 2) {
             printf("%x ", *(uint8_t *)x);
-            if ((x >> 1 << 1) % 8 == 0) {
+            if (x % 16 == 0) {
               printf("\n");
             }
           }
