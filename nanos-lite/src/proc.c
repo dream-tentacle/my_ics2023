@@ -93,7 +93,5 @@ Context *schedule(Context *prev) {
   if (current)
     current->cp = prev;
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
-  printf("current = %p\n", current);
-  // current = &pcb[0];
   return current->cp;
 }
