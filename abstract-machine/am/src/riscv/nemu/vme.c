@@ -91,6 +91,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     memset(page_table, 0, PGSIZE);
     *page_dir_entry_p = ((uintptr_t)page_table >> 2) | 0x1;
   }
+  printf("page_dir_entry_p = %p\n", *page_dir_entry_p);
   // 获取页表项
   PTE *page_table = (PTE *)(PTE_PPN(*page_dir_entry_p) << 12);
   PTE *page_table_entry_p = &page_table[VPN0(va)];
