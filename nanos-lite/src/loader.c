@@ -43,9 +43,11 @@ uintptr_t loader(PCB *pcb, const char *filename) {
              elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz);
       // 40060ae4
       // 从ramdisk中读取数据
-      fs_lseek(fd, elf_phdr[i].p_offset, SEEK_SET);
+      // fs_lseek(fd, elf_phdr[i].p_offset, SEEK_SET);
       uint32_t start = ROUNDDOWN(elf_phdr[i].p_vaddr, PGSIZE);
       int j = start;
+      fs_lseek(fd, elf_phdr[i].p_offset - (elf_phdr[i].p_vaddr - start),
+               SEEK_SET);
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz; j += PGSIZE) {
         void *page = new_page(1);
         map(&pcb->as, (void *)j, page, 0);
