@@ -43,11 +43,15 @@ uintptr_t loader(PCB *pcb, const char *filename) {
              elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz);
       // 40060ae4
       // 从ramdisk中读取数据
-      // fs_lseek(fd, elf_phdr[i].p_offset, SEEK_SET);
+      fs_lseek(fd, elf_phdr[i].p_offset, SEEK_SET);
       uint32_t start = ROUNDDOWN(elf_phdr[i].p_vaddr, PGSIZE);
       int j = start;
-      fs_lseek(fd, elf_phdr[i].p_offset - (elf_phdr[i].p_vaddr - start),
-               SEEK_SET);
+      void *page = new_page(1);
+      map(&pcb->as, (void *)j, page, 0);
+      memset(page, 0, j - elf_phdr[i].p_vaddr);
+      fs_read(fd, page + j - elf_phdr[i].p_vaddr,
+              PGSIZE - (j - elf_phdr[i].p_vaddr));
+      j += PGSIZE;
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz; j += PGSIZE) {
         void *page = new_page(1);
         map(&pcb->as, (void *)j, page, 0);
@@ -58,16 +62,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
               0, PGSIZE - (elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j));
         } else {
           fs_read(fd, page, PGSIZE);
-        }
-        if (j == 0x40060000) {
-          printf("map %p to %p\n", j, page);
-          int x = (int)(0x40060a08 + page - j);
-          for (; x < (int)(0x40060af0 + page - j); x += 2) {
-            printf("%x ", *(uint8_t *)x);
-            if (x % 16 == 0) {
-              printf("\n");
-            }
-          }
         }
       }
     }
