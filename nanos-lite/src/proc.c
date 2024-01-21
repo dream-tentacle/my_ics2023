@@ -63,10 +63,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   pcb->cp = ucontext(&pcb->as, (Area){pcb->stack, pcb + 1}, (void *)entry);
   printf("the new user pdir = %p\n", pcb->as.ptr);
   pcb->cp->GPRx = (int)sp + pcb->as.area.end - newpg;
-  printf("pcb->cp->GPRx = %x\n", pcb->cp->GPRx);
-  printf("end = %p\n", pcb->as.area.end);
-  printf("newpg = %p\n", newpg);
-  printf("sp = %p\n", sp);
   // pcb->cp->GPRx = (int)sp;
 }
 PCB *add_pcb() {

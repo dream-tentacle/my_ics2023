@@ -63,14 +63,7 @@ void __am_switch(Context *c) {
     set_satp(c->pdir);
   }
 }
-int pa_position[0x800000] = {};
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  if (pa_position[(uintptr_t)pa >> 12] == 1) {
-    printf("pa = %p, va = %p\n", pa, va);
-    printf("previous: %p\n", pa_position[(uintptr_t)pa >> 12]);
-    assert(0);
-  }
-  pa_position[(uintptr_t)pa >> 12] = (int)va;
   // 首先获取页目录项
   PTE *pdir = (PTE *)as->ptr; // 页目录基地址
   uint32_t vpn0 = (uintptr_t)va >> 22;
