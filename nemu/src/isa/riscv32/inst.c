@@ -302,10 +302,10 @@ static int decode_exec(Decode *s) {
     call_funct(s->dnpc, s->pc);
   }
 #endif
-  if (t1value != gpr(6)) {
-    t1value = gpr(6);
-    printf("t1=%d=%x\n", t1value, t1value);
-  }
+  // if (t1value != gpr(6)) {
+  //   t1value = gpr(6);
+  //   printf("t1=%d=%x\n", t1value, t1value);
+  // }
   return 0;
 }
 int isa_exec_once(Decode *s) {
