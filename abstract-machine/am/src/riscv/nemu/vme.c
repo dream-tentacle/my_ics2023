@@ -65,9 +65,9 @@ void __am_switch(Context *c) {
 }
 int pa_p[1000000], cnt = 0;
 void map(AddrSpace *as, void *va, void *pa, int prot) {
-  // if ((int)pa == 0x825b5000) {
-  //   printf("va = %p, pa = %p\n", va, pa);
-  // }
+  if ((int)pa == 0x825b5000) {
+    printf("va = %p, pa = %p\n", va, pa);
+  }
   pa_p[cnt++] = (int)pa;
   if (cnt >= 1000000)
     printf("cnt = %d\n", cnt);
