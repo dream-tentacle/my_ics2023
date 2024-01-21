@@ -303,8 +303,8 @@ static int decode_exec(Decode *s) {
   }
 #endif
   if (t1value != gpr(6)) {
-    printf("t1=%d=%x\n", t1value, t1value);
     t1value = gpr(6);
+    printf("t1=%d=%x\n", t1value, t1value);
   }
   return 0;
 }
