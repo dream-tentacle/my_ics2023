@@ -92,24 +92,8 @@ void init_proc() {
 Context *schedule(Context *prev) {
   if (current)
     current->cp = prev;
-  // int flag = -1;
-  // for (int i = 0; i < MAX_NR_PROC; i++) {
-  //   if (current == &pcb[i]) {
-  //     flag = i;
-  //     break;
-  //   }
-  // }
-  // if (flag == -1)
-  //   current = &pcb[0];
-  // else {
-  //   for (int i = flag; i < 2 * MAX_NR_PROC; i++) {
-  //     if (pcb[(i + 1) % MAX_NR_PROC].cp != NULL) {
-  //       current = &pcb[(i + 1) % MAX_NR_PROC];
-  //       break;
-  //     }
-  //   }
-  // }
   current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+  printf("current = %p\n", current);
   // current = &pcb[0];
   return current->cp;
 }
