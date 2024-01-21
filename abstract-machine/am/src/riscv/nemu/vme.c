@@ -67,7 +67,11 @@ int pa_p[1000000], cnt = 0;
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   pa_p[cnt++] = (int)pa;
   for (int i = 0; i < cnt; i++) {
-    assert(pa_p[i] != (int)pa);
+    if (pa_p[i] == (int)pa) {
+      printf("pa = %p, va = %p\n", pa, va);
+      printf("pdir = %p\n", as->ptr);
+      assert(0);
+    }
   }
   // 首先获取页目录项
   PTE *pdir = (PTE *)as->ptr; // 页目录基地址
