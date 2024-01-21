@@ -82,7 +82,8 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
     printf("map %p to %p, pde = %p, pt = %p\n", va, pa, pde, pt);
   }
   if ((int)pde == 0x20870801) {
-    printf("[[map %p to %p, pde = %p, pt = %p]]\n", va, pa, pde, pt);
+    printf("[[map %p to %p, &pde=%p,pde=%p,&pt=%p,pt=%p]]\n", va, pa, &pde, pde,
+           &pt, pt);
   }
   if ((int)va >> 12 == 0x821b8) {
     printf("[[[map %p to %p, pde = %p, pt = %p]]]\n", va, pa, pde, pt);
