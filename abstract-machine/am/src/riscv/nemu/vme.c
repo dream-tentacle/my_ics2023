@@ -63,12 +63,14 @@ void __am_switch(Context *c) {
     set_satp(c->pdir);
   }
 }
-int pa_p[10000], cnt = 0;
+int pa_p[1000000], cnt = 0;
 void map(AddrSpace *as, void *va, void *pa, int prot) {
   // if ((int)pa == 0x825b5000) {
   //   printf("va = %p, pa = %p\n", va, pa);
   // }
   pa_p[cnt++] = (int)pa;
+  if (cnt >= 1000000)
+    printf("cnt = %d\n", cnt);
   for (int i = 0; i < cnt - 1; i++) {
     if (pa_p[i] == (int)pa) {
       printf("pa = %p, va = %p\n", pa, va);
