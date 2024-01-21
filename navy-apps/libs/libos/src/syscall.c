@@ -83,6 +83,7 @@ int _write(int fd, void *buf, size_t count) {
 extern int _end;
 static void *program_brk = (void *)&_end;
 void *_sbrk(intptr_t increment) {
+  _write(1, "sbrk\n", 5);
   if (program_brk == 0)
     program_brk = (void *)&_end;
   void *re = program_brk;
