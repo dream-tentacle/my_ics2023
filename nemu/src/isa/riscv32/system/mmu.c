@@ -21,13 +21,14 @@ paddr_t isa_mmu_translate(vaddr_t vaddr, int len, int type) {
   int pdir = ((satp & 0x3fffff) << 12); // 页目录基地址
   long long pde_p = pdir | (vaddr >> 22 << 2);
   uint32_t pde = paddr_read((paddr_t)pde_p, 4);
+  if ((!pde & 1))
+    printf("vaddr=%x,pdir=%x,pde_p=%llx,pde=%x\n", vaddr, pdir, pde_p, pde);
   Assert((pde & 1), "pde & 1 = 0");        // 页目录项有效
   uint32_t ptab = (pde << 2) & 0xfffff000; // 页表基地址
   long long pte_p = ptab + 4 * ((vaddr >> 12) & 0x3ff);
   uint32_t pte = paddr_read(pte_p, 4);
   if (!(pte & 1))
-    printf("vaddr = %x, pdir = %x, pde = %x, ptab = %x, pte = %x\n", vaddr,
-           pdir, pde, ptab, pte);
+    printf("vaddr=%x,pte_p=%llx,pte=%x\n", vaddr, pte_p, pte);
   Assert((pte & 1), "pte & 1 = 0");           // 页表项有效
   return (pte >> 10 << 12) | (vaddr & 0xfff); // 物理地址
 }
