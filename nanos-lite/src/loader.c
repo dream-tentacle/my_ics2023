@@ -36,11 +36,18 @@ uintptr_t loader(PCB *pcb, const char *filename) {
   fs_lseek(fd, elf_ehdr.e_phoff, SEEK_SET);
   fs_read(fd, elf_phdr, sizeof(Elf_Phdr) * elf_ehdr.e_phnum);
   for (int i = 0; i < elf_ehdr.e_phnum; i++) {
-    // 40060a3c
+
     if (elf_phdr[i].p_type == 1) {
       printf("start: %p, fileend: %p, memend: %p\n", elf_phdr[i].p_vaddr,
              elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz,
              elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz);
+      if (elf_phdr[i].p_vaddr == 0x4005dffc) {
+        // 读取位于40060a3c的一个int
+        int a;
+        fs_lseek(fd, 0x40060a3c, SEEK_SET);
+        fs_read(fd, &a, sizeof(int));
+        printf("a=%d\n", a);
+      }
       // 从ramdisk中读取数据
       fs_lseek(fd, elf_phdr[i].p_offset, SEEK_SET);
       uint32_t start = ROUNDDOWN(elf_phdr[i].p_vaddr, PGSIZE);
