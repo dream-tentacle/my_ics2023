@@ -14,9 +14,7 @@ static Area segments[] = { // Kernel memory mappings
 
 static inline void set_satp(void *pdir) {
   uintptr_t mode = 1ul << (__riscv_xlen - 1);
-  printf("123\n");
   asm volatile("csrw satp, %0" : : "r"(mode | ((uintptr_t)pdir >> 12)));
-  printf("456\n");
 }
 
 static inline uintptr_t get_satp() {
@@ -40,7 +38,6 @@ bool vme_init(void *(*pgalloc_f)(int), void (*pgfree_f)(void *)) {
     }
   }
   set_satp(kas.ptr);
-  printf("789\n");
   vme_enable = 1;
 
   return true;
@@ -99,7 +96,7 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // 检查是不是没有填入过，若填入过则报错
   assert(!(*page_table_entry_p & 1));
   // 填入页表项
-  *page_table_entry_p = ((uintptr_t)pa << 10) | 0x1;
+  *page_table_entry_p = ((uintptr_t)pa >> 2) | 0x1;
 }
 
 Context *ucontext(AddrSpace *as, Area kstack, void *entry) {
