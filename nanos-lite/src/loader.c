@@ -49,8 +49,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz; j += PGSIZE) {
         void *page = new_page(1);
         map(&pcb->as, (void *)j, page, 0);
-        if (j == 0x40060000)
-          printf("map %p to %p\n", j, page);
         if (j + PGSIZE >= elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz) {
           fs_read(fd, page, elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j);
           memset(
@@ -58,6 +56,11 @@ uintptr_t loader(PCB *pcb, const char *filename) {
               0, PGSIZE - (elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j));
         } else {
           fs_read(fd, page, PGSIZE);
+        }
+        if (j == 0x40060000) {
+          printf("map %p to %p\n", j, page);
+          int *x = 0x40060a3c + page - j;
+          printf("x = %p,*x = %d\n", x, *x);
         }
       }
     }
