@@ -10,6 +10,19 @@
 #define Elf_Ehdr Elf32_Ehdr
 #define Elf_Phdr Elf32_Phdr
 #endif
+uint32_t find_paddr(PCB *pcb, uint32_t vaddr) {
+  int pdir = (int)pcb->as.ptr;
+  uint32_t pde_p = pdir | (vaddr >> 22 << 2);
+  uint32_t pde = *(uint32_t *)pde_p;
+  if ((!pde & 1))
+    return 0;
+  uint32_t ptab = (pde << 2) & 0xfffff000; // 页表基地址
+  uint32_t pte_p = ptab + 4 * ((vaddr >> 12) & 0x3ff);
+  uint32_t pte = *(uint32_t *)pte_p;
+  if (!(pte & 1))
+    return 0;
+  return (pte >> 10 << 12) | (vaddr & 0xfff); // 物理地址
+}
 extern void *new_page(size_t nr_page);
 uintptr_t loader(PCB *pcb, const char *filename) {
   Elf_Ehdr elf_ehdr;
@@ -24,9 +37,6 @@ uintptr_t loader(PCB *pcb, const char *filename) {
   fs_read(fd, elf_phdr, sizeof(Elf_Phdr) * elf_ehdr.e_phnum);
   for (int i = 0; i < elf_ehdr.e_phnum; i++) {
     if (elf_phdr[i].p_type == 1) {
-      // printf("load begin: %p\n", elf_phdr[i].p_vaddr);
-      // printf("file end: %p\n", elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz);
-      // printf("load end: %p\n", elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz);
       // 从ramdisk中读取数据
       fs_lseek(fd, elf_phdr[i].p_offset, SEEK_SET);
       uint32_t start = ROUNDDOWN(elf_phdr[i].p_vaddr, PGSIZE);
@@ -36,23 +46,30 @@ uintptr_t loader(PCB *pcb, const char *filename) {
         map(&pcb->as, (void *)j, page, 0);
         if (j + PGSIZE >= elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz) {
           fs_read(fd, page, elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j);
-          // printf("read %p - %p\n", j,
-          //        elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - 1);
           memset(
               (void *)(page + elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j),
               0, PGSIZE - (elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz - j));
-          // printf("memset %p - %p\n", elf_phdr[i].p_vaddr +
-          // elf_phdr[i].p_filesz,
-          //        j + PGSIZE - 1);
         } else {
           fs_read(fd, page, PGSIZE);
         }
       }
+    }
+  }
+  for (int i = 0; i < elf_ehdr.e_phnum; i++) {
+    if (elf_phdr[i].p_type == 1) {
+      uint32_t start = ROUNDDOWN(elf_phdr[i].p_vaddr, PGSIZE);
+      int j = start;
+      for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_filesz; j += PGSIZE) {
+      }
       // 未初始化的数据
       for (; j < elf_phdr[i].p_vaddr + elf_phdr[i].p_memsz; j += PGSIZE) {
-        void *page = new_page(1);
-        map(&pcb->as, (void *)j, page, 0);
-        memset(page, 0, PGSIZE);
+        void *page;
+        page = (void *)find_paddr(pcb, j);
+        if (!page) {
+          page = new_page(1);
+          map(&pcb->as, (void *)j, page, 0);
+          memset(page, 0, PGSIZE);
+        }
       }
     }
   }
