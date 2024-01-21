@@ -85,13 +85,13 @@ void map(AddrSpace *as, void *va, void *pa, int prot) {
   // 首先获取页目录项
   PTE *page_dir = as->ptr;
   PTE *page_dir_entry_p = &page_dir[VPN1(va)];
-  printf("page_dir_entry_p = %p\n", page_dir_entry_p);
   // 如果页目录项不存在，那么就分配一个页表
   if (!(*page_dir_entry_p & 1)) {
     PTE *page_table = (PTE *)(pgalloc_usr(PGSIZE));
     memset(page_table, 0, PGSIZE);
     *page_dir_entry_p = ((uintptr_t)page_table << 10) | 0x1;
   }
+  printf("page_dir_entry_p = %p\n", *page_dir_entry_p);
   // 获取页表项
   PTE *page_table = (PTE *)(PTE_PPN(*page_dir_entry_p) << 12);
   PTE *page_table_entry_p = &page_table[VPN0(va)];
