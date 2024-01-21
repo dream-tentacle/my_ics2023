@@ -66,6 +66,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   printf("pcb->cp->GPRx = %x\n", pcb->cp->GPRx);
   printf("end = %p\n", pcb->as.area.end);
   printf("newpg = %p\n", newpg);
+  printf("sp = %p\n", sp);
   // pcb->cp->GPRx = (int)sp;
 }
 PCB *add_pcb() {
