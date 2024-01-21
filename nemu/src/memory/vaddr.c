@@ -39,7 +39,7 @@ word_t vaddr_read(vaddr_t addr, int len) {
 
 void vaddr_write(vaddr_t addr, int len, word_t data) {
   if (addr >> 4 == 0x40060a3) {
-    printf("addr=%x,data=%x\n", addr, data);
+    printf("addr=%x,data=%x,previous=%x\n", addr, data, vaddr_read(addr, len));
   }
   if (isa_mmu_check(addr, len, MMU_STORE) == MMU_DIRECT)
     paddr_write(addr, len, data);
