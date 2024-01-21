@@ -29,6 +29,8 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   return mtvep;
 }
 word_t isa_query_intr() {
+  if (mstatus != 0x1800)
+    printf("mstatus=%x\n", mstatus);
   if (cpu.INTR == true && mtvep != 0 && (mstatus & 0x8)) {
     cpu.INTR = false;
     return 0x80000007;
