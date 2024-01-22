@@ -88,7 +88,7 @@ quit:
 
 
   LOAD t3, OFFSET_SP(sp)
-  csrw mscratch, t3 // mscratch = original sp
+  csrw mscratch, t3 // mscratch设为原来的sp
   LOAD t3, OFFSET_NP(sp)
   bnez t3, trap_to_user // if np == 1, trap to user
   MAP(REGS, POP)

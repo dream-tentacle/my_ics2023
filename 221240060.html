@@ -1,64 +1,121 @@
-<!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>&#x8bf4;&#x660e;</title>
-        <style>
-/* From extension vscode.github */
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
- *--------------------------------------------------------------------------------------------*/
+<!DOCTYPE html><html><head>
+      <title>221240060</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:////home/dream/.vscode/extensions/shd101wyy.markdown-preview-enhanced-0.8.11/crossnote/dependencies/katex/katex.min.css">
+      
+      
+      
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
 
-.vscode-dark img[src$=\#gh-light-mode-only],
-.vscode-light img[src$=\#gh-dark-mode-only] {
-	display: none;
+      </style>
+      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script></head><body for="html-export">
+    
+    
+      <div class="crossnote markdown-preview  ">
+      
+<h1 id="说明">说明 </h1>
+<p>已经完成PA4所有必做题。运行时，pcb[0]为<code>hello</code>内核程序，其余三个均为nterm，可以从nterm进入其他用户程序，包括bird,pal,nslider等。</p>
+<h1 id="必答题">必答题 </h1>
+<p><strong>分时多任务的具体过程</strong> 请结合代码, 解释分页机制和硬件中断是如何支撑仙剑奇侠传和<code>hello</code>程序在我们的计算机系统(Nanos-lite, AM, NEMU)中分时运行的.<br>
+下面是在<code>common.h</code>中定义了TIME_SHARING的情况，此时只支持pcb在0和1之间切换</p>
+<ol>
+<li>一开始假设在用户程序运行</li>
+<li>当CPU接收到硬件时钟中断后，进入操作系统的时钟中断处理 (NEMU)</li>
+<li>时钟中断处理时，将<code>switch_to</code>设为0，但在TIME_SHARING情况下这个修改无用，因为schedule还会去修改<code>switch_to</code>的值 (Nanos-lite)</li>
+<li>进入<code>schedule()</code>，判断<code>current</code>是1，设定<code>switch_to</code>为0，故当前上下文指针切换到pcb[0] (Nanos-lite)</li>
+<li>返回到<code>trap.S</code>中，会根据切换到的上下文进行恢复，此时就恢复到了hello程序 (AM)</li>
+<li>如果这个程序是hello，则没有切换栈指针，否则要切换回用户的栈，具体在<code>trap.S</code>中有详细注释 (AM)</li>
+<li>切换到了hello，输出一句话后马上调用<code>yield()</code> (Nanos-lite)</li>
+<li><code>yield()</code>导致再次进入<code>schedule()</code>，判断<code>current</code>是0，设定<code>switch_to</code>为1，当前上下文指针切换到pcb[1] (Nanos-lite)</li>
+<li>然后返回到<code>trap.S</code>中，会根据切换到的上下文进行恢复，此时就恢复到了用户程序 (AM)</li>
+</ol>
+<p>关于分页，在<code>trap.S</code>中退出时，satp也已经通过上下文恢复而切换到了相应的正确值，根据它提供的页目录指针，NEMU会进行对应的读取指令和数据操作</p>
+<p>下面是在common.h中取消定义了TIME_SHARING的情况，此时就是PA最后一个必答题要求完成的展示</p>
+<ol>
+<li>一开始假设在用户程序1运行</li>
+<li>当CPU接收到硬件时钟中断后，进入操作系统的时钟中断处理 (NEMU)</li>
+<li>时钟中断处理时，将<code>switch_to</code>设为0 (Nanos-lite)</li>
+<li>进入<code>schedule()</code>，根据<code>switch_to=0</code>，当前上下文指针切换到pcb[0] (Nanos-lite)</li>
+<li>返回到<code>trap.S</code>中，会根据切换到的上下文进行恢复，此时就恢复到了hello程序 (AM)</li>
+<li>如果这个程序是hello，则没有切换栈指针，否则要切换回用户的栈，具体在<code>trap.S</code>中有详细注释 (AM)</li>
+<li>切换到了hello，输出一句话后马上调用<code>yield()</code>，并将<code>switch_to</code>设为<code>fg_pcb</code>(此时=1) (Nanos-lite)</li>
+<li><code>yield()</code>导致再次进入<code>schedule()</code>，根据<code>switch_to=1</code>，切换上下文指针为pcb[1] (Nanos-lite)</li>
+<li>返回到<code>trap.S</code>中，会根据切换到的上下文进行恢复，此时就恢复到了用户程序1 (AM)</li>
+<li>在用户程序1运行时，如果在event中接收到F1/F2/F3，则将<code>switch_to</code>设为1/2/3，<code>fg_pcb</code>同样如此 (Nanos-lite)</li>
+<li>进入<code>yield()</code>，然后<code>schedule()</code>根据<code>switch_to</code>设定切换到的用户程序</li>
+</ol>
+<p><strong>理解计算机系统 尝试在Linux中编写并运行以下程序:</strong></p>
+<pre data-role="codeBlock" data-info="" class="language-text text"><code>int main() {
+  char *p = "abc";
+  p[0] = 'A';
+  return 0;
 }
+</code></pre><p><strong>你会看到程序因为往只读字符串进行写入而触发了段错误. 请你根据学习的知识和工具, 从程序, 编译器, 链接器, 运行时环境, 操作系统和硬件等视角分析"字符串的写保护机制是如何实现的". 换句话说, 上述程序在执行<code>p[0] = 'A'</code>的时候, 计算机系统究竟发生了什么而引发段错误? 计算机系统又是如何保证段错误会发生? 如何使用合适的工具来证明你的想法?</strong></p>
+<p>程序：字符串"abc"是只读的一个数据<br>
+编译器：char *p = "abc"这一句中，将p指向了某个地址，但此时还没有链接，因此后一句编译时不知道p[0]是只读的<br>
+链接器：将p指向了一个只读数据段的地址<br>
+运行时环境：不知道p是只读的，照常运行指令<br>
+操作系统和硬件：当执行指令时，尝试写入数据，但是写入的地址会先进行检查，发现这个段的段标记符中是没有写入权限的，因此发生段错误，进入中断处理。<br>
+因此，主要的发生错误原因是写入数据前，会检查写入数据的段标记符的相关权限。</p>
+<p>使用robjdump读取编译后的文件：</p>
+<pre data-role="codeBlock" data-info="$ objdump -d test.o" class="language-$ $"><code>test.o:     file format elf64-x86-64
 
-</style>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
-<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
-<style>
-            body {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
-                font-size: 14px;
-                line-height: 1.6;
-            }
-        </style>
-        <style>
-.task-list-item {
-    list-style-type: none;
-}
+Disassembly of section .text:
 
-.task-list-item-checkbox {
-    margin-left: -20px;
-    vertical-align: middle;
-    pointer-events: none;
-}
-</style>
-        
-    </head>
-    <body class="vscode-body vscode-light">
-        <h1 id="说明">说明</h1>
-<h3 id="pa3-可以从nterm运行仙剑一切正常"><strong>PA3 可以从<code>nterm</code>运行仙剑，一切正常！</strong></h3>
-<h1 id="pa3-必答题">PA3 必答题</h1>
-<h3 id="必答题需要在实验报告中回答---理解上下文结构体的前世今生">必答题(需要在实验报告中回答) - 理解上下文结构体的前世今生</h3>
-<p>你会在<code>__am_irq_handle()</code>中看到有一个上下文结构指针<code>c</code>, <code>c</code>指向的上下文结构究竟在哪里? 这个上下文结构又是怎么来的? 具体地, 这个上下文结构有很多成员, 每一个成员究竟在哪里赋值的? <code>$ISA-nemu.h</code>, <code>trap.S</code>, 上述讲义文字, 以及你刚刚在NEMU中实现的新指令, 这四部分内容又有什么联系?</p>
-<p><strong>答：</strong> c指向的上下文结构在<code>trap.S</code>中，它的首地址存在sp中。它是由<code>trap.S</code>中<code>addi sp, sp, -CONTEXT_SIZE</code>所分配的，每一个成员都是在<code>jal __am_irq_handle</code>指令前赋值的，具体而言，通用寄存器是在MAP步骤宏定义展开并一个个存储，然后再将<code>mcause,mstatus,mepc</code>用STORE和对应宏定义展开的偏移量存储的。<code>$ISA-nemu.h</code>定义了Context的各个内容顺序，让C语言代码中能够以正确顺序访问；<code>trap.S</code>申请空间并存储了各代码，讲义就是将<code>trap.S</code>的过程讲了一遍，而我刚刚在NEMU实现的新指令例如<code>csrr</code>则是<code>trap.S</code>所使用到的指令。</p>
-<h3 id="必答题需要在实验报告中回答---理解穿越时空的旅程">必答题(需要在实验报告中回答) - 理解穿越时空的旅程</h3>
-<p>从<code>yield test</code>调用<code>yield()</code>开始, 到从<code>yield()</code>返回的期间, 这一趟旅程具体经历了什么? 软(AM, <code>yield test</code>)硬(NEMU)件是如何相互协助来完成这趟旅程的? 你需要解释这一过程中的每一处细节, 包括涉及的每一行汇编代码/C代码的行为, 尤其是一些比较关键的指令/变量. 事实上, 上文的必答题&quot;理解上下文结构体的前世今生&quot;已经涵盖了这趟旅程中的一部分, 你可以把它的回答包含进来.</p>
-<p>别被&quot;每一行代码&quot;吓到了, 这个过程也就大约50行代码, 要完全理解透彻并不是不可能的. 我们之所以设置这道必答题, 是为了强迫你理解清楚这个过程中的每一处细节. 这一理解是如此重要, 以至于如果你缺少它, 接下来你面对bug几乎是束手无策.</p>
-<p><strong>答：</strong> 从<code>yield()</code>开始，进入<code>abstract-machine/am/src/riscv/nemu/cte.c</code>的<code>yield()</code>，然后根据宏，运行了<code>asm volatile(&quot;li a7, -1; ecall&quot;);</code>，此时是软件调用了硬件的指令，其中<code>li a7 -1</code>是将系统调用号设为<code>-1</code>，存储在<code>a7</code>中（即<code>c-&gt;GPR1</code>），然后NEMU执行ecall指令。NEMU调用<code>isa_raise_intr()</code>函数，并跳转到预先设定的<code>trap.S</code>的位置，然会执行了&quot;理解上下文结构体的前世今生&quot;的过程，<code>trap.S</code>会调用软件的<code>__am_irq_handle</code>函数中，该函数根据异常的原因以及系统调用号来执行相应的操作，并调用预先设定的<code>user_handler()</code>函数（此处是<code>simple_trap()</code>），最后返回到<code>trap.S</code>中，<code>trap.S</code>最后使用了<code>mret</code>指令，让NEMU跳转到之前<code>ecall</code>时存储的位置，就返回到了<code>yield()</code>的下一条指令。</p>
-<h3 id="必答题需要在实验报告中回答---hello程序是什么-它从而何来-要到哪里去">必答题(需要在实验报告中回答) - hello程序是什么, 它从而何来, 要到哪里去</h3>
-<p>我们知道navy-apps/tests/hello/hello.c只是一个C源文件, 它会被编译链接成一个ELF文件. 那么, hello程序一开始在哪里? 它是怎么出现内存中的? 为什么会出现在目前的内存位置? 它的第一条指令在哪里? 究竟是怎么执行到它的第一条指令的? hello程序在不断地打印字符串, 每一个字符又是经历了什么才会最终出现在终端上?</p>
-<p><strong>答：</strong> 一开始<code>hello</code>程序在内存的<code>ramdisk_start</code>与<code>ramdisk_end</code>之间，它是在一开始运行程序的时候就被NEMU加载到内存中的。在<code>nanos-lite</code>的<code>Makefile</code>中，创建了文件<code>resources.S</code>，该文件指定了<code>ramdisk.img</code>的起始位置。<code>hello</code>的第一条指令在elf文件的表头<code>elf_ehdr.e_entry</code>所指向的位置，<code>loader</code>会返回这个值，然后<code>naive_uload</code>通过<code>((void (*)())entry)();</code>语句，将第一条位置当成一个函数指针来调用，从而开始执行<code>hello</code>。<code>hello</code>打印字符时，系统函数最终会调用<code>_write()</code>，然后通过<code>_syscall()</code>来调用相应的系统调用，与“理解穿越时空的旅程”不同的地方在于设定的<code>user_handler()</code>函数，此处设为了nanos-lite中的函数<code>do_event()</code>，然后该函数调用<code>do_syscall</code>，<code>do_syscall</code>再处理相应的系统调用号，此处即调用了<code>sys_write()</code>，它调用<code>fs_write()</code>，然后调用<code>serial_write()</code>，该函数通过<code>putch()</code>输出，而<code>putch()</code>调用了AM的<code>outb()</code>，从而送到NEMU的输出端口位置，NEMU再将该内容输出。</p>
-<h3 id="仙剑奇侠传究竟如何运行">仙剑奇侠传究竟如何运行</h3>
-<p>运行仙剑奇侠传时会播放启动动画, 动画里仙鹤在群山中飞过. 这一动画是通过navy-apps/apps/pal/repo/src/main.c中的PAL_SplashScreen()函数播放的. 阅读这一函数, 可以得知仙鹤的像素信息存放在数据文件mgo.mkf中. 请回答以下问题: 库函数, libos, Nanos-lite, AM, NEMU是如何相互协助, 来帮助仙剑奇侠传的代码从mgo.mkf文件中读出仙鹤的像素信息, 并且更新到屏幕上? 换一种PA的经典问法: 这个过程究竟经历了些什么? (Hint: 合理使用各种trace工具, 可以帮助你更容易地理解仙剑奇侠传的行为)
-<strong>答：</strong> 首先，程序在<code>PAL_MKFReadChunk</code>中调用了<code>fread</code>函数，这是库函数，最终会调用到<code>libos</code>中的<code>_read()</code>系统调用，然后的过程与“hello程序是什么, 它从而何来, 要到哪里去”中<code>_write()</code>的过程基本是一样的，此处不再赘述，总之就是将<code>mgo.mkf</code>读取到了相应的内存中。</p>
+0000000000000000 &lt;main&gt;:
+   0:   f3 0f 1e fa             endbr64 
+   4:   55                      push   %rbp
+   5:   48 89 e5                mov    %rsp,%rbp
+   8:   48 8d 05 00 00 00 00    lea    0x0(%rip),%rax        # f &lt;main+0xf&gt;
+   f:   48 89 45 f8             mov    %rax,-0x8(%rbp)
+  13:   48 8b 45 f8             mov    -0x8(%rbp),%rax
+  17:   c6 00 41                movb   $0x41,(%rax)
+  1a:   b8 00 00 00 00          mov    $0x0,%eax
+  1f:   5d                      pop    %rbp
+  20:   c3                      ret   
+</code></pre><p>此处的rax赋值地址还没有写入<br>
+使用objdump读取最终生成的可执行文件，其中main函数部分如下：</p>
+<pre data-role="codeBlock" data-info="0000000000001129 <main>:" class="language-0000000000001129 0000000000001129"><code>    1129:       f3 0f 1e fa             endbr64 
+    112d:       55                      push   %rbp
+    112e:       48 89 e5                mov    %rsp,%rbp
+    1131:       48 8d 05 cc 0e 00 00    lea    0xecc(%rip),%rax        # 2004 &lt;_IO_stdin_used+0x4&gt;
+    1138:       48 89 45 f8             mov    %rax,-0x8(%rbp)
+    113c:       48 8b 45 f8             mov    -0x8(%rbp),%rax
+    1140:       c6 00 41                movb   $0x41,(%rax)
+    1143:       b8 00 00 00 00          mov    $0x0,%eax
+    1148:       5d                      pop    %rbp
+    1149:       c3                      ret    
+</code></pre><p>此处的地址为2004，然后通过readelf读取节头信息，其中某一个节为：</p>
+<pre data-role="codeBlock" data-info="[16] .rodata           PROGBITS         0000000000002000  00002000" class="language-[16] [16] rodata"><code>       0000000000000008  0000000000000000   A       0     0     4
+</code></pre><p>从这里可以看出，对应的数据是在.rodata节的。<br>
+使用objdump读取段头，其中有一个头为：</p>
+<pre data-role="codeBlock" data-info="" class="language-text text"><code> LOAD           0x0000000000002000 0x0000000000002000 0x0000000000002000
+                 0x00000000000000cc 0x00000000000000cc  R      0x1000
+</code></pre><p>从这里的权限只有R看出确实是只读的。<br>
+为了验证2004处确实是"abc"，我们使用objdump读取段内容，其中有一段为：</p>
+<pre data-role="codeBlock" data-info="" class="language-text text"><code>Contents of section .rodata:
+ 2000 01000200 61626300                    ....abc.        
+</code></pre><p>可见2004处确实是"abc"</p>
 
-        <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
-        
-    </body>
-    </html>
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
