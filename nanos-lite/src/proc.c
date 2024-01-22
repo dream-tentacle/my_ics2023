@@ -1,6 +1,6 @@
 #include <proc.h>
 #include <loader.h>
-#define MAX_NR_PROC 5
+#define MAX_NR_PROC 4
 
 static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
@@ -17,15 +17,6 @@ void hello_fun(void *arg) {
       Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg,
           j);
     j++;
-    switch_to = fg_pcb;
-    yield();
-  }
-}
-void clear(void *arg) {
-  while (1) {
-    Log("clear screen");
-    extern void gpu_init();
-    gpu_init();
     switch_to = fg_pcb;
     yield();
   }
@@ -84,7 +75,6 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 PCB *add_pcb() { return current; }
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"kernel");
-  context_kload(&pcb[4], clear, NULL);
   char *argv[] = {NULL};
   char *envp[] = {NULL};
   protect(&pcb[1].as);
