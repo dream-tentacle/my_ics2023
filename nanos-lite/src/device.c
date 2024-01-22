@@ -36,6 +36,7 @@ size_t dispinfo_read(char *buf, size_t offset, size_t len) {
                  gpu_config.height);
 }
 size_t fb_write(const void *buf, size_t offset, size_t len) {
+  yield();
   AM_GPU_CONFIG_T gpu_config = io_read(AM_GPU_CONFIG);
   int w = (offset / 4) % gpu_config.width;
   int h = (offset / 4) / gpu_config.width;
