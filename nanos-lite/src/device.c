@@ -17,13 +17,14 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
   }
   return len;
 }
-
+extern unsigned int switch_to;
 size_t events_read(char *buf, size_t offset, size_t len) {
   AM_INPUT_KEYBRD_T ev = io_read(AM_INPUT_KEYBRD);
   if (ev.keycode == AM_KEY_NONE) {
     return 0;
   }
   if (ev.keydown) {
+    printf("kd %s\n", keyname[ev.keycode]);
     return sprintf(buf, "kd %s\n", keyname[ev.keycode]);
   } else {
     return sprintf(buf, "ku %s\n", keyname[ev.keycode]);
