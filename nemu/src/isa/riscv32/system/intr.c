@@ -19,11 +19,8 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
   /* TODO: Trigger an interrupt/exception with ``NO''.
    * Then return the address of the interrupt/exception vector.
    */
-  if (NO == 0x80000007) {
-    // 时钟中断
-    mstatus = mstatus | ((mstatus & 0x8) << 4); // 设置MPIE=MIE
-    mstatus = mstatus & ~0x8;                   // 设置MIE=0
-  }
+  mstatus = mstatus | ((mstatus & 0x8) << 4); // 设置MPIE=MIE
+  mstatus = mstatus & ~0x8;                   // 设置MIE=0
   mcause = NO;
   mepc = epc;
   return mtvep;
