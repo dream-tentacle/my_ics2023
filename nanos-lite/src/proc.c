@@ -84,7 +84,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 PCB *add_pcb() { return current; }
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"kernel");
-  context_kload(&pcb[1], clear, NULL);
+  context_kload(&pcb[4], clear, NULL);
   char *argv[] = {NULL};
   char *envp[] = {NULL};
   protect(&pcb[1].as);
