@@ -19,6 +19,7 @@ void hello_fun(void *arg) {
 }
 void context_kload(PCB *pcb, void *entry, void *arg) {
   pcb->cp = kcontext((Area){pcb->stack, pcb + 1}, entry, arg);
+  printf("pcb->cp = %p\n", pcb->cp);
 }
 void context_uload(PCB *pcb, const char *filename, char *const argv[],
                    char *const envp[]) {
