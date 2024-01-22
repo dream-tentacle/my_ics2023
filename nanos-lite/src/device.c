@@ -25,17 +25,17 @@ size_t events_read(char *buf, size_t offset, size_t len) {
   }
   if (ev.keydown) {
     if (strcmp(keyname[ev.keycode], "F1") == 0) {
-      switch_to = 1;
+      switch_to = 4;
       fg_pcb = 1;
       MULTIPROGRAM_YIELD();
     }
     if (strcmp(keyname[ev.keycode], "F2") == 0) {
-      switch_to = 2;
+      switch_to = 4;
       fg_pcb = 2;
       MULTIPROGRAM_YIELD();
     }
     if (strcmp(keyname[ev.keycode], "F3") == 0) {
-      switch_to = 3;
+      switch_to = 4;
       fg_pcb = 3;
       MULTIPROGRAM_YIELD();
     }

@@ -36,7 +36,6 @@ PCB *add_pcb();
 void switch_boot_pcb();
 void init_device();
 int sys_execve(const char *fname, char *const argv[], char *const envp[]) {
-  gpu_init();
   PCB *new_pcb = add_pcb();
   if (new_pcb == NULL) {
     panic("No more PCB");
