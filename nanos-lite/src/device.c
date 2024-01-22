@@ -70,6 +70,8 @@ void gpu_init() {
   memset(buf, 0, 4 * 400 * 300);
   printf("buf = %p\n", buf);
   io_write(AM_GPU_FBDRAW, 0, 0, buf, 400, 300, true);
+  for (int i = 1; i < 100000000; i++)
+    ;
 }
 void init_device() {
   Log("Initializing devices...");
