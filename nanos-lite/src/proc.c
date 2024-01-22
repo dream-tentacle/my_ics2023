@@ -69,7 +69,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   // pcb->cp->GPRx = (int)sp;
 }
 PCB *add_pcb() {
-  return &pcb[0];
+  return &pcb[1];
   // for (int i = 0; i < MAX_NR_PROC; i++) {
   //   if (pcb[i].cp == NULL) {
   //     return &pcb[i];
@@ -80,9 +80,9 @@ PCB *add_pcb() {
 void init_proc() {
   char *argv[] = {"--skip", NULL};
   char *envp[] = {NULL};
-  protect(&pcb[0].as);
-  context_uload(&pcb[0], "/bin/pal", argv, envp);
-  context_kload(&pcb[1], hello_fun, (void *)"kernel");
+  protect(&pcb[1].as);
+  context_uload(&pcb[1], "/bin/nterm", argv, envp);
+  context_kload(&pcb[0], hello_fun, (void *)"kernel");
   switch_boot_pcb();
   yield();
   // load program here
