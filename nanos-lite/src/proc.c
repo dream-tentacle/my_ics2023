@@ -82,7 +82,7 @@ void init_proc() {
   // load program here
   // naive_uload(NULL, "/bin/pal");
 }
-
+unsigned int switch_to;
 Context *schedule(Context *prev) {
   if (current)
     current->cp = prev;

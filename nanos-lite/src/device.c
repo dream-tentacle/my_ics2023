@@ -24,7 +24,10 @@ size_t events_read(char *buf, size_t offset, size_t len) {
     return 0;
   }
   if (ev.keydown) {
-    printf("kd %s\n", keyname[ev.keycode]);
+    if (strcmp(keyname[ev.keycode], "F1") == 0) {
+      switch_to = 1;
+      MULTIPROGRAM_YIELD();
+    }
     return sprintf(buf, "kd %s\n", keyname[ev.keycode]);
   } else {
     return sprintf(buf, "ku %s\n", keyname[ev.keycode]);

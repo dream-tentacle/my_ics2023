@@ -173,10 +173,10 @@ static void execute(uint64_t n) {
       break;
     }
 #endif
-    // word_t intr = isa_query_intr();
-    // if (intr != INTR_EMPTY) {
-    //   cpu.pc = isa_raise_intr(intr, s.dnpc);
-    // }
+    word_t intr = isa_query_intr();
+    if (intr != INTR_EMPTY) {
+      cpu.pc = isa_raise_intr(intr, s.dnpc);
+    }
   }
 }
 
