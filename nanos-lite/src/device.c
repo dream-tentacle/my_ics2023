@@ -65,13 +65,9 @@ void gpu_init() {
   if (buf_flag == 0) {
     buf_flag = 1;
     buf = (void *)new_page(400 * 300 / 1024 + 1);
+    memset(buf, 0, 4 * 400 * 300);
   }
-  printf("buf = %p\n", buf);
-  memset(buf, 0, 4 * 400 * 300);
-  printf("buf = %p\n", buf);
   io_write(AM_GPU_FBDRAW, 0, 0, buf, 400, 300, true);
-  for (int i = 1; i < 100000000; i++)
-    ;
 }
 void init_device() {
   Log("Initializing devices...");
