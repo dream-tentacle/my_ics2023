@@ -7,6 +7,11 @@ extern void __am_get_cur_as(Context *c);
 extern void __am_switch(Context *c);
 // 一个函数指针，指向一个函数，这个函数的返回值是Context*，参数是Event和Context*。
 Context *__am_irq_handle(Context *c) {
+  printf("c->sp = %x\n", c->gpr[2]);
+  printf("c->np = %x\n", c->np);
+  int mscratch;
+  asm volatile("csrr %0, mscratch" : "=r"(mscratch));
+  printf("mscratch = %x\n", mscratch);
   __am_get_cur_as(c);
   if (user_handler) {
     Event ev = {0};
