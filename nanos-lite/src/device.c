@@ -17,7 +17,7 @@ size_t serial_write(const void *buf, size_t offset, size_t len) {
   }
   return len;
 }
-extern unsigned int switch_to;
+extern unsigned int switch_to, fg_pcb;
 size_t events_read(char *buf, size_t offset, size_t len) {
   AM_INPUT_KEYBRD_T ev = io_read(AM_INPUT_KEYBRD);
   if (ev.keycode == AM_KEY_NONE) {
@@ -26,14 +26,17 @@ size_t events_read(char *buf, size_t offset, size_t len) {
   if (ev.keydown) {
     if (strcmp(keyname[ev.keycode], "F1") == 0) {
       switch_to = 1;
+      fg_pcb = 1;
       MULTIPROGRAM_YIELD();
     }
     if (strcmp(keyname[ev.keycode], "F2") == 0) {
       switch_to = 2;
+      fg_pcb = 2;
       MULTIPROGRAM_YIELD();
     }
     if (strcmp(keyname[ev.keycode], "F3") == 0) {
       switch_to = 3;
+      fg_pcb = 3;
       MULTIPROGRAM_YIELD();
     }
     return sprintf(buf, "kd %s\n", keyname[ev.keycode]);

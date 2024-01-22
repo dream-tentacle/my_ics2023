@@ -7,6 +7,7 @@ static PCB pcb_boot = {};
 PCB *current = NULL;
 
 unsigned int switch_to = 0;
+unsigned int fg_pcb = 1;
 void switch_boot_pcb() { current = &pcb_boot; }
 void *new_page(size_t nr_page);
 void hello_fun(void *arg) {
@@ -15,6 +16,7 @@ void hello_fun(void *arg) {
     // if (j % 10000 == 0)
     Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
     j++;
+    switch_to = fg_pcb;
     yield();
   }
 }
