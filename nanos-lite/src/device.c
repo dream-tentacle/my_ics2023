@@ -58,8 +58,14 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
   io_write(AM_GPU_FBDRAW, w, h, tmp, len / sizeof(uint32_t), 1, true);
   return len;
 }
-int buf[400 * 300] = {0};
+void *buf;
+char buf_flag = 0;
+extern void *new_page(size_t nr_page);
 void gpu_init() {
+  if (buf_flag == 0) {
+    buf_flag = 1;
+    buf = (void *)new_page(400 * 300 / 1024 + 1);
+  }
   printf("buf = %p\n", buf);
   memset(buf, 0, 4 * 400 * 300);
   printf("buf = %p\n", buf);
