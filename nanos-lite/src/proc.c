@@ -72,7 +72,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   pcb->cp->np = 1;                 // c->np 设为1，表示用户态退出
   // pcb->cp->GPRx = (int)sp;
 }
-PCB *add_pcb() { return &pcb[2]; }
+PCB *add_pcb() { return &pcb[fg_pcb]; }
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"kernel");
   char *argv[] = {NULL};

@@ -47,9 +47,8 @@ int sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   context_uload(new_pcb, fname, argv, envp);
   switch_boot_pcb();
   extern unsigned int switch_to;
-  switch_to = 2;
   extern unsigned int fg_pcb;
-  fg_pcb = 2;
+  switch_to = fg_pcb;
   yield();
   return 0;
 }
