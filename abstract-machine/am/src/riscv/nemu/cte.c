@@ -74,6 +74,7 @@ Context *kcontext(Area kstack, void (*entry)(void *), void *arg) {
   c->pdir = NULL;
   c->GPR2 = (uint32_t)arg;
   c->mstatus = 1 << 7;
+  printf("c=%p\n", c);
   return c;
 }
 
