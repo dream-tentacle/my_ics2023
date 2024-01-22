@@ -154,6 +154,8 @@ void print_ring_buffer() {
   printf(" --> %s\n", last_decode->logbuf);
 }
 #endif
+int last_mie = 0;
+extern word_t mstatus;
 static void execute(uint64_t n) {
   Decode s;
   for (; n > 0; n--) {
@@ -174,6 +176,14 @@ static void execute(uint64_t n) {
     word_t intr = isa_query_intr();
     if (intr != INTR_EMPTY) {
       cpu.pc = isa_raise_intr(intr, cpu.pc);
+    }
+    if (last_mie != (mstatus & 0x8) >> 3) {
+      last_mie = (mstatus & 0x8) >> 3;
+      if (last_mie == 0) {
+        Log("关中断");
+      } else {
+        Log("开中断");
+      }
     }
   }
 }
