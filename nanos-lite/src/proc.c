@@ -78,11 +78,11 @@ void init_proc() {
   char *argv[] = {NULL};
   char *envp[] = {NULL};
   protect(&pcb[1].as);
-  context_uload(&pcb[1], "/bin/nslider", argv, envp);
+  context_uload(&pcb[1], "/bin/nterm", argv, envp);
   protect(&pcb[2].as);
-  context_uload(&pcb[2], "/bin/pal", argv, envp);
+  context_uload(&pcb[2], "/bin/nterm", argv, envp);
   protect(&pcb[3].as);
-  context_uload(&pcb[3], "/bin/nslider", argv, envp);
+  context_uload(&pcb[3], "/bin/nterm", argv, envp);
   switch_boot_pcb();
   yield();
   // load program here
