@@ -62,7 +62,7 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   uintptr_t entry = loader(pcb, filename);
   Log("User Context set entry = %p", entry);
   pcb->cp = ucontext(&pcb->as, (Area){pcb->stack, pcb + 1}, (void *)entry);
-  printf("the new user pdir = %p\n", pcb->as.ptr);
+  printf("User as->ptr = %p\n", pcb->as.ptr);
   pcb->cp->GPRx = (int)sp + pcb->as.area.end - newpg;
   pcb->cp->gpr[2] = pcb->cp->GPRx; // c->sp 设为用户栈顶（虚拟地址）
   pcb->cp->np = 1;                 // c->np 设为1，表示用户态退出
