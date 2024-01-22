@@ -1,7 +1,7 @@
 #include <common.h>
 #include <proc.h>
 extern void do_syscall(Context *c);
-
+extern unsigned int switch_to;
 static Context *do_event(Event e, Context *c) {
   switch (e.event) {
   case EVENT_YIELD:
@@ -11,6 +11,7 @@ static Context *do_event(Event e, Context *c) {
     do_syscall(c);
     break;
   case EVENT_IRQ_TIMER:
+    switch_to = 0;
     c = schedule(c);
     break;
   default:

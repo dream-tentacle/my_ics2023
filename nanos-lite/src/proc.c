@@ -15,7 +15,7 @@ void hello_fun(void *arg) {
     // if (j % 10000 == 0)
     Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
     j++;
-    switch_to = (switch_to + 1) % 2;
+    switch_to = (switch_to + 1) % MAX_NR_PROC;
     yield();
   }
 }
