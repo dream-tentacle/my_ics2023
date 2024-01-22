@@ -94,7 +94,7 @@ Context *schedule(Context *prev) {
 #ifdef TIME_SHARING
   for (int i = 0; i < 2; i++) {
     if (current == &pcb[i]) {
-      switch_to = (i + 1) % MAX_NR_PROC;
+      switch_to = (i + 1) % 2;
       break;
     }
   }
