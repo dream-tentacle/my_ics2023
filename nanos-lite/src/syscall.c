@@ -45,6 +45,7 @@ int sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   }
   protect(&new_pcb->as);
   context_uload(new_pcb, fname, argv, envp);
+  switch_boot_pcb();
   yield();
   return 0;
 }
