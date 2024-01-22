@@ -53,7 +53,7 @@ save_context:
 
   csrr t3, mscratch // 此时已经是原来的sp了
   STORE t3, OFFSET_SP(sp)
-
+  addi t3, t3, -CONTEXT_SIZE
   bne t3, sp, trap_from_user // 比较t3和sp的值，
   // 如果相等，说明是从内核态进入的，如果不相等，说明是从用户态进入的
   li t3, 0 // 保存np=0
