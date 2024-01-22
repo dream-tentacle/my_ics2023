@@ -45,10 +45,11 @@ Context *__am_irq_handle(Context *c) {
   __am_switch(c);
   printf("c->sp = %x\n", c->gpr[2]);
   printf("c->np = %x\n", c->np);
-  printf("quit handle\n-----\n");
   int sp;
   asm volatile("mv %0, sp" : "=r"(sp));
   printf("now sp = %x\n", sp);
+  printf("quit handle\n-----\n");
+  assert(0);
   return c;
 }
 
