@@ -72,14 +72,14 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
   pcb->cp->np = 1;                 // c->np 设为1，表示用户态退出
   // pcb->cp->GPRx = (int)sp;
 }
-PCB *add_pcb() { return current; }
+PCB *add_pcb() { return &pcb[2]; }
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"kernel");
   char *argv[] = {NULL};
   char *envp[] = {NULL};
   protect(&pcb[1].as);
   context_uload(&pcb[1], "/bin/nslider", argv, envp);
-  protect(&pcb[2].as);
+  // protect(&pcb[2].as);
   // context_uload(&pcb[2], "/bin/pal", argv, envp);
   // protect(&pcb[3].as);
   // context_uload(&pcb[3], "/bin/nslider", argv, envp);
