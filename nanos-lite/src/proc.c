@@ -78,7 +78,7 @@ void init_proc() {
   char *argv[] = {NULL};
   char *envp[] = {NULL};
   protect(&pcb[1].as);
-  context_uload(&pcb[1], "/bin/pal", argv, envp);
+  context_uload(&pcb[1], "/bin/nterm", argv, envp);
   protect(&pcb[2].as);
   context_uload(&pcb[2], "/bin/bird", argv, envp);
   protect(&pcb[3].as);
