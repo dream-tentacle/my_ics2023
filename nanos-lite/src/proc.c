@@ -76,7 +76,7 @@ PCB *add_pcb() {
   // return NULL;
 }
 void init_proc() {
-  char *argv[] = {NULL};
+  char *argv[] = {"--skip", NULL};
   char *envp[] = {NULL};
   protect(&pcb[0].as);
   context_uload(&pcb[0], "/bin/pal", argv, envp);
