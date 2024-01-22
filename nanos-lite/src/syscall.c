@@ -56,7 +56,7 @@ void sys_exit(int code) {
   if (code == 0) {
     printf("successfully exit!\n");
   } else {
-    printf("exit with code %d\n", code);
+    printf("terminate. exit with code %d\n", code);
   }
   halt(code);
 }
