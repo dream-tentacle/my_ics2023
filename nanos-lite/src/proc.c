@@ -70,13 +70,15 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 }
 PCB *add_pcb() { return current; }
 void init_proc() {
-  context_kload(&pcb[0], hello_fun, (void *)"kernel");
+  context_kload(&pcb[0], hello_fun, (void *)"kernel1");
+  context_kload(&pcb[2], hello_fun, (void *)"kernel2");
+  context_kload(&pcb[3], hello_fun, (void *)"kernel3");
   char *argv[] = {NULL};
   char *envp[] = {NULL};
   protect(&pcb[1].as);
   context_uload(&pcb[1], "/bin/pal", argv, envp);
-  protect(&pcb[2].as);
-  context_uload(&pcb[2], "/bin/bird", argv, envp);
+  // protect(&pcb[2].as);
+  // context_uload(&pcb[2], "/bin/bird", argv, envp);
   switch_boot_pcb();
   yield();
   // load program here
@@ -86,6 +88,14 @@ unsigned int switch_to;
 Context *schedule(Context *prev) {
   if (current)
     current->cp = prev;
-  current = (current == &pcb[0] ? &pcb[1] : &pcb[0]);
+#ifdef TIMESHARING
+  for (int i = 0; i < MAX_NR_PROC; i++) {
+    if (current == &pcb[i]) {
+      switch_to = (i + 1) % MAX_NR_PROC;
+      break;
+    }
+  }
+#endif
+  current = &pcb[switch_to];
   return current->cp;
 }
