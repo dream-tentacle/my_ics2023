@@ -295,9 +295,6 @@ static int decode_exec(Decode *s) {
         s->dnpc = mepc;
         mstatus = mstatus | ((mstatus & 0x80) >> 4);
         mstatus = mstatus | 0x80;
-        if ((mstatus & 0x8) >> 3) {
-          printf("mret 开中断\n");
-        }
       } while (0));
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));
   INSTPAT_END();

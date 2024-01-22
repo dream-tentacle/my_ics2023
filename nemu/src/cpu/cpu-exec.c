@@ -177,14 +177,6 @@ static void execute(uint64_t n) {
     if (intr != INTR_EMPTY) {
       cpu.pc = isa_raise_intr(intr, s.dnpc);
     }
-    if (last_mie != (mstatus & 0x8) >> 3) {
-      last_mie = (mstatus & 0x8) >> 3;
-      if (last_mie == 0) {
-        Log("关中断");
-      } else {
-        Log("开中断");
-      }
-    }
   }
 }
 
