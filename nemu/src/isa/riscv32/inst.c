@@ -33,7 +33,8 @@ enum {
   TYPE_J,
   TYPE_R,
   TYPE_B,
-  TYPE_Zicsr,
+  TYPE_ZicsrR,
+  TYPE_ZicsrI,
   TYPE_N, // none
 };
 
@@ -69,7 +70,7 @@ enum {
   } while (0)
 #define immZicsr()                                                             \
   do {                                                                         \
-    *imm = BITS(i, 31, 20);                                                    \
+    *imm = BITS(i, 19, 15);                                                    \
   } while (0)
 static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2,
                            word_t *imm, int type) {
@@ -102,13 +103,17 @@ static void decode_operand(Decode *s, int *rd, word_t *src1, word_t *src2,
     src1R();
     src2R();
     break;
-  case TYPE_Zicsr:
-    immZicsr();
+  case TYPE_ZicsrR:
+    *src2 = BITS(i, 31, 20); // CSR寄存器编号
     src1R();
+    break;
+  case TYPE_ZicsrI:
+    *src2 = BITS(i, 31, 20); // CSR寄存器编号
+    immZicsr();
     break;
   }
 }
-word_t mtvep, mepc, mcause, mstatus = 0x1800, satp;
+word_t mtvep, mepc, mcause, mstatus = 0x1800, satp, mscratch;
 // satp |MODE(1)|ASID(9)|PPN(22)|
 // MODE=0: Bare, 直接映射
 // MODE=1: Sv32, 页表映射
@@ -123,6 +128,8 @@ word_t csr_read(word_t imm) {
     return mstatus;
   if (imm == 0x180)
     return satp;
+  if (imm == 0x340)
+    return mscratch;
   Assert(0, "csr_read: not implemented this csr");
   return 0;
 }
@@ -147,6 +154,11 @@ void csr_mask(word_t imm, word_t val) {
     satp |= val;
     return;
   }
+  if (imm == 0x340) {
+    mscratch |= val;
+    return;
+  }
+  Assert(0, "csr_mask: not implemented this csr");
 }
 void csr_write(word_t imm, word_t val) {
   if (imm == 0x305) {
@@ -167,6 +179,10 @@ void csr_write(word_t imm, word_t val) {
   }
   if (imm == 0x180) {
     satp = val;
+    return;
+  }
+  if (imm == 0x340) {
+    mscratch = val;
     return;
   }
   Assert(0, "csr_write: not implemented this csr");
@@ -280,12 +296,15 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000001 ????? ????? 111 ????? 01100 11", remu, R,
           Assert(src2 != 0, "div by zero in riscv32/inst.c");
           R(rd) = src1 % src2);
-  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, Zicsr,
-          R(rd) = csr_read(imm);
-          csr_write(imm, src1));
-  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs, Zicsr,
-          R(rd) = csr_read(imm);
-          if (src1 != 0) csr_mask(imm, src1));
+  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, ZicsrR,
+          R(rd) = csr_read(src2); // src2是csr寄存器编号
+          csr_write(src2, src1));
+  INSTPAT("??????? ????? ????? 101 ????? 11100 11", csrrwi, ZicsrI,
+          R(rd) = csr_read(src2); // src2是csr寄存器编号
+          csr_write(src2, src1));
+  INSTPAT("??????? ????? ????? 010 ????? 11100 11", csrrs, ZicsrR,
+          R(rd) = csr_read(src2); // src2是csr寄存器编号
+          if (src1 != 0) csr_mask(src2, src1));
   INSTPAT("0000000 00000 00000 000 00000 11100 11", ecall, N,
           s->dnpc = isa_raise_intr(11, s->snpc));
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N,
