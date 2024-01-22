@@ -31,18 +31,38 @@ f(30) f(31)
 #define PUSH(n) STORE concat(x, n), (n * XLEN)(sp);
 #define POP(n)  LOAD  concat(x, n), (n * XLEN)(sp);
 
-#define CONTEXT_SIZE  ((NR_REGS + 3 + 1) * XLEN)
+#define CONTEXT_SIZE  ((NR_REGS + 3 + 2) * XLEN)
 #define OFFSET_SP     ( 2 * XLEN)
 #define OFFSET_CAUSE  ((NR_REGS + 0) * XLEN)
 #define OFFSET_STATUS ((NR_REGS + 1) * XLEN)
 #define OFFSET_EPC    ((NR_REGS + 2) * XLEN)
+#define OFFSET_PDIR   ((NR_REGS + 3) * XLEN)
+#define OFFSET_NP     ((NR_REGS + 4) * XLEN)
 
 .align 3
 .globl __am_asm_trap
 __am_asm_trap:
+  csrrw sp, mscratch, sp   // (1) atomically exchange sp and mscratch
+  bnez sp, save_context    // (2) take the branch if we trapped from user
+  csrr sp, mscratch        // (3) if we trapped from kernel, restore the original sp
+
+save_context:
   addi sp, sp, -CONTEXT_SIZE
 
-  MAP(REGS, PUSH)
+  MAP(REGS, PUSH) // push registers
+
+  csrr t3, mscratch // 此时已经是原来的sp了
+  STORE t3, OFFSET_SP(sp)
+// 比较t3和sp的值，如果相等，说明是从内核态进入的，如果不相等，说明是从用户态进入的
+  bne t3, sp, trap_from_user
+  li t3, 0 // 保存np=0
+  j quit // 跳转到quit
+trap_from_user:
+  li t3, 1 // 保存np=1
+quit:
+  STORE t3, OFFSET_NP(sp)
+
+  csrwi mscratch, 0
 
   csrr t0, mcause
   csrr t1, mstatus
@@ -65,7 +85,22 @@ __am_asm_trap:
   csrw mstatus, t1
   csrw mepc, t2
 
-  MAP(REGS, POP)
 
+  LOAD t3, OFFSET_SP(sp)
+  csrw mscratch, t3 // mscratch = original sp
+  LOAD t3, OFFSET_NP(sp)
+  bnez t3, trap_to_user // if np == 1, trap to user
+  MAP(REGS, POP)
   addi sp, sp, CONTEXT_SIZE
+  li sp, 0
+  csrrw sp, mscratch, sp 
+  // 此时sp已经是原来的sp了, mscratch则被置为0
+  mret
+  
+trap_to_user:
+  MAP(REGS, POP)
+  addi sp, sp, CONTEXT_SIZE
+  csrrw sp, mscratch, sp
+  // 从用户态进入，之前mscratch设为了用户的sp，现在二者交换
+
   mret
