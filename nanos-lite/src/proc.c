@@ -23,9 +23,9 @@ void hello_fun(void *arg) {
 }
 void clear(void *arg) {
   while (1) {
+    Log("clear screen");
     extern void gpu_init();
     gpu_init();
-    Log("clear screen");
     switch_to = fg_pcb;
     yield();
   }
