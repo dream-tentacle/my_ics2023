@@ -82,7 +82,7 @@ void init_proc() {
   protect(&pcb[2].as);
   context_uload(&pcb[2], "/bin/pal", argv, envp);
   protect(&pcb[3].as);
-  context_uload(&pcb[3], "/bin/slider", argv, envp);
+  context_uload(&pcb[3], "/bin/nslider", argv, envp);
   switch_boot_pcb();
   yield();
   // load program here
