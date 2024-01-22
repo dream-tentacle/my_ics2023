@@ -59,6 +59,7 @@ size_t fb_write(const void *buf, size_t offset, size_t len) {
   return len;
 }
 void gpu_init() {
+  printf("screen init\n");
   void *buf = malloc(4 * 400 * 300);
   memset(buf, 0, 4 * 400 * 300);
   io_write(AM_GPU_FBDRAW, 0, 0, buf, 400, 300, true);
