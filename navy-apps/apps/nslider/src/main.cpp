@@ -62,6 +62,8 @@ int main() {
 
     if (e.type == SDL_KEYDOWN) {
       switch (e.key.keysym.sym) {
+      case SDLK_ESCAPE:
+        return 0;
       case SDLK_0:
         rep = rep * 10 + 0;
         break;
@@ -73,24 +75,6 @@ int main() {
         break;
       case SDLK_3:
         rep = rep * 10 + 3;
-        break;
-      case SDLK_4:
-        rep = rep * 10 + 4;
-        break;
-      case SDLK_5:
-        rep = rep * 10 + 5;
-        break;
-      case SDLK_6:
-        rep = rep * 10 + 6;
-        break;
-      case SDLK_7:
-        rep = rep * 10 + 7;
-        break;
-      case SDLK_8:
-        rep = rep * 10 + 8;
-        break;
-      case SDLK_9:
-        rep = rep * 10 + 9;
         break;
       case SDLK_J:
       case SDLK_DOWN:
