@@ -52,7 +52,14 @@ int sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   yield();
   return 0;
 }
-void sys_exit(int code) { halt(code); }
+void sys_exit(int code) {
+  if (code == 0) {
+    printf("successfully exit!\n");
+  } else {
+    printf("exit with code %d\n", code);
+  }
+  halt(code);
+}
 // #define STRACE
 #ifdef STRACE
 #define strace(s, ...) printf("> " s " <\n", ##__VA_ARGS__)
