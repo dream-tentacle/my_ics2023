@@ -6,6 +6,7 @@ static PCB pcb[MAX_NR_PROC] __attribute__((used)) = {};
 static PCB pcb_boot = {};
 PCB *current = NULL;
 
+unsigned int switch_to = 0;
 void switch_boot_pcb() { current = &pcb_boot; }
 void *new_page(size_t nr_page);
 void hello_fun(void *arg) {
@@ -14,6 +15,7 @@ void hello_fun(void *arg) {
     // if (j % 10000 == 0)
     Log("Hello World from Nanos-lite with arg '%s' for the %dth time!", arg, j);
     j++;
+    switch_to = (switch_to + 1) % 2;
     yield();
   }
 }
@@ -71,20 +73,19 @@ void context_uload(PCB *pcb, const char *filename, char *const argv[],
 PCB *add_pcb() { return current; }
 void init_proc() {
   context_kload(&pcb[0], hello_fun, (void *)"kernel1");
-  context_kload(&pcb[2], hello_fun, (void *)"kernel2");
-  context_kload(&pcb[3], hello_fun, (void *)"kernel3");
   char *argv[] = {NULL};
   char *envp[] = {NULL};
   protect(&pcb[1].as);
   context_uload(&pcb[1], "/bin/pal", argv, envp);
-  // protect(&pcb[2].as);
-  // context_uload(&pcb[2], "/bin/bird", argv, envp);
+  protect(&pcb[2].as);
+  context_uload(&pcb[2], "/bin/bird", argv, envp);
+  protect(&pcb[3].as);
+  context_uload(&pcb[3], "/bin/nterm", argv, envp);
   switch_boot_pcb();
   yield();
   // load program here
   // naive_uload(NULL, "/bin/pal");
 }
-unsigned int switch_to = 0;
 Context *schedule(Context *prev) {
   if (current)
     current->cp = prev;
