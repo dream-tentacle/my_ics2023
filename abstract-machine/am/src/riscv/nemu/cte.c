@@ -49,7 +49,8 @@ Context *__am_irq_handle(Context *c) {
   asm volatile("mv %0, sp" : "=r"(sp));
   printf("now sp = %p\n", sp);
   printf("quit handle\n-----\n");
-  assert(0);
+  if (c->np == 1)
+    assert(0);
   return c;
 }
 
