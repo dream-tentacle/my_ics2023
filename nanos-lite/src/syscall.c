@@ -48,6 +48,8 @@ int sys_execve(const char *fname, char *const argv[], char *const envp[]) {
   switch_boot_pcb();
   extern unsigned int switch_to;
   switch_to = 2;
+  extern unsigned int fg_pcb;
+  fg_pcb = 2;
   yield();
   return 0;
 }
