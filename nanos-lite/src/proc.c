@@ -84,11 +84,11 @@ void init_proc() {
   // load program here
   // naive_uload(NULL, "/bin/pal");
 }
-unsigned int switch_to;
+unsigned int switch_to = 0;
 Context *schedule(Context *prev) {
   if (current)
     current->cp = prev;
-#ifdef TIMESHARING
+#ifdef TIME_SHARING
   for (int i = 0; i < MAX_NR_PROC; i++) {
     if (current == &pcb[i]) {
       switch_to = (i + 1) % MAX_NR_PROC;

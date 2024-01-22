@@ -31,7 +31,7 @@ uint64_t prevtime = 0;
 #ifndef CONFIG_TARGET_AM
 static void timer_intr() {
   uint64_t nowtime = get_time();
-  if (nowtime - prevtime > 10000000) { // 1000 ms
+  if (nowtime - prevtime > 100000) { // 10 ms
     extern void dev_raise_intr();
     dev_raise_intr();
     prevtime = get_time();
