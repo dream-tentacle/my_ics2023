@@ -296,10 +296,14 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000001 ????? ????? 111 ????? 01100 11", remu, R,
           Assert(src2 != 0, "div by zero in riscv32/inst.c");
           R(rd) = src1 % src2);
-  INSTPAT("??????? ????? ????? 001 ????? 11100 11", csrrw, ZicsrR,
-          R(rd) = csr_read(src2); // src2是csr寄存器编号
-          printf("rd = %d changed to %d\n", rd, R(rd)); csr_write(src2, src1);
-          printf("csr_write %d to csr %d\n", src1, src2););
+  INSTPAT(
+      "??????? ????? ????? 001 ????? 11100 11", csrrw, ZicsrR, do {
+        R(rd) = csr_read(src2); // src2是csr寄存器编号
+        printf("rd = %d changed to %p\n", rd, (void *)(long long)R(rd));
+        csr_write(src2, src1);
+        printf("csr_write %p to csr %p\n", (void *)(long long)src1,
+               (void *)(long long)src2);
+      } while (0));
   INSTPAT("??????? ????? ????? 101 ????? 11100 11", csrrwi, ZicsrI,
           R(rd) = csr_read(src2); // src2是csr寄存器编号
           csr_write(src2, src1));
