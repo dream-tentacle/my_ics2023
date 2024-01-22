@@ -291,9 +291,14 @@ static int decode_exec(Decode *s) {
   INSTPAT("0000000 00001 00000 000 00000 11100 11", ebreak, N,
           NEMUTRAP(s->pc, R(10))); // R(10) is $a0
   INSTPAT(
-      "0011000 00010 00000 000 00000 11100 11", mret, N, s->dnpc = mepc;
-      mstatus = mstatus | ((mstatus & 0x80) >> 4); mstatus = mstatus | 0x80;
-      if ((mstatus & 0x8) >> 3) { printf("mret 开中断\n"); });
+      "0011000 00010 00000 000 00000 11100 11", mret, N, do {
+        s->dnpc = mepc;
+        mstatus = mstatus | ((mstatus & 0x80) >> 4);
+        mstatus = mstatus | 0x80;
+        if ((mstatus & 0x8) >> 3) {
+          printf("mret 开中断\n");
+        }
+      } while (0));
   INSTPAT("??????? ????? ????? ??? ????? ????? ??", inv, N, INV(s->pc));
   INSTPAT_END();
 
