@@ -8,6 +8,7 @@ extern void __am_switch(Context *c);
 // 一个函数指针，指向一个函数，这个函数的返回值是Context*，参数是Event和Context*。
 Context *__am_irq_handle(Context *c) {
   printf("-----\nenter handle\n");
+  printf("c=%p\n", c);
   printf("c->sp = %p\n", c->gpr[2]);
   printf("c->np = %p\n", c->np);
   printf("c->mcause = %p\n", c->mcause);
@@ -43,6 +44,7 @@ Context *__am_irq_handle(Context *c) {
     assert(c != NULL);
   }
   __am_switch(c);
+  printf("c=%p\n", c);
   printf("c->sp = %p\n", c->gpr[2]);
   printf("c->np = %p\n", c->np);
   int sp;
